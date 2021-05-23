@@ -1,0 +1,2484 @@
+L 1 "..\USR\Global\word.c"
+N/*
+N≥£”√∂Ã”Ô∑≈µΩ’‚¿Ô¿¥
+N’‚∏ˆø…“‘◊˜Œ™“ª∏ˆ≈‰÷√Œƒº˛
+N*/
+N#include "word.h"
+L 1 "..\USR\Global\word.h" 1
+N/*
+NÁä∂ÊÄÅÊú∫Êñá‰ª∂
+N
+N*/
+N#ifndef __WORD_H__
+N#define __WORD_H__
+N
+N#include "stdint.h"
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
+N/* Copyright (C) ARM Ltd., 1999,2014 */
+N/* All rights reserved */
+N
+N/*
+N * RCS $Revision$
+N * Checkin $Date$
+N * Revising $Author: agrant $
+N */
+N
+N#ifndef __stdint_h
+N#define __stdint_h
+N#define __ARMCLIB_VERSION 5060037
+N
+N  #ifdef __INT64_TYPE__
+S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
+S    #define __INT64 __INT64_TYPE__
+N  #else
+N    /* armcc has builtin '__int64' which can be used in --strict mode */
+N    #define __INT64 __int64
+N    #define __INT64_C_SUFFIX__ ll
+N  #endif
+N  #define __PASTE2(x, y) x ## y
+N  #define __PASTE(x, y) __PASTE2(x, y)
+N  #define __INT64_C(x)  __ESCAPE__(__PASTE(x, __INT64_C_SUFFIX__))
+N  #define __UINT64_C(x)  __ESCAPE__(__PASTE(x ## u, __INT64_C_SUFFIX__))
+N  #if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
+X  #if 0L || (1L && !0L)
+N    /* armclang and non-strict armcc allow 'long long' in system headers */
+N    #define __LONGLONG long long
+N  #else
+S    /* strict armcc has '__int64' */
+S    #define __LONGLONG __int64
+N  #endif
+N
+N  #ifndef __STDINT_DECLS
+N  #define __STDINT_DECLS
+N
+N    #undef __CLIBNS
+N
+N    #ifdef __cplusplus
+S      namespace std {
+S          #define __CLIBNS std::
+S          extern "C" {
+N    #else
+N      #define __CLIBNS
+N    #endif  /* __cplusplus */
+N
+N
+N/*
+N * 'signed' is redundant below, except for 'signed char' and if
+N * the typedef is used to declare a bitfield.
+N */
+N
+N    /* 7.18.1.1 */
+N
+N    /* exact-width signed integer types */
+Ntypedef   signed          char int8_t;
+Ntypedef   signed short     int int16_t;
+Ntypedef   signed           int int32_t;
+Ntypedef   signed       __INT64 int64_t;
+Xtypedef   signed       __int64 int64_t;
+N
+N    /* exact-width unsigned integer types */
+Ntypedef unsigned          char uint8_t;
+Ntypedef unsigned short     int uint16_t;
+Ntypedef unsigned           int uint32_t;
+Ntypedef unsigned       __INT64 uint64_t;
+Xtypedef unsigned       __int64 uint64_t;
+N
+N    /* 7.18.1.2 */
+N
+N    /* smallest type of at least n bits */
+N    /* minimum-width signed integer types */
+Ntypedef   signed          char int_least8_t;
+Ntypedef   signed short     int int_least16_t;
+Ntypedef   signed           int int_least32_t;
+Ntypedef   signed       __INT64 int_least64_t;
+Xtypedef   signed       __int64 int_least64_t;
+N
+N    /* minimum-width unsigned integer types */
+Ntypedef unsigned          char uint_least8_t;
+Ntypedef unsigned short     int uint_least16_t;
+Ntypedef unsigned           int uint_least32_t;
+Ntypedef unsigned       __INT64 uint_least64_t;
+Xtypedef unsigned       __int64 uint_least64_t;
+N
+N    /* 7.18.1.3 */
+N
+N    /* fastest minimum-width signed integer types */
+Ntypedef   signed           int int_fast8_t;
+Ntypedef   signed           int int_fast16_t;
+Ntypedef   signed           int int_fast32_t;
+Ntypedef   signed       __INT64 int_fast64_t;
+Xtypedef   signed       __int64 int_fast64_t;
+N
+N    /* fastest minimum-width unsigned integer types */
+Ntypedef unsigned           int uint_fast8_t;
+Ntypedef unsigned           int uint_fast16_t;
+Ntypedef unsigned           int uint_fast32_t;
+Ntypedef unsigned       __INT64 uint_fast64_t;
+Xtypedef unsigned       __int64 uint_fast64_t;
+N
+N    /* 7.18.1.4 integer types capable of holding object pointers */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+Stypedef   signed       __INT64 intptr_t;
+Stypedef unsigned       __INT64 uintptr_t;
+N#else
+Ntypedef   signed           int intptr_t;
+Ntypedef unsigned           int uintptr_t;
+N#endif
+N
+N    /* 7.18.1.5 greatest-width integer types */
+Ntypedef   signed     __LONGLONG intmax_t;
+Xtypedef   signed     long long intmax_t;
+Ntypedef unsigned     __LONGLONG uintmax_t;
+Xtypedef unsigned     long long uintmax_t;
+N
+N
+N#if !defined(__cplusplus) || defined(__STDC_LIMIT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.2.1 */
+N
+N    /* minimum values of exact-width signed integer types */
+N#define INT8_MIN                   -128
+N#define INT16_MIN                -32768
+N#define INT32_MIN          (~0x7fffffff)   /* -2147483648 is unsigned */
+N#define INT64_MIN  __INT64_C(~0x7fffffffffffffff) /* -9223372036854775808 is unsigned */
+N
+N    /* maximum values of exact-width signed integer types */
+N#define INT8_MAX                    127
+N#define INT16_MAX                 32767
+N#define INT32_MAX            2147483647
+N#define INT64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of exact-width unsigned integer types */
+N#define UINT8_MAX                   255
+N#define UINT16_MAX                65535
+N#define UINT32_MAX           4294967295u
+N#define UINT64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.2 */
+N
+N    /* minimum values of minimum-width signed integer types */
+N#define INT_LEAST8_MIN                   -128
+N#define INT_LEAST16_MIN                -32768
+N#define INT_LEAST32_MIN          (~0x7fffffff)
+N#define INT_LEAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of minimum-width signed integer types */
+N#define INT_LEAST8_MAX                    127
+N#define INT_LEAST16_MAX                 32767
+N#define INT_LEAST32_MAX            2147483647
+N#define INT_LEAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of minimum-width unsigned integer types */
+N#define UINT_LEAST8_MAX                   255
+N#define UINT_LEAST16_MAX                65535
+N#define UINT_LEAST32_MAX           4294967295u
+N#define UINT_LEAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.3 */
+N
+N    /* minimum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MIN           (~0x7fffffff)
+N#define INT_FAST16_MIN          (~0x7fffffff)
+N#define INT_FAST32_MIN          (~0x7fffffff)
+N#define INT_FAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MAX             2147483647
+N#define INT_FAST16_MAX            2147483647
+N#define INT_FAST32_MAX            2147483647
+N#define INT_FAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of fastest minimum-width unsigned integer types */
+N#define UINT_FAST8_MAX            4294967295u
+N#define UINT_FAST16_MAX           4294967295u
+N#define UINT_FAST32_MAX           4294967295u
+N#define UINT_FAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.4 */
+N
+N    /* minimum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MIN INT64_MIN
+N#else
+N#define INTPTR_MIN INT32_MIN
+N#endif
+N
+N    /* maximum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MAX INT64_MAX
+N#else
+N#define INTPTR_MAX INT32_MAX
+N#endif
+N
+N    /* maximum value of pointer-holding unsigned integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define UINTPTR_MAX UINT64_MAX
+N#else
+N#define UINTPTR_MAX UINT32_MAX
+N#endif
+N
+N    /* 7.18.2.5 */
+N
+N    /* minimum value of greatest-width signed integer type */
+N#define INTMAX_MIN  __ESCAPE__(~0x7fffffffffffffffll)
+N
+N    /* maximum value of greatest-width signed integer type */
+N#define INTMAX_MAX  __ESCAPE__(9223372036854775807ll)
+N
+N    /* maximum value of greatest-width unsigned integer type */
+N#define UINTMAX_MAX __ESCAPE__(18446744073709551615ull)
+N
+N    /* 7.18.3 */
+N
+N    /* limits of ptrdiff_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define PTRDIFF_MIN INT64_MIN
+S#define PTRDIFF_MAX INT64_MAX
+N#else
+N#define PTRDIFF_MIN INT32_MIN
+N#define PTRDIFF_MAX INT32_MAX
+N#endif
+N
+N    /* limits of sig_atomic_t */
+N#define SIG_ATOMIC_MIN (~0x7fffffff)
+N#define SIG_ATOMIC_MAX   2147483647
+N
+N    /* limit of size_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define SIZE_MAX UINT64_MAX
+N#else
+N#define SIZE_MAX UINT32_MAX
+N#endif
+N
+N    /* limits of wchar_t */
+N    /* NB we have to undef and redef because they're defined in both
+N     * stdint.h and wchar.h */
+N#undef WCHAR_MIN
+N#undef WCHAR_MAX
+N
+N#if defined(__WCHAR32) || (defined(__ARM_SIZEOF_WCHAR_T) && __ARM_SIZEOF_WCHAR_T == 4)
+X#if 0L || (0L && __ARM_SIZEOF_WCHAR_T == 4)
+S  #define WCHAR_MIN   0
+S  #define WCHAR_MAX   0xffffffffU
+N#else
+N  #define WCHAR_MIN   0
+N  #define WCHAR_MAX   65535
+N#endif
+N
+N    /* limits of wint_t */
+N#define WINT_MIN (~0x7fffffff)
+N#define WINT_MAX 2147483647
+N
+N#endif /* __STDC_LIMIT_MACROS */
+N
+N#if !defined(__cplusplus) || defined(__STDC_CONSTANT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.4.1 macros for minimum-width integer constants */
+N#define INT8_C(x)   (x)
+N#define INT16_C(x)  (x)
+N#define INT32_C(x)  (x)
+N#define INT64_C(x)  __INT64_C(x)
+N
+N#define UINT8_C(x)  (x ## u)
+N#define UINT16_C(x) (x ## u)
+N#define UINT32_C(x) (x ## u)
+N#define UINT64_C(x) __UINT64_C(x)
+N
+N    /* 7.18.4.2 macros for greatest-width integer constants */
+N#define INTMAX_C(x)  __ESCAPE__(x ## ll)
+N#define UINTMAX_C(x) __ESCAPE__(x ## ull)
+N
+N#endif /* __STDC_CONSTANT_MACROS */
+N
+N    #ifdef __cplusplus
+S         }  /* extern "C" */
+S      }  /* namespace std */
+N    #endif /* __cplusplus */
+N  #endif /* __STDINT_DECLS */
+N
+N  #ifdef __cplusplus
+S    #ifndef __STDINT_NO_EXPORTS
+S      using ::std::int8_t;
+S      using ::std::int16_t;
+S      using ::std::int32_t;
+S      using ::std::int64_t;
+S      using ::std::uint8_t;
+S      using ::std::uint16_t;
+S      using ::std::uint32_t;
+S      using ::std::uint64_t;
+S      using ::std::int_least8_t;
+S      using ::std::int_least16_t;
+S      using ::std::int_least32_t;
+S      using ::std::int_least64_t;
+S      using ::std::uint_least8_t;
+S      using ::std::uint_least16_t;
+S      using ::std::uint_least32_t;
+S      using ::std::uint_least64_t;
+S      using ::std::int_fast8_t;
+S      using ::std::int_fast16_t;
+S      using ::std::int_fast32_t;
+S      using ::std::int_fast64_t;
+S      using ::std::uint_fast8_t;
+S      using ::std::uint_fast16_t;
+S      using ::std::uint_fast32_t;
+S      using ::std::uint_fast64_t;
+S      using ::std::intptr_t;
+S      using ::std::uintptr_t;
+S      using ::std::intmax_t;
+S      using ::std::uintmax_t;
+S    #endif
+N  #endif /* __cplusplus */
+N
+N#undef __INT64
+N#undef __LONGLONG
+N
+N#endif /* __stdint_h */
+N
+N/* end of stdint.h */
+L 9 "..\USR\Global\word.h" 2
+N#include "font_header.h"
+L 1 "..\LCD\font_header.h" 1
+N
+N#ifndef _FONT_HEADER_H_
+N#define _FONT_HEADER_H_
+N
+N#include "stdint.h"
+N#include "configure.h"
+L 1 "..\USR\stm32\configure.h" 1
+N/*
+NÁî®Êà∑ÈÖçÁΩÆÊñá‰ª∂
+NÊèê‰æõÁªôÁ®ãÂ∫èÂëò‰øÆÊîπÈÖçÁΩÆÁî®
+N*/
+N
+N#ifndef _CONFIGURE_H_
+N#define _CONFIGURE_H_
+N
+N//#define  USER_LOG	//Áî®Êà∑Êó•ÂøóËæìÂá∫
+N//#define  USE_FULL_ASSERT	//ÂºÄÂêØÊñ≠Ë®Ä
+N
+N
+N#define SCREENILI9806  	0		//5ÂØ∏Â±è
+N#define SCREENRA8875   	1		//Êó∫ÂÆù7ÂØ∏Â±è
+N#define V_SCREENRA8875  2		//Êó∫ÂÆù7ÂØ∏Â±è,Á´ñÂ±è
+N#define TM12864Z		3		//Â∏¶Â≠óÂ∫ìÁöÑ12864Â±èÔºà3.3V 20pÊèíÈíàÔºâ
+N#define TM12864_NO_FONT	4		//‰∏çÂ∏¶Â≠óÂ∫ìÁöÑ12864Â±èÔºà3.3V 20pÊèíÈíàÔºâ
+N
+N/*
+NÊ≥®ÊÑèÔºåÊòìËß¶Èó®Á¢∞‰∏éÈáëÁ†ÅÈó®Á¢∞ÊòØÁõ∏ÂèçÁöÑ
+N*/
+N#define YICHU_DOOR 		1					//0.ÊôÆÈÄöÊú∫ÂûãÈó®Á¢∞ÔºàÈáëÁ†ÅÔºâ„ÄÇ1.ÊòìËß¶Èó®Á¢∞
+N#define SCREEN     		TM12864_NO_FONT		//Â±èÂπïÁ±ªÂûã
+N
+N#define ZJ_VS_XY	1	//1ÔºåÊ£ÄÊµã‰∏≠ÂêâÂÖ¥ÂÖÉÊó†‰ø°Âè∑ÁîµÊú∫
+N
+N/*
+NÊú∫ÊüúÂèÇÊï∞
+N*/
+N#define MAX_CHANNEL_SIZE		80	//Âçï‰∏ÄÊú∫ÊüúÊúÄÂ§ßË¥ßÈÅìÊï∞
+N#define MAX_CONTAINER_SIZE		9	//ÊúÄÂ§öÊîØÊåÅÁöÑÊú∫ÊüúÊï∞
+N#define MAX_LAYER_SIZE			8	//ÊúÄÂ§ßÊîØÊåÅÁöÑÂ±ÇÊï∞ÔºåÊâòÁõòÊï∞
+N#define MAX_COLUMN_SIZE			10	//ÊúÄÂ§ßÊîØÊåÅÁöÑÂçïÂ±ÇË¥ßÈÅìÊï∞ÔºåÂàóÊï∞
+N
+N
+N#if ((SCREEN == TM12864Z) || (SCREEN == TM12864_NO_FONT))	//ËìùÂ±è
+X#if ((4 == 3) || (4 == 4))	
+N	#define LCD_CLEAR_SIDE	lcd_clear(); 
+N	#define LCD_DRAW_FRAME 	 ((void)0)//Âï•‰πü‰∏çÊâßË°å
+N	#define JY_MILK		//Âùá‰∫öÁâõÂ•∂
+N	
+N#elif (SCREEN == SCREENILI9806 || SCREEN == SCREENRA8875)	//ÂΩ©Â±èÊ®™Â±è
+S	#define LCD_CLEAR_SIDE	lcd_fill_color(300, 0, ((lcd_get_xsize()) - 300), (lcd_get_ysize()), BLUE)//lcd_fill_color(6*48 - 24, 0, 5, 480, WHITE); 
+S	#define LCD_DRAW_FRAME 	lcd_fill_color(6*48 - 24, 0, 5, 480, WHITE)
+S
+S#elif SCREEN == V_SCREENRA8875	//ÂΩ©Â±èÁ´ñÂ±è
+S	#define LCD_CLEAR_SIDE	lcd_fill_color(0, 400, 480, 400, BLUE)//lcd_fill_color(6*48 - 24, 0, 5, 480, WHITE); 
+S	#define LCD_DRAW_FRAME 	lcd_fill_color(0, 398, 480, 3, WHITE)
+S
+N#endif
+N
+N
+N
+N
+N#define FLASH_APP_ADDR		(0x08010000)  	//Áî®Êà∑Á®ãÂ∫èËµ∑ÂßãÂú∞ÂùÄ
+N
+N#endif
+L 7 "..\LCD\font_header.h" 2
+N
+N
+N///////////////////////////////////////
+N/*       Defines for constants
+N*/
+N#define	________	0x0
+N#define	_______X	0x1
+N#define	______X_	0x2
+N#define	______XX	0x3
+N#define	_____X__	0x4
+N#define	_____X_X	0x5
+N#define	_____XX_	0x6
+N#define	_____XXX	0x7
+N#define	____X___	0x8
+N#define	____X__X	0x9
+N#define	____X_X_	0xa
+N#define	____X_XX	0xb
+N#define	____XX__	0xc
+N#define	____XX_X	0xd
+N#define	____XXX_	0xe
+N#define	____XXXX	0xf
+N#define	___X____	0x10
+N#define	___X___X	0x11
+N#define	___X__X_	0x12
+N#define	___X__XX	0x13
+N#define	___X_X__	0x14
+N#define	___X_X_X	0x15
+N#define	___X_XX_	0x16
+N#define	___X_XXX	0x17
+N#define	___XX___	0x18
+N#define	___XX__X	0x19
+N#define	___XX_X_	0x1a
+N#define	___XX_XX	0x1b
+N#define	___XXX__	0x1c
+N#define	___XXX_X	0x1d
+N#define	___XXXX_	0x1e
+N#define	___XXXXX	0x1f
+N#define	__X_____	0x20
+N#define	__X____X	0x21
+N#define	__X___X_	0x22
+N#define	__X___XX	0x23
+N#define	__X__X__	0x24
+N#define	__X__X_X	0x25
+N#define	__X__XX_	0x26
+N#define	__X__XXX	0x27
+N#define	__X_X___	0x28
+N#define	__X_X__X	0x29
+N#define	__X_X_X_	0x2a
+N#define	__X_X_XX	0x2b
+N#define	__X_XX__	0x2c
+N#define	__X_XX_X	0x2d
+N#define	__X_XXX_	0x2e
+N#define	__X_XXXX	0x2f
+N#define	__XX____	0x30
+N#define	__XX___X	0x31
+N#define	__XX__X_	0x32
+N#define	__XX__XX	0x33
+N#define	__XX_X__	0x34
+N#define	__XX_X_X	0x35
+N#define	__XX_XX_	0x36
+N#define	__XX_XXX	0x37
+N#define	__XXX___	0x38
+N#define	__XXX__X	0x39
+N#define	__XXX_X_	0x3a
+N#define	__XXX_XX	0x3b
+N#define	__XXXX__	0x3c
+N#define	__XXXX_X	0x3d
+N#define	__XXXXX_	0x3e
+N#define	__XXXXXX	0x3f
+N#define	_X______	0x40
+N#define	_X_____X	0x41
+N#define	_X____X_	0x42
+N#define	_X____XX	0x43
+N#define	_X___X__	0x44
+N#define	_X___X_X	0x45
+N#define	_X___XX_	0x46
+N#define	_X___XXX	0x47
+N#define	_X__X___	0x48
+N#define	_X__X__X	0x49
+N#define	_X__X_X_	0x4a
+N#define	_X__X_XX	0x4b
+N#define	_X__XX__	0x4c
+N#define	_X__XX_X	0x4d
+N#define	_X__XXX_	0x4e
+N#define	_X__XXXX	0x4f
+N#define	_X_X____	0x50
+N#define	_X_X___X	0x51
+N#define	_X_X__X_	0x52
+N#define	_X_X__XX	0x53
+N#define	_X_X_X__	0x54
+N#define	_X_X_X_X	0x55
+N#define	_X_X_XX_	0x56
+N#define	_X_X_XXX	0x57
+N#define	_X_XX___	0x58
+N#define	_X_XX__X	0x59
+N#define	_X_XX_X_	0x5a
+N#define	_X_XX_XX	0x5b
+N#define	_X_XXX__	0x5c
+N#define	_X_XXX_X	0x5d
+N#define	_X_XXXX_	0x5e
+N#define	_X_XXXXX	0x5f
+N#define	_XX_____	0x60
+N#define	_XX____X	0x61
+N#define	_XX___X_	0x62
+N#define	_XX___XX	0x63
+N#define	_XX__X__	0x64
+N#define	_XX__X_X	0x65
+N#define	_XX__XX_	0x66
+N#define	_XX__XXX	0x67
+N#define	_XX_X___	0x68
+N#define	_XX_X__X	0x69
+N#define	_XX_X_X_	0x6a
+N#define	_XX_X_XX	0x6b
+N#define	_XX_XX__	0x6c
+N#define	_XX_XX_X	0x6d
+N#define	_XX_XXX_	0x6e
+N#define	_XX_XXXX	0x6f
+N#define	_XXX____	0x70
+N#define	_XXX___X	0x71
+N#define	_XXX__X_	0x72
+N#define	_XXX__XX	0x73
+N#define	_XXX_X__	0x74
+N#define	_XXX_X_X	0x75
+N#define	_XXX_XX_	0x76
+N#define	_XXX_XXX	0x77
+N#define	_XXXX___	0x78
+N#define	_XXXX__X	0x79
+N#define	_XXXX_X_	0x7a
+N#define	_XXXX_XX	0x7b
+N#define	_XXXXX__	0x7c
+N#define	_XXXXX_X	0x7d
+N#define	_XXXXXX_	0x7e
+N#define	_XXXXXXX	0x7f
+N#define	X_______	0x80
+N#define	X______X	0x81
+N#define	X_____X_	0x82
+N#define	X_____XX	0x83
+N#define	X____X__	0x84
+N#define	X____X_X	0x85
+N#define	X____XX_	0x86
+N#define	X____XXX	0x87
+N#define	X___X___	0x88
+N#define	X___X__X	0x89
+N#define	X___X_X_	0x8a
+N#define	X___X_XX	0x8b
+N#define	X___XX__	0x8c
+N#define	X___XX_X	0x8d
+N#define	X___XXX_	0x8e
+N#define	X___XXXX	0x8f
+N#define	X__X____	0x90
+N#define	X__X___X	0x91
+N#define	X__X__X_	0x92
+N#define	X__X__XX	0x93
+N#define	X__X_X__	0x94
+N#define	X__X_X_X	0x95
+N#define	X__X_XX_	0x96
+N#define	X__X_XXX	0x97
+N#define	X__XX___	0x98
+N#define	X__XX__X	0x99
+N#define	X__XX_X_	0x9a
+N#define X__XX_XX	0x9b
+N#define X__XXX__	0x9c
+N#define X__XXX_X	0x9d
+N#define	X__XXXX_	0x9e
+N#define	X__XXXXX	0x9f
+N#define	X_X_____	0xa0
+N#define	X_X____X	0xa1
+N#define	X_X___X_	0xa2
+N#define	X_X___XX	0xa3
+N#define	X_X__X__	0xa4
+N#define	X_X__X_X	0xa5
+N#define	X_X__XX_	0xa6
+N#define	X_X__XXX	0xa7
+N#define	X_X_X___	0xa8
+N#define	X_X_X__X	0xa9
+N#define	X_X_X_X_	0xaa
+N#define	X_X_X_XX	0xab
+N#define	X_X_XX__	0xac
+N#define	X_X_XX_X	0xad
+N#define	X_X_XXX_	0xae
+N#define	X_X_XXXX	0xaf
+N#define	X_XX____	0xb0
+N#define X_XX___X	0xb1
+N#define	X_XX__X_	0xb2
+N#define	X_XX__XX	0xb3
+N#define	X_XX_X__	0xb4
+N#define	X_XX_X_X	0xb5
+N#define	X_XX_XX_	0xb6
+N#define	X_XX_XXX	0xb7
+N#define	X_XXX___	0xb8
+N#define	X_XXX__X	0xb9
+N#define	X_XXX_X_	0xba
+N#define	X_XXX_XX	0xbb
+N#define	X_XXXX__	0xbc
+N#define	X_XXXX_X	0xbd
+N#define	X_XXXXX_	0xbe
+N#define	X_XXXXXX	0xbf
+N#define	XX______	0xc0
+N#define	XX_____X	0xc1
+N#define	XX____X_	0xc2
+N#define	XX____XX	0xc3
+N#define	XX___X__	0xc4
+N#define	XX___X_X	0xc5
+N#define	XX___XX_	0xc6
+N#define	XX___XXX	0xc7
+N#define	XX__X___	0xc8
+N#define	XX__X__X	0xc9
+N#define	XX__X_X_	0xca
+N#define	XX__X_XX	0xcb
+N#define	XX__XX__	0xcc
+N#define	XX__XX_X	0xcd
+N#define	XX__XXX_	0xce
+N#define XX__XXXX	0xcf
+N#define	XX_X____	0xd0
+N#define	XX_X___X	0xd1
+N#define	XX_X__X_	0xd2
+N#define	XX_X__XX	0xd3
+N#define	XX_X_X__	0xd4
+N#define	XX_X_X_X	0xd5
+N#define	XX_X_XX_	0xd6
+N#define	XX_X_XXX	0xd7
+N#define	XX_XX___	0xd8
+N#define	XX_XX__X	0xd9
+N#define	XX_XX_X_	0xda
+N#define	XX_XX_XX	0xdb
+N#define	XX_XXX__	0xdc
+N#define	XX_XXX_X	0xdd
+N#define	XX_XXXX_	0xde
+N#define	XX_XXXXX	0xdf
+N#define	XXX_____	0xe0
+N#define	XXX____X	0xe1
+N#define	XXX___X_	0xe2
+N#define	XXX___XX	0xe3
+N#define	XXX__X__	0xe4
+N#define	XXX__X_X	0xe5
+N#define	XXX__XX_	0xe6
+N#define	XXX__XXX	0xe7
+N#define	XXX_X___	0xe8
+N#define	XXX_X__X	0xe9
+N#define	XXX_X_X_	0xea
+N#define	XXX_X_XX	0xeb
+N#define	XXX_XX__	0xec
+N#define	XXX_XX_X	0xed
+N#define	XXX_XXX_	0xee
+N#define	XXX_XXXX	0xef
+N#define	XXXX____	0xf0
+N#define	XXXX___X	0xf1
+N#define	XXXX__X_	0xf2
+N#define	XXXX__XX	0xf3
+N#define	XXXX_X__	0xf4
+N#define	XXXX_X_X	0xf5
+N#define	XXXX_XX_	0xf6
+N#define	XXXX_XXX	0xf7
+N#define	XXXXX___	0xf8
+N#define	XXXXX__X	0xf9
+N#define	XXXXX_X_	0xfa
+N#define	XXXXX_XX	0xfb
+N#define	XXXXXX__	0xfc
+N#define	XXXXXX_X	0xfd
+N#define	XXXXXXX_	0xfe
+N#define	XXXXXXXX	0xff
+N
+N
+N
+Ntypedef struct BX_FONT
+N{
+N	const uint8_t size;//◊÷ÃÂ¥Û–°
+N	const char* index;//Œƒ◊÷À˜“˝
+N	const uint8_t* lattice;//µ„’Û
+N}BX_FONT;
+N
+Nextern const BX_FONT  font96;
+Nextern const BX_FONT  font48;
+Nextern const BX_FONT  font16;
+Nextern const BX_FONT  font64;
+N
+N#endif
+L 10 "..\USR\Global\word.h" 2
+N#include "configure.h" 
+N
+N//‰ø°ÊÅØÁïåÈù¢
+N
+N
+N
+N#if ((SCREEN == TM12864Z) || (SCREEN == TM12864_NO_FONT))
+X#if ((4 == 3) || (4 == 4))
+N
+N	#define G_HOLDER_FONT			(&font16)	//ËèúÂçïÂÜÖÂÆπÂ≠ó‰Ωì
+N	#define G_HOLDER_ITEM_SIZE		3		//ÊØèÈ°µÊòæÁ§∫ÁöÑÂÜÖÂÆπË°åÊï∞
+N	#define G_HOLDER_FOREGROUND		WHITE	//ÂÜÖÂÆπÂâçÊôØËâ≤
+N	#define G_HOLDER_BACKGROUND		BLUE	//ÂÜÖÂÆπËÉåÊôØËâ≤
+N	#define G_HOLDER_CUR_ZI_COLOR	BLACK	//ÂÜÖÂÆπÂΩìÂâçÈÄâÈ°πÊï∞Â≠óÈ¢úËâ≤
+N	#define G_HOLDER_CUR_NAME_COLOR	WHITE	//ÂÜÖÂÆπÂΩìÂâçÈÄâÈ°πÂêçÁß∞È¢úËâ≤
+N
+N	//ÊòæÁ§∫‰∫åÁª¥Á†Å
+N	#define G_ERCODE_X		0	
+N	#define G_ERCODE_Y		0
+N	#define G_ERCODE_SCALE	1
+N
+N#elif ( (SCREEN == SCREENILI9806) || (SCREEN == SCREENRA8875))
+S
+S	#define G_HOLDER_FONT		(&font48)	//ËèúÂçïÂÜÖÂÆπÂ≠ó‰Ωì
+S	#define G_HOLDER_ITEM_SIZE	7			//ÊØèÈ°µÊòæÁ§∫ÁöÑÂÜÖÂÆπË°åÊï∞
+S	#define G_HOLDER_FOREGROUND		WHITE	//ÂÜÖÂÆπÂâçÊôØËâ≤
+S	#define G_HOLDER_BACKGROUND		BLUE	//ÂÜÖÂÆπËÉåÊôØËâ≤
+S	#define G_HOLDER_CUR_ZI_COLOR		transfer24Bit_to_16Bit(0xff9900)	//ÂÜÖÂÆπÂΩìÂâçÈÄâÈ°πÊï∞Â≠óÈ¢úËâ≤
+S	#define G_HOLDER_CUR_NAME_COLOR	RED									//ÂÜÖÂÆπÂΩìÂâçÈÄâÈ°πÂêçÁß∞È¢úËâ≤
+S
+S	//ÊòæÁ§∫‰∫åÁª¥Á†Å
+S	#define G_ERCODE_X		500	
+S	#define G_ERCODE_Y		100
+S	#define G_ERCODE_SCALE	6
+S
+S#elif (SCREEN == V_SCREENRA8875)
+S
+S	#define G_HOLDER_FONT		(&font48)	//ËèúÂçïÂÜÖÂÆπÂ≠ó‰Ωì
+S	#define G_HOLDER_ITEM_SIZE	7			//ÊØèÈ°µÊòæÁ§∫ÁöÑÂÜÖÂÆπË°åÊï∞
+S	#define G_HOLDER_FOREGROUND		WHITE	//ÂÜÖÂÆπÂâçÊôØËâ≤
+S	#define G_HOLDER_BACKGROUND		BLUE	//ÂÜÖÂÆπËÉåÊôØËâ≤
+S	#define G_HOLDER_CUR_ZI_COLOR		transfer24Bit_to_16Bit(0xff9900)	//ÂÜÖÂÆπÂΩìÂâçÈÄâÈ°πÊï∞Â≠óÈ¢úËâ≤
+S	#define G_HOLDER_CUR_NAME_COLOR	RED									//ÂÜÖÂÆπÂΩìÂâçÈÄâÈ°πÂêçÁß∞È¢úËâ≤
+S
+S	//ÊòæÁ§∫‰∫åÁª¥Á†Å
+S	#define G_ERCODE_X		100	
+S	#define G_ERCODE_Y		300
+S	#define G_ERCODE_SCALE	6
+S
+N#endif
+N
+N
+N
+N
+N
+N
+N
+N
+N
+Ntypedef struct WORD{
+N	const char *character;
+N	uint16_t x;
+N	uint16_t y;
+N	uint16_t color;
+N	uint16_t background;
+N	const BX_FONT *font;
+N	uint16_t valx;
+N	uint16_t valy;
+N}WORD;
+N
+Nvoid word_init(void);
+N
+N
+N
+N
+Ntypedef struct CHARACTER{
+N	const WORD *standby;
+N	const WORD *start;
+N	const WORD *choose;
+N	const WORD *menu;
+N	const WORD *salling;
+N	const WORD *set;
+N	const WORD *warring;
+N	const WORD *info;
+N	const WORD *drvset;
+N}CHARACTER;
+N
+N
+N
+N
+Nextern CHARACTER pt_word;
+N
+Nextern volatile char version[];
+N
+N
+N
+N
+N#endif
+L 6 "..\USR\Global\word.c" 2
+N#include "lcd_header.h"
+L 1 "..\LCD\lcd_header.h" 1
+N#ifndef __ILI9325_H__
+N#define __ILI9325_H__
+N
+N#include "stdint.h"
+N#include "font_header.h"
+N#include "word.h"
+N/*
+N16bit 565 È¢úËâ≤
+N*/
+N#define   BLACK                0x0000                // ??:    0,   0,   0 //
+N#define   BLUE                 0x001F                // ??:    0,   0, 255 //
+N#define   GREEN                0x07E0                // ??:    0, 255,   0 //
+N#define   CYAN                 0x07FF                // ??:    0, 255, 255 //
+N#define   RED                  0xF800                // ??:  255,   0,   0 //
+N#define   MAGENTA              0xF81F                // ??:  255,   0, 255 //
+N#define   YELLOW               0xFFE0                // ??:  255, 255, 0   //
+N#define   WHITE                0xFFFF                // ??:  255, 255, 255 //
+N#define   NAVY                 0x000F                // ???:  0,   0, 128 //
+N#define   DGREEN               0x03E0                // ???:  0, 128,   0 //
+N#define   DCYAN                0x03EF                // ???:  0, 128, 128 //
+N#define   MAROON               0x7800                // ???:128,   0,   0 //
+N#define   PURPLE               0x780F                // ??:  128,   0, 128 //
+N#define   OLIVE                0x7BE0                // ???:128, 128,   0 //
+N#define   LGRAY                0xC618                // ???:192, 192, 192 //
+N#define   DGRAY                0x7BEF                // ???:128, 128, 128 //
+N
+N#define		RGB_GRAY		0xcccccc	//????
+N#define		RGB_DGRAY		0x999999	//???
+N
+N
+N
+N
+N
+N
+N
+Nvoid lcd_fill_color(uint16_t xStart,uint16_t yStart,uint16_t xLong,uint16_t yLong,uint16_t Color);
+Nvoid bsp_lcd_fill_pic16(uint16_t x, uint16_t y,uint16_t pic_H, uint16_t pic_V, const uint16_t *pic);
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+N
+Nvoid lcd_set_background(uint16_t bk);
+Nvoid lcd_set_forceground(uint16_t col);
+Nuint16_t lcd_get_xsize(void);
+Nuint16_t lcd_get_ysize(void);
+Nuint16_t transfer24Bit_to_16Bit(uint32_t color);
+Nvoid lcd_fill_color(uint16_t xStart,uint16_t yStart,uint16_t xLong,uint16_t yLong,uint16_t Color);
+Nvoid show_ercode(uint16_t x, uint16_t y, uint16_t xylong, uint8_t scale , uint8_t dat[][41]);
+Nvoid clear_ercode(uint16_t x, uint16_t y, uint16_t xylong, uint8_t scale);
+N
+N
+N
+N
+Nvoid lcd_init(void);
+Nvoid lcd_clear(void);
+Nvoid lcd_show_character(const WORD *character);
+Nvoid lcd_show_money(uint32_t money,uint16_t x,uint16_t y, uint16_t foreground, uint16_t background, const BX_FONT font);
+Nvoid lcd_show_string(const char* str,uint16_t x ,uint16_t y, uint16_t foreground, uint16_t background, const BX_FONT font);
+Nvoid lcd_show_time(const WORD *time);
+Nvoid lcd_show_num(uint32_t num,uint16_t x,uint16_t y ,uint16_t foreground, uint16_t background, const BX_FONT font ,uint8_t type, uint8_t size);
+Nvoid lcd_clear_character(const WORD *character);
+N
+N
+N
+N#endif
+N
+N
+L 7 "..\USR\Global\word.c" 2
+N#include "global.h"
+L 1 "..\USR\Global\global.h" 1
+N/*
+NÂÖ®Â±ÄË¶ÅÁî®ÁöÑÂèòÈáèÊàñÊñπÊ≥ï
+N*/
+N#ifndef _GOLBAL_H_
+N#define _GOLBAL_H_
+N
+N#include "stdint.h"
+N#include "msg.h" 
+L 1 "..\USR\MSG\msg.h" 1
+N/*
+NÁä∂ÊÄÅÊú∫Êñá‰ª∂
+N
+N*/
+N#ifndef _MSH_H_
+N#define _MSH_H_
+N
+N#include "stdint.h"
+N
+N//ÂÆö‰πâÊ∂àÊÅØÁ±ªÂûã
+N#define MsgSYS    0    //Áä∂ÊÄÅÊú∫Ê∂àÊÅØ
+N#define MsgKEY    1    //ÊåâÈîÆÊ∂àÊÅØ
+N#define MsgCOIN   2    //Á°¨Â∏ÅÂô®Ê∂àÊÅØ
+N#define MsgBILL   3    //Á∫∏Â∏ÅÂô®Ê∂àÊÅØ
+N#define MsgCARD   4    //ËØªÂç°Âô®Ê∂àÊÅØ
+N#define MsgPHONE  5    //ÊâãÊú∫Âç°ËØªÂç°Âô®Ê∂àÊÅØ
+N#define MsgCHAN   6    //Âá∫Ë¥ßÊú∫ÊûÑÊ∂àÊÅØ
+N#define MsgEVN    7    //ÁéØÂ¢ÉÁ≥ªÁªüÊ∂àÊÅØ
+N#define MsgCOMIT  8    //ÈÄöËÆØÊ®°ÂùóÊ∂àÊÅØ„ÄÇ
+N#define MsgEVENT  9    //‰∫ã‰ª∂
+N#define MsgASSIS  10   //Áßò‰π¶Ê∂àÊÅØ„ÄÇ
+N#define MsgDROP   11   //Ë∞ÉË¥ßÊ£ÄÊµãÊ∂àÊÅØ
+N#define MsgLIFT   12   //ÂçáÈôçÊú∫‰ø°ÊÅØ
+N#define MsgPC     13   //‰∏ä‰ΩçÊú∫Ê∂àÊÅØ
+N#define MsgHT     14   //ÂêéÂè∞Ê∂àÊÅØ
+N#define MsgSCAN   15	//ÁΩëÁªúÊ∂àË¥π‰ø°ÊÅØ
+N#define MsgLftEx   16   //ÂçáÈôçÊú∫ÊãìÂ±ïÊ∂àÊÅØ
+N#define MsgVoice   17   //ËØ≠Èü≥Ê®°Âùó‰ø°ÊÅØ
+N#define MsgSensor  18	//‰∫∫‰ΩìÊÑüÂ∫îÂô®
+N#define MsgQkPass	19	//quick pass ËÆæÂ§á
+N#define MsgRemote	20	//ËøúÁ®ãÊéßÂà∂Ê∂àÊÅØ
+N#define MsgOnline	21	//Âú®Á∫øÂç°
+N#define MsgQrcode	22	//‰∫åÁª¥Á†Å
+N
+N
+N#define FSMMSG_SIZE_DEFAULT	0//ÈªòËÆ§Ê∂àÊÅØÂ§ßÂ∞è
+N/*
+NÂÆö‰πâÁ≥ªÁªüÊ∂àÊÅØÁªìÊûÑ
+N*/
+Ntypedef struct FSMMSG	
+N{
+N	uint8_t   type; 	//Ê∂àÊÅØÁ±ªÂûã
+N	uint8_t   stype; 	//Ê∂àÊÅØÂ≠êÁ±ªÂûã
+N	uint32_t  value; 	//Ê∂àÊÅØÁöÑÂÄº
+N	uint16_t  exLen;	//ÈôÑÂä†Êï∞ÊçÆÈïøÂ∫¶
+N	void  *dat;			//ÈôÑÂä†Êï∞ÊçÆÊåáÈíà
+N}FSMMSG;
+N
+N
+N
+Nvoid SYSMsgInit(void); //Ê∂àÊÅØÁ≥ªÁªüÂàùÂßãÂåñ
+NFSMMSG* apply_fsm_msg(uint16_t size); //Áî≥ËØ∑‰∏Ä‰∏™Ê∂àÊÅØ„ÄÇ
+Nvoid  release_fsm_msg(FSMMSG * msg);//ÈáäÊîæ‰∏Ä‰∏™Ê∂àÊÅØ
+Nuint8_t send_fsm_msg(FSMMSG *msg);  //ÂèëÈÄÅ‰∏Ä‰∏™Á≥ªÁªüÊ∂àÊÅØ„ÄÇ
+Nuint8_t SendFSYSMSG(FSMMSG *msg);  //ÂèëÈÄÅ‰∏Ä‰∏™Á≥ªÁªüÊ∂àÊÅØÔºåÂπ∂ÊèíÂà∞ÈòüÂàóÊúÄÂâçÈù¢„ÄÇ
+NFSMMSG * WaitSYSMSG(uint16_t timeout,uint8_t *err);//Á≠âÂæÖ‰∏Ä‰∏™Á≥ªÁªüÊ∂àÊÅØ
+N
+N
+N#endif
+L 9 "..\USR\Global\global.h" 2
+N#include "main.h"
+L 1 "..\USR\main.h" 1
+N/*
+N@’‚¿Ô∂®“Âµƒ∂´Œ˜£¨ πµ√≥Ã–Ú”Îª˙∆˜≤ªœÎπÿ
+N*/
+N#ifndef _MAIN_H_
+N#define _MAIN_H_
+N
+Ntypedef enum{FALSE, TRUE}bool;
+N
+N#endif
+L 10 "..\USR\Global\global.h" 2
+N
+N
+N#define MAX_H_SIZE 	8	//ÊâòÁõòÊï∞
+N#define MAX_L_SIZE  10	//Ë¥ßÈÅìÊï∞
+N
+N//Êñ≠Ë®ÄÂ£∞Êòé
+Nvoid assert_failed(uint8_t* file, uint32_t line);
+N//Áî®Êà∑Êó•ÂøóËæìÂá∫
+Nvoid log_fail(uint8_t* file, uint32_t line);
+N
+N/*
+N‰∫§ÊòìË°å‰∏∫ÊèèËø∞
+N*/
+Ntypedef struct CLASS_TRADE 
+N{
+N	//ÂΩìÂâçÊú∫ÊüúÊèèËø∞
+N	struct {
+N		uint8_t  container; //ÂΩìÂâçË¥ßÁÆ±
+N		uint8_t  tray;    	//ÂΩìÂâçÊâòÁõò
+N		uint8_t  col;    	//ÂΩìÂâçË¥ßÈÅìÔºàËøô‰∏™Áî®backupÂå∫Êù•Â≠òÂÇ®Ôºâ
+N	}curDiverBoard;
+N	
+N	//ÂΩìÂâçÈÄâÊã©ÊèèËø∞
+N	struct {
+N		char   select[11];	//Á¨¨11Â≠óËäÇÁî®Êù•ÂÅöÂÅúÊ≠¢Â≠óÁ¨¶
+N		uint8_t	state;  	//ÂΩìÂâçÁöÑÈÄâÊã©Áä∂ÊÄÅ 0 Êú™ÈÄâÔºå1ÊåáÂÆö‰∫ÜÊâòÁõòÔºå2ÊåáÂÆö‰∫ÜË¥ßÈÅì
+N		uint32_t value;  	//ÂΩìÂâçÈÄâÊã©ÁöÑÂÄº
+N	}select;
+N	
+N	struct {
+N		uint8_t state;		//ËæìÂÖ•Áä∂ÊÄÅÔºàÂÖ∂ÂÆûÊòØÁî®Êù•ËÆ∞ÂΩïËæìÂÖ•‰ΩçÊï∞Ôºâ
+N		char numchar[12];	//‰∏∫‰∫ÜÊòæÁ§∫,Âõ†‰∏∫Â¶ÇÊûúËæìÂÖ•ÈáëÈ¢ùÂ∞èÊï∞ÁÇπ‰ºöÂ§ö‰∏Ä‰ΩçÔºåÊâÄ‰ª•ËøôÈáåÂÖÅËÆ∏12Â≠óËäÇÈïøÂ∫¶
+N		uint32_t value;		//ËæìÂÖ•ÂÄºÔºàËæìÂÖ•Âá†‰ΩçËÆ°ÁÆóÂá†‰ΩçÔºâ
+N		uint8_t lenn;		//ËæìÂÖ•ÈïøÂ∫¶(ËØªËÆæÁΩÆ,ÊØèÊ¨°ËÆæÁΩÆÁä∂ÊÄÅÊó∂ËØª)
+N		uint8_t backup;		//Â§á‰ªΩ
+N		bool flag;			//‰∏Ä‰∏™Áä∂ÊÄÅÊ†áÂøó
+N	}inputNum;
+N	
+N	//Ë¥ßÈÅì‰ø°ÊÅØÊèèËø∞
+N	struct{
+N		uint32_t price; //‰ª∑Ê†ºÔºàÂä®ÊÄÅËØªËÆæÁΩÆÔºâ
+N		uint16_t store;	//Â∫ìÂ≠òÔºàÂä®ÊÄÅËØªËÆæÁΩÆÔºâ
+N	}channel;
+N	
+N	//‰∫åÁª¥Á†ÅÁõ∏ÂÖ≥
+N	struct{
+N		uint8_t token[18];
+N		char *timeStamp;//Êó∂Èó¥Êà≥
+N		uint8_t type;//ÊîØ‰ªòÁ±ªÂûã 0x32ÊîØ‰ªòÂÆùÔºå0x33ÂæÆ‰ø°
+N		uint8_t stamp[14];//ËÆ∞ÂΩïÊó∂Èó¥Êà≥
+N	}qrcode;
+N	
+N	uint8_t businessmode; //0Áé∞Èáë 1 ICÂç° 2 ÊâãÊú∫ÊîØ‰ªò
+N	uint32_t saleCostTime;//Âá∫Ë¥ßËÄóË¥πÊó∂Èó¥
+N}CLASS_TRADE;
+N
+N/*
+NÁä∂ÊÄÅÂèÇÊï∞ÔºåÁî®‰∫éÊéßÂà∂Áä∂ÊÄÅÁöÑË°å‰∏∫
+N*/
+Ntypedef struct CLASS_FSM_STATUS  
+N{
+N	uint8_t mode; 	//ÊåáÁ§∫ÁõÆÊ†áÁä∂ÊÄÅËøõÂÖ•ÊüêÁßçÊ®°Âºè
+N	uint8_t status; //Áî®‰∫éËÆ∞ÂΩïÁä∂ÊÄÅÂÜÖÈÉ®Â§ÑÁêÜÊó∂‰∫ßÁîüÁöÑ‰∏≠Èó¥ÊÄÅ
+N	uint8_t count; 	//Áî®‰∫éÁä∂ÊÄÅÂÜÖÈÉ®ËÆ°Êï∞Ôºå
+N	uint8_t shortcut; //Âø´Êç∑ÊñπÂºèÊ†áÂøó
+N	uint16_t num;	//Áä∂ÊÄÅÊó∂Èó¥ËÆ°Êï∞
+N
+N}CLASS_FSM_STATUS;
+N
+N
+N
+N/*
+NÊèèËø∞ÂîÆË¥ßÊú∫Êï¥Êú∫ÂèÇÊï∞
+NËøôÈáåÁöÑÂèÇÊï∞ÈÉΩÊòØÂºÄÊú∫Â∞±ËØªÂèñÁöÑ
+N*/
+Ntypedef struct CLASS_VM_SET
+N{
+N	uint8_t DT;	//Âº∫Âà∂Ë¥≠‰π∞
+N	uint8_t comDtu;//
+N	
+N	uint8_t language;	//ËØ≠Ë®Ä
+N	uint8_t point;		//Â∞èÊï∞ÁÇπ‰ΩçÊï∞ÔºàÂºÄÊú∫ËØªËØªËÆæÁΩÆ,ÂêÑÁßçËæìÂÖ•ÈïøÂ∫¶Ôºå‰ª•ÂèäÈáëÈ¢ùËæìÂÖ•ÈïøÂ∫¶Ôºâ
+N	uint8_t priceBit;	//‰ª∑Ê†º‰ΩçÊï∞
+N	uint8_t channelBit;	//Ë¥ßÈÅì‰ΩçÊï∞
+N	uint8_t storeBit;	//Â∫ìÂ≠ò‰ΩçÊï∞
+N	uint8_t goodsIdBit;	//Êù°Á†Å‰ΩçÊï∞
+N	uint8_t keyState;	//ÈîÆÁõòËß¶ÂèëÊñπÂºèÂàáÊç¢
+N	uint8_t door;		//Èó®Á¢∞ 
+N	
+N	uint8_t linkState;	//ËøûÁΩëÁä∂ÊÄÅ
+N	uint8_t linkNum;	//ÈÄöËÆØÊµÅÊ∞¥Âè∑
+N	
+N	uint8_t storeEnable;//Â∫ìÂ≠ò‰ΩøËÉΩ
+N	uint8_t applyEnable;//‰∫åÁª¥Á†ÅÊîØ‰ªòÂºÄÂÖ≥
+N	
+N	uint8_t maxChannelNum;	//ÊØèÊâòÁõòË¥ßÈÅìÊï∞
+N	uint8_t maxtrayNum;		//ÊâòÁõòÊï∞
+N	uint8_t maxContainerNum;//Êú∫ÊüúÊï∞ÁõÆ
+N}CLASS_VM_SET;
+N
+N
+N/*
+NÊèêÁ§∫‰ø°ÊÅØÁªìÊûÑ‰Ωì
+NÂÆûÁé∞ÂÆöÊó∂Ê∏ÖÈô§
+NËÆ§‰∏∫ÊèêÁ§∫Âè™ÊòØ‰∏ÄË°å
+NÂπ∂‰∏îÂõûÂ§çÂ∫ïËâ≤ÊòØËÉåÊôØËâ≤
+N*/
+Ntypedef struct CLASS_PROMPT
+N{
+N	uint8_t fontsize;//ÂçïÂ≠óÁ¨¶‰∏ÄËæπÁÇπÈòµÊï∞
+N	uint16_t x;
+N	uint16_t y;
+N	uint32_t len;
+N}CLASS_PROMPT;
+N
+N
+N
+N
+N/*
+NÊèèËø∞Ê∂àÊÅØÂä©Êâã
+N*/
+Ntypedef struct CLASS_ASSISIT{
+N	uint8_t  state;
+N	uint16_t value;
+N
+N}CLASS_ASSISIT;
+N
+N
+N
+N//ÊöÇÊó∂Áî®ÁöÑ(Ëøô‰∫õÂêéÈù¢ÈÉΩË¶ÅÊõøÊç¢Êéâ)
+Nextern uint8_t CA306;
+Nextern volatile uint8_t coin_level;			//Á°¨Â∏ÅÂô®Â±ÇÁ∫ßÊéßÂà∂
+Nextern uint32_t sysfactor;
+Nextern uint8_t check_w_power_on;
+N
+N
+N
+N
+N
+N
+N
+N/*
+NÂÖ®Â±ÄÂèòÈáèÂ£∞Êòé
+N*/
+Nextern volatile CLASS_VM_SET g_vm;	//ÂîÆË¥ßÊú∫ÂèÇÊï∞
+Nextern volatile CLASS_FSM_STATUS g_fsm;	//Áä∂ÊÄÅÊú∫Áä∂ÊÄÅ
+Nextern volatile CLASS_TRADE g_trade;//‰∫§ÊòìÁõ∏ÂÖ≥
+N
+N/*
+NÂ£∞Êòé
+N*/
+N	
+Nvoid tradenumadd(void);
+Nvoid select_goods(uint8_t key);
+Nchar *select_char_get(void);
+Nbool select_state_get(void);
+Nvoid select_clear(void);
+Nuint16_t select_value_get(void);
+N
+Nvoid input_num(uint8_t key);
+Nvoid input_money(uint8_t key);
+Nvoid input_clear(void);
+Nvoid input_len_set(uint8_t len);
+Nchar* input_char_get(void);
+Nuint8_t input_time(uint8_t key);
+Nuint8_t input_len_get(void);
+Nvoid fsm_value_clear(void);
+N
+Nuint32_t input_value_get(void);
+Nuint8_t input_data(uint8_t key);
+N
+N#endif
+L 8 "..\USR\Global\word.c" 2
+N
+Nvolatile char version[] = {"MXXX-1803181"};//∞Ê±æ∫≈
+N
+N/*============================================================================================
+Nµ•…´∆¡ƒª
+N============================================================================================*/
+N
+N#if ((SCREEN == TM12864Z) || (SCREEN == TM12864_NO_FONT))
+X#if ((4 == 3) || (4 == 4))
+N
+N/*
+NæØ∏ÊÃ· æ–≈œ¢
+N*/
+Nconst WORD chs_warring[] = {
+N{"…Ë÷√≥…π¶", 	4*8, 6, WHITE, BLUE, &font16},	//0
+X{"…Ë÷√≥…π¶", 	4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"…Ë÷√ ß∞‹", 	4*8, 6, WHITE, BLUE, &font16},	//1
+X{"…Ë÷√ ß∞‹", 	4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"…Ë÷√≥¨œﬁ", 	4*8, 6, WHITE, BLUE, &font16},	//2
+X{"…Ë÷√≥¨œﬁ", 	4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"…Ë÷√Œª ˝≤ª◊„", 4*8, 6, WHITE, BLUE, &font16},	//3
+X{"…Ë÷√Œª ˝≤ª◊„", 4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"’˝‘⁄≤‚ ‘÷–", 	4*8, 6, WHITE, BLUE, &font16},	//4
+X{"’˝‘⁄≤‚ ‘÷–", 	4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"’˝‘⁄ª÷∏¥...",4*8, 6, WHITE, BLUE, &font16},	//5
+X{"’˝‘⁄ª÷∏¥...",4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"ª÷∏¥≥…π¶   ",4*8, 6, WHITE, BLUE, &font16},	//6
+X{"ª÷∏¥≥…π¶   ",4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"œ‘ æ ±º‰", 	1*8, 0, WHITE, BLUE, &font16},	//7
+X{"œ‘ æ ±º‰", 	1*8, 0, 0xFFFF, 0x001F, &font16},	
+N{"HARD FAULT", 0, 0, BLACK, BLUE, &font16},//8
+X{"HARD FAULT", 0, 0, 0x0000, 0x001F, &font16},
+N
+N//Õº±Í
+N{"Ãñ", 		1*8, 6, WHITE, BLUE, &font16},	//9
+X{"Ãñ", 		1*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"ÈT", 		3*8, 6, WHITE, BLUE, &font16},	//10
+X{"ÈT", 		3*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"ôC", 		5*8, 6, WHITE, BLUE, &font16},	//11
+X{"ôC", 		5*8, 6, 0xFFFF, 0x001F, &font16},	
+N
+N//e2prom∏¥Œª
+N{"EEPROM RESET    ", 0, 2, WHITE, BLUE, &font16},	//12
+X{"EEPROM RESET    ", 0, 2, 0xFFFF, 0x001F, &font16},	
+N//rtcª÷∏¥
+N{"RTC INIT        ", 0, 0, WHITE, BLUE, &font16},	//13
+X{"RTC INIT        ", 0, 0, 0xFFFF, 0x001F, &font16},	
+N{"RTC RESET	      ", 0, 0, WHITE, BLUE, &font16},	//14
+X{"RTC RESET	      ", 0, 0, 0xFFFF, 0x001F, &font16},	
+N{"CRYSTAL ERR     ", 0, 6, WHITE, BLUE, &font16},	//15
+X{"CRYSTAL ERR     ", 0, 6, 0xFFFF, 0x001F, &font16},	
+N
+N//Õº±Í
+N{"Éˆ", 7*8,  6, WHITE, BLUE, &font16},//÷∆¿‰Õº±Í			//16
+X{"Éˆ", 7*8,  6, 0xFFFF, 0x001F, &font16},
+N{"üÙ", 9*8,  6, WHITE, BLUE, &font16},//’’√˜Õº±Í			//17
+X{"üÙ", 9*8,  6, 0xFFFF, 0x001F, &font16},
+N{"ö¢", 11*8, 6, WHITE, BLUE, &font16},//…±∂æÕº±Í			//18
+X{"ö¢", 11*8, 6, 0xFFFF, 0x001F, &font16},
+N{"îz", 0, 0, WHITE, BLUE, &font16, 4*8, 0},//Œ¥◊∞Œ¬∂»ÃΩÕ∑Õº±Í 	//19 ∫Û√Ê◊¯±Í±Ì æøÏΩ›º¸≤È—Ø÷–’˝≥£Œ¬∂»÷µµƒŒª÷√
+X{"îz", 0, 0, 0xFFFF, 0x001F, &font16, 4*8, 0},
+N{"ü·", 7*8, 6, WHITE, BLUE, &font16},//÷∆»»Õº±Í 					//20
+X{"ü·", 7*8, 6, 0xFFFF, 0x001F, &font16},
+N{"ì‹", 13*8, 6, WHITE, BLUE, &font16},//≤£¡ßº”»»Õº±Í 			//21
+X{"ì‹", 13*8, 6, 0xFFFF, 0x001F, &font16},
+N{"îµ", 8*8, 0, WHITE, BLUE, &font16, 10*8, 0},//¥˝∑¢ÀÕ ˝æ›Õº±Í 	//22
+X{"îµ", 8*8, 0, 0xFFFF, 0x001F, &font16, 10*8, 0},
+N{"úÿ", 2*8, 0, WHITE, BLUE, &font16, 6*8, 0},//…„ œ∂»Õº±Í 		//23 ∫Û√Ê2∏ˆ◊¯±Í±Ì æøÏΩ›º¸≤È—ØŒ¬∂»Õº±Íµƒ¡Ì“ª∏ˆŒª÷√
+X{"úÿ", 2*8, 0, 0xFFFF, 0x001F, &font16, 6*8, 0},
+N{"◊x", 0, 6, WHITE, BLUE, &font16, 6*8, 6},//À¢ø®∆˜Õº±Í			//24
+X{"◊x", 0, 6, 0xFFFF, 0x001F, &font16, 6*8, 6},
+N
+N//flash∏¥Œª
+N{"FLASH RESET     ", 0, 4, WHITE, BLUE, &font16},	//25
+X{"FLASH RESET     ", 0, 4, 0xFFFF, 0x001F, &font16},	
+N{"FLASH IS NOT SST", 0, 4, WHITE, BLUE, &font16},	//26
+X{"FLASH IS NOT SST", 0, 4, 0xFFFF, 0x001F, &font16},	
+N{"FLASH IS NOT SPI", 0, 4, WHITE, BLUE, &font16},	//27
+X{"FLASH IS NOT SPI", 0, 4, 0xFFFF, 0x001F, &font16},	
+N{"RECOVERY        ", 0, 4, WHITE, BLUE, &font16, 9*8, 4},	//28
+X{"RECOVERY        ", 0, 4, 0xFFFF, 0x001F, &font16, 9*8, 4},	
+N{"FLASH REC       ", 0, 4, WHITE, BLUE, &font16, 9*8, 4},	//29
+X{"FLASH REC       ", 0, 4, 0xFFFF, 0x001F, &font16, 9*8, 4},	
+N
+N};
+N
+N/*
+N¥˝ª˙
+N*/
+Nconst WORD chs_standby[] = {
+N//¥˝ª˙ΩÁ√Ê
+N{"  ª∂”≠À¢ø®π∫ŒÔ  ", 0, 3, WHITE, BLUE, &font16},		//0
+X{"  ª∂”≠À¢ø®π∫ŒÔ  ", 0, 3, 0xFFFF, 0x001F, &font16},		
+N{"Õ¯¬Áπ ’œŒﬁ∑®œ˚∑—", 0, 3, WHITE, BLUE, &font16},		//1
+X{"Õ¯¬Áπ ’œŒﬁ∑®œ˚∑—", 0, 3, 0xFFFF, 0x001F, &font16},		
+N{"À¢ø®π ’œŒﬁ∑®œ˚∑—", 0, 3, WHITE, BLUE, &font16},		//2
+X{"À¢ø®π ’œŒﬁ∑®œ˚∑—", 0, 3, 0xFFFF, 0x001F, &font16},		
+N{"ª˙∆˜π ’œŒﬁ∑®œ˚∑—", 0, 3, WHITE, BLUE, &font16},		//3
+X{"ª˙∆˜π ’œŒﬁ∑®œ˚∑—", 0, 3, 0xFFFF, 0x001F, &font16},		
+N//#º¸≤È—Ø‘⁄œﬂø®–≈œ¢ΩÁ√Ê
+N{"ø®∫≈:", 		0, 0, WHITE, BLUE, &font16, 6*8, 0},		//4
+X{"ø®∫≈:", 		0, 0, 0xFFFF, 0x001F, &font16, 6*8, 0},		
+N{"”‡∂Ó:", 		0, 2, WHITE, BLUE, &font16, 6*8, 2},		//5
+X{"”‡∂Ó:", 		0, 2, 0xFFFF, 0x001F, &font16, 6*8, 2},		
+N{"œﬁπ∫:", 		0, 4, WHITE, BLUE, &font16, 6*8, 4},		//6
+X{"œﬁπ∫:", 		0, 4, 0xFFFF, 0x001F, &font16, 6*8, 4},		
+N{"«ÎÀ¢ø®≤È—Ø", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//7
+X{"«ÎÀ¢ø®≤È—Ø", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N{"Õ¯¬ÁŒ¥¡¨Ω”", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//8
+X{"Õ¯¬ÁŒ¥¡¨Ω”", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N{"≤ªœﬁ", 		6*8, 4, WHITE, BLUE, &font16, 6*8, 2},		//9
+X{"≤ªœﬁ", 		6*8, 4, 0xFFFF, 0x001F, &font16, 6*8, 2},		
+N{"¥Œ", 			10*8, 4, WHITE, BLUE, &font16, 10*8, 4},		//10
+X{"¥Œ", 			10*8, 4, 0xFFFF, 0x001F, &font16, 10*8, 4},		
+N{"ø®≤ª¥Ê‘⁄   ", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//11
+X{"ø®≤ª¥Ê‘⁄   ", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N{"Œﬁ–ßø®     ", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//12
+X{"Œﬁ–ßø®     ", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N{"∑«±æ–£ø®   ", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//13
+X{"∑«±æ–£ø®   ", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N{"≤‚ ‘ø®     ", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//14
+X{"≤‚ ‘ø®     ", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N{"∑«±æª˙ø®   ", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//15
+X{"∑«±æª˙ø®   ", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N{"¥¶¿Ì“Ï≥£   ", 	0, 6, WHITE, BLUE, &font16, 14*8,6},		//16
+X{"¥¶¿Ì“Ï≥£   ", 	0, 6, 0xFFFF, 0x001F, &font16, 14*8,6},		
+N
+N//ª∂”≠π‚¡Ÿ∏®÷˙Ã· æ
+N{"Õ¯¬Áπ ’œŒﬁ∑®œ˚∑—", 0, 600, WHITE, BLUE, &font16},		//17	//œ‘ æŒª÷√…Ë÷√Œ™≥¨œﬁ£¨’‚¿Ô≤ªœ‘ æ
+X{"Õ¯¬Áπ ’œŒﬁ∑®œ˚∑—", 0, 600, 0xFFFF, 0x001F, &font16},		
+N{"À¢ø®π ’œŒﬁ∑®œ˚∑—", 0, 600, WHITE, BLUE, &font16},		//18	//’‚¿Ô≤ªœ‘ æ
+X{"À¢ø®π ’œŒﬁ∑®œ˚∑—", 0, 600, 0xFFFF, 0x001F, &font16},		
+N{"ª˙∆˜π ’œŒﬁ∑®œ˚∑—", 0, 600, WHITE, BLUE, &font16},		//19	//’‚¿Ô≤ªœ‘ æ
+X{"ª˙∆˜π ’œŒﬁ∑®œ˚∑—", 0, 600, 0xFFFF, 0x001F, &font16},		
+N{"«Î—°‘Ò…Ã∆∑      ", 0, 600, WHITE, BLUE, &font16},		//20	//’‚¿Ô≤ªœ‘ æ
+X{"«Î—°‘Ò…Ã∆∑      ", 0, 600, 0xFFFF, 0x001F, &font16},		
+N
+N
+N};
+N
+N/*
+Nø™ª˙ΩÁ√Ê
+N*/
+Nconst WORD chs_start[] = {
+N	{"’˝‘⁄ºÏ≤‚…Ë±∏... ", 0, 0, WHITE, BLUE, &font16},		//0
+X	{"’˝‘⁄ºÏ≤‚…Ë±∏... ", 0, 0, 0xFFFF, 0x001F, &font16},		
+N	{"÷Ω±“∆˜’˝≥£      ",	0, 6, WHITE, BLUE, &font16},		//1
+X	{"÷Ω±“∆˜’˝≥£      ",	0, 6, 0xFFFF, 0x001F, &font16},		
+N	{"”≤±“∆˜’˝≥£      ", 0, 6, WHITE, BLUE, &font16},		//2
+X	{"”≤±“∆˜’˝≥£      ", 0, 6, 0xFFFF, 0x001F, &font16},		
+N	{"÷Ω±“∆˜Œ¥¡¨Ω”    ", 0, 6, WHITE, BLUE, &font16},		//3
+X	{"÷Ω±“∆˜Œ¥¡¨Ω”    ", 0, 6, 0xFFFF, 0x001F, &font16},		
+N	{"”≤±“∆˜Œ¥¡¨Ω”    ", 0, 6, WHITE, BLUE, &font16},		//4
+X	{"”≤±“∆˜Œ¥¡¨Ω”    ", 0, 6, 0xFFFF, 0x001F, &font16},		
+N	{"«˝∂Ø∞Â’˝≥£      ", 0, 2, WHITE, BLUE, &font16},		//5
+X	{"«˝∂Ø∞Â’˝≥£      ", 0, 2, 0xFFFF, 0x001F, &font16},		
+N	{"«˝∂Ø∞ÂŒ¥¡¨Ω”    ", 0, 2, WHITE, BLUE, &font16},		//6
+X	{"«˝∂Ø∞ÂŒ¥¡¨Ω”    ", 0, 2, 0xFFFF, 0x001F, &font16},		
+N	{"∂¡ø®∆˜’˝≥£      ", 0, 4, WHITE, BLUE, &font16},		//7
+X	{"∂¡ø®∆˜’˝≥£      ", 0, 4, 0xFFFF, 0x001F, &font16},		
+N	{"∂¡ø®∆˜Œ¥¡¨Ω”    ", 0, 4, WHITE, BLUE, &font16},		//8
+X	{"∂¡ø®∆˜Œ¥¡¨Ω”    ", 0, 4, 0xFFFF, 0x001F, &font16},		
+N};
+N
+N/*
+Nπ∫¬Ú
+N*/	
+Nconst WORD chs_choose[] = {
+N//—°ªıΩÁ√Ê
+N{"…Ã∆∑:"	, 	0, 0, 	WHITE, BLUE, &font16, 5*8, 0},			//0
+X{"…Ã∆∑:"	, 	0, 0, 	0xFFFF, 0x001F, &font16, 5*8, 0},			
+N{"º€∏Ò:" , 		0, 3, 	WHITE, BLUE, &font16, 5*8, 3},			//1
+X{"º€∏Ò:" , 		0, 3, 	0xFFFF, 0x001F, &font16, 5*8, 3},			
+N{"ø‚¥Ê:" , 		500, 500, 	WHITE, BLUE, &font16, 500, 500},	//2 ∏ƒ¡ÀŒª÷√≤ªœ‘ æ’‚∏ˆ ‘≠ º(0, 4    6*8, 4)
+X{"ø‚¥Ê:" , 		500, 500, 	0xFFFF, 0x001F, &font16, 500, 500},	
+N{"Œﬁ¥Àªıµ¿", 	0, 6, WHITE, BLUE, &font16}, 		//3
+X{"Œﬁ¥Àªıµ¿", 	0, 6, 0xFFFF, 0x001F, &font16}, 		
+N{"ªıµ¿“—Ω˚”√      ", 0, 6, WHITE, BLUE, &font16}, 	//4
+X{"ªıµ¿“—Ω˚”√      ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N{"…Ã∆∑“— €ø’      ", 0, 6, WHITE, BLUE, &font16}, 	//5
+X{"…Ã∆∑“— €ø’      ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N{"ªıµ¿Õ£÷π∑˛ŒÒ    ", 0, 6, WHITE, BLUE, &font16}, 	//6
+X{"ªıµ¿Õ£÷π∑˛ŒÒ    ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N{"Õ¯¬ÁŒ¥¡¨Ω”      ", 0, 6, WHITE, BLUE, &font16},			//7
+X{"Õ¯¬ÁŒ¥¡¨Ω”      ", 0, 6, 0xFFFF, 0x001F, &font16},			
+N{"«ÎÀ¢ø®π∫ŒÔ      ", 0, 6, WHITE, BLUE, &font16, 14*8, 6},	//8
+X{"«ÎÀ¢ø®π∫ŒÔ      ", 0, 6, 0xFFFF, 0x001F, &font16, 14*8, 6},	
+N{"«ÎÀ¢ø®ªÚ…®¬Î    ", 0, 6, WHITE, BLUE, &font16},			//9
+X{"«ÎÀ¢ø®ªÚ…®¬Î    ", 0, 6, 0xFFFF, 0x001F, &font16},			
+N{"“—∂¡ø®∫ÛÃ®’˝—È÷§", 0, 6, WHITE, BLUE, &font16},			//10
+X{"“—∂¡ø®∫ÛÃ®’˝—È÷§", 0, 6, 0xFFFF, 0x001F, &font16},			
+N
+N//‘⁄œﬂø®≥ˆªı
+N{"ø®∫≈:", 		0, 0, WHITE, BLUE, &font16, 5*8, 0},	//11
+X{"ø®∫≈:", 		0, 0, 0xFFFF, 0x001F, &font16, 5*8, 0},	
+N{"ª˙πÒ‘›Õ£∑˛ŒÒ", 0, 6, WHITE, BLUE, &font16}, 			//12
+X{"ª˙πÒ‘›Õ£∑˛ŒÒ", 0, 6, 0xFFFF, 0x001F, &font16}, 			
+N{"”‡∂Ó:", 		0, 3, WHITE, BLUE, &font16, 5*8, 3},	//13 ∏ƒŒ™µ⁄»˝––
+X{"”‡∂Ó:", 		0, 3, 0xFFFF, 0x001F, &font16, 5*8, 3},	
+N{"ø®≤ª¥Ê‘⁄≤ªƒ‹œ˚∑—", 0, 6, WHITE, BLUE, &font16},	//14
+X{"ø®≤ª¥Ê‘⁄≤ªƒ‹œ˚∑—", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{" Œﬁ–ßø®≤ªƒ‹œ˚∑— ", 0, 6, WHITE, BLUE, &font16},	//15
+X{" Œﬁ–ßø®≤ªƒ‹œ˚∑— ", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{"∑«±æ–£ø®≤ªƒ‹œ˚∑—", 0, 6, WHITE, BLUE, &font16},	//16
+X{"∑«±æ–£ø®≤ªƒ‹œ˚∑—", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{"¥Œ ˝≥¨œﬁ≤ªƒ‹œ˚∑—", 0, 6, WHITE, BLUE, &font16},	//17
+X{"¥Œ ˝≥¨œﬁ≤ªƒ‹œ˚∑—", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{"∑«±æª˙ø®≤ªƒ‹œ˚∑—", 0, 6, WHITE, BLUE, &font16},	//18
+X{"∑«±æª˙ø®≤ªƒ‹œ˚∑—", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{"”‡∂Ó≤ª◊„≤ªƒ‹œ˚∑—", 0, 6, WHITE, BLUE, &font16},	//19
+X{"”‡∂Ó≤ª◊„≤ªƒ‹œ˚∑—", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{" µ⁄  ≤„…Ã∆∑Õ£ € ", 0, 6, WHITE, BLUE, &font16, 3*8, 6},	//20
+X{" µ⁄  ≤„…Ã∆∑Õ£ € ", 0, 6, 0xFFFF, 0x001F, &font16, 3*8, 6},	
+N{"   ø€øÓ ß∞‹    ", 0, 6, WHITE, BLUE, &font16},		//21
+X{"   ø€øÓ ß∞‹    ", 0, 6, 0xFFFF, 0x001F, &font16},		
+N{"¥¶¿Ì“Ï≥£≤ªƒ‹œ˚∑—", 0, 6, WHITE, BLUE, &font16},	//22
+X{"¥¶¿Ì“Ï≥£≤ªƒ‹œ˚∑—", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{"   Õ®÷™π‹¿Ì‘±   ", 0, 6, WHITE, BLUE, &font16},	//23
+X{"   Õ®÷™π‹¿Ì‘±   ", 0, 6, 0xFFFF, 0x001F, &font16},	
+N{"‘›Õ£∑˛ŒÒ        ", 0, 6, WHITE, BLUE, &font16}, 	//24
+X{"‘›Õ£∑˛ŒÒ        ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N{"«Î…®¬Î÷ß∏∂      ", 0, 6, WHITE, BLUE, &font16}, 	//25
+X{"«Î…®¬Î÷ß∏∂      ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N{"º€∏Ò¥ÌŒÛ«Î÷ÿ—°ªı",  0, 6, WHITE, BLUE, &font16},	//26	
+X{"º€∏Ò¥ÌŒÛ«Î÷ÿ—°ªı",  0, 6, 0xFFFF, 0x001F, &font16},	
+N{"ø‚¥Ê¥ÌŒÛ«Î÷ÿ—°ªı",  0, 6, WHITE, BLUE, &font16},	//27	
+X{"ø‚¥Ê¥ÌŒÛ«Î÷ÿ—°ªı",  0, 6, 0xFFFF, 0x001F, &font16},	
+N
+N//œ÷Ω
+N{"Õ∂»Î:", 0, 0, WHITE, BLUE, &font16, 5*8, 0}, 	//28
+X{"Õ∂»Î:", 0, 0, 0xFFFF, 0x001F, &font16, 5*8, 0}, 	
+N{"…Ã∆∑:", 0, 2, WHITE, BLUE, &font16, 5*8, 2}, 	//29
+X{"…Ã∆∑:", 0, 2, 0xFFFF, 0x001F, &font16, 5*8, 2}, 	
+N{"º€∏Ò:", 0, 4, WHITE, BLUE, &font16, 5*8, 4}, 	//30
+X{"º€∏Ò:", 0, 4, 0xFFFF, 0x001F, &font16, 5*8, 4}, 	
+N{"«ÎºÃ–¯Õ∂±“      ", 0, 6, WHITE, BLUE, &font16}, 	//31
+X{"«ÎºÃ–¯Õ∂±“      ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N{"«Î—°‘Ò…Ã∆∑      ", 0, 6, WHITE, BLUE, &font16}, 	//32
+X{"«Î—°‘Ò…Ã∆∑      ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N{"‘›Õ£∑˛ŒÒ        ", 0, 6, WHITE, BLUE, &font16}, 	//33
+X{"‘›Õ£∑˛ŒÒ        ", 0, 6, 0xFFFF, 0x001F, &font16}, 	
+N
+N};
+N
+N/*
+N≤Àµ•ΩÁ√Ê
+N*/
+Nconst WORD chs_menu[] = {
+N{"…Ã∆∑…Ë÷√" , 0, 2, WHITE, BLUE, &font16},//0
+X{"…Ã∆∑…Ë÷√" , 0, 2, 0xFFFF, 0x001F, &font16},
+N{"ªıµ¿≤‚ ‘" , 0, 4, WHITE, BLUE, &font16},//1
+X{"ªıµ¿≤‚ ‘" , 0, 4, 0xFFFF, 0x001F, &font16},
+N{"ªıµ¿…Ë÷√" , 0, 6, WHITE, BLUE, &font16},//2
+X{"ªıµ¿…Ë÷√" , 0, 6, 0xFFFF, 0x001F, &font16},
+N{"Œ¬øÿ…Ë÷√" , 0, 2, WHITE, BLUE, &font16},//3
+X{"Œ¬øÿ…Ë÷√" , 0, 2, 0xFFFF, 0x001F, &font16},
+N{"øÿ÷∆…Ë÷√" , 0, 4, WHITE, BLUE, &font16},//4
+X{"øÿ÷∆…Ë÷√" , 0, 4, 0xFFFF, 0x001F, &font16},
+N{"÷ß∏∂…Ë÷√" , 0, 6, WHITE, BLUE, &font16},//5
+X{"÷ß∏∂…Ë÷√" , 0, 6, 0xFFFF, 0x001F, &font16},
+N{"ª˙∆˜…Ë÷√" , 0, 2, WHITE, BLUE, &font16},//6
+X{"ª˙∆˜…Ë÷√" , 0, 2, 0xFFFF, 0x001F, &font16},
+N{"ª˙∆˜–≈œ¢" , 0, 4, WHITE, BLUE, &font16},//7
+X{"ª˙∆˜–≈œ¢" , 0, 4, 0xFFFF, 0x001F, &font16},
+N{"Õ®—∂…Ë÷√" , 300, 200, WHITE, BLUE, &font16},		//8
+X{"Õ®—∂…Ë÷√" , 300, 200, 0xFFFF, 0x001F, &font16},		
+N{"π‹¿Ì…Ë÷√" , 0, 0, WHITE, BLUE, &font16, 12*8, 0}, //9
+X{"π‹¿Ì…Ë÷√" , 0, 0, 0xFFFF, 0x001F, &font16, 12*8, 0}, 
+N{" €ªıª˙–≈œ¢" , 400, 0, WHITE, BLUE, &font16}, 		//10
+X{" €ªıª˙–≈œ¢" , 400, 0, 0xFFFF, 0x001F, &font16}, 		
+N{"ID:", 300, 50 , WHITE, BLUE, &font16},	//11
+X{"ID:", 300, 50 , 0xFFFF, 0x001F, &font16},	
+N{"∞Ê±æ∫≈:", 300, 100, WHITE, BLUE, &font16},//12
+X{"∞Ê±æ∫≈:", 300, 100, 0xFFFF, 0x001F, &font16},
+N{"«˝∂Ø∞Â:", 300, 150, WHITE, BLUE, &font16},//13
+X{"«˝∂Ø∞Â:", 300, 150, 0xFFFF, 0x001F, &font16},
+N{"’˝≥£", 	500, 150, WHITE, BLUE, &font16},//14
+X{"’˝≥£", 	500, 150, 0xFFFF, 0x001F, &font16},
+N{"Œ¥¡¨Ω”", 	500, 150, WHITE, BLUE, &font16},//15
+X{"Œ¥¡¨Ω”", 	500, 150, 0xFFFF, 0x001F, &font16},
+N{"∂¡ø®∆˜:", 300, 200, WHITE, BLUE, &font16},//16
+X{"∂¡ø®∆˜:", 300, 200, 0xFFFF, 0x001F, &font16},
+N{"÷Ω±“∆˜:", 300, 250, WHITE, BLUE, &font16},//17
+X{"÷Ω±“∆˜:", 300, 250, 0xFFFF, 0x001F, &font16},
+N{"”≤±“∆˜:", 300, 300, WHITE, BLUE, &font16},//18
+X{"”≤±“∆˜:", 300, 300, 0xFFFF, 0x001F, &font16},
+N{"Õ¯  ¬Á:", 300, 350, WHITE, BLUE, &font16},//19
+X{"Õ¯  ¬Á:", 300, 350, 0xFFFF, 0x001F, &font16},
+N{"¡¨Õ¯", 	500, 350, WHITE, BLUE, &font16},//20
+X{"¡¨Õ¯", 	500, 350, 0xFFFF, 0x001F, &font16},
+N{"Œ¥¡¨Õ¯", 	500, 350, WHITE, BLUE, &font16},//21
+X{"Œ¥¡¨Õ¯", 	500, 350, 0xFFFF, 0x001F, &font16},
+N{"Œ¬  ∂»:", 300, 400, WHITE, BLUE, &font16},//22
+X{"Œ¬  ∂»:", 300, 400, 0xFFFF, 0x001F, &font16},
+N{"π ’œ", 	500, 400, WHITE, BLUE, &font16},//23
+X{"π ’œ", 	500, 400, 0xFFFF, 0x001F, &font16},
+N{"Õ®—∂√‹¬Î:",500, 400, WHITE, BLUE, &font16},//24
+X{"Õ®—∂√‹¬Î:",500, 400, 0xFFFF, 0x001F, &font16},
+N{"œ˙ €Õ≥º∆",0, 4, WHITE, BLUE, &font16},//25
+X{"œ˙ €Õ≥º∆",0, 4, 0xFFFF, 0x001F, &font16},
+N};
+N
+N/*
+N≥ˆªıΩÁ√Ê
+N*/
+Nconst WORD chs_salling[] = {
+N
+N{"”‡∂Ó", 30, 230, WHITE, BLUE, &font48},						//0
+X{"”‡∂Ó", 30, 230, 0xFFFF, 0x001F, &font48},						
+N{"’˝‘⁄≥ˆªı«Î…‘∫Ú  ", 0, 6, WHITE, BLUE, &font16, 14*8, 6},		//1
+X{"’˝‘⁄≥ˆªı«Î…‘∫Ú  ", 0, 6, 0xFFFF, 0x001F, &font16, 14*8, 6},		
+N{"≥ˆªı≥…π¶        ", 0, 6, WHITE, BLUE, &font16},				//2
+X{"≥ˆªı≥…π¶        ", 0, 6, 0xFFFF, 0x001F, &font16},				
+N{"≥ˆªı ß∞‹        ", 0, 6, WHITE, BLUE, &font16, 14*8, 6},		//3
+X{"≥ˆªı ß∞‹        ", 0, 6, 0xFFFF, 0x001F, &font16, 14*8, 6},		
+N{"«Î»°◊ﬂ…Ã∆∑      ", 0, 6, WHITE, BLUE, &font16},				//4
+X{"«Î»°◊ﬂ…Ã∆∑      ", 0, 6, 0xFFFF, 0x001F, &font16},				
+N};
+N
+N/*
+N…Ë÷√ΩÁ√ÊÃ· æ”Ô
+N*/
+Nconst WORD chs_set[] = {
+N
+N{"…Ë÷√≥…π¶", 500, 400, WHITE, BLUE, &font16},	//0
+X{"…Ë÷√≥…π¶", 500, 400, 0xFFFF, 0x001F, &font16},	
+N{"…Ë÷√ ß∞‹", 500, 400, WHITE, BLUE, &font16},	//1
+X{"…Ë÷√ ß∞‹", 500, 400, 0xFFFF, 0x001F, &font16},	
+N{"…Ë÷√≥¨œﬁ", 500, 400, WHITE, BLUE, &font16}, 	//2
+X{"…Ë÷√≥¨œﬁ", 500, 400, 0xFFFF, 0x001F, &font16}, 	
+N{"…Ë÷√Œª ˝≤ª◊„", 500, 400, WHITE, BLUE, &font16},//3
+X{"…Ë÷√Œª ˝≤ª◊„", 500, 400, 0xFFFF, 0x001F, &font16},
+N{"’˝‘⁄≤‚ ‘", 4*8, 6, WHITE, BLUE, &font16},	//4
+X{"’˝‘⁄≤‚ ‘", 4*8, 6, 0xFFFF, 0x001F, &font16},	
+N{"’˝≥£µÁª˙ ˝", 500, 400, WHITE, BLUE, &font16},	//5
+X{"’˝≥£µÁª˙ ˝", 500, 400, 0xFFFF, 0x001F, &font16},	
+N{"≤ª‘⁄ŒªµÁª˙", 500, 400, WHITE, BLUE, &font16},	//6
+X{"≤ª‘⁄ŒªµÁª˙", 500, 400, 0xFFFF, 0x001F, &font16},	
+N{"’˝‘⁄ª÷∏¥≥ˆ≥ß..." , 500, 400, WHITE, BLUE, &font16},	//7
+X{"’˝‘⁄ª÷∏¥≥ˆ≥ß..." , 500, 400, 0xFFFF, 0x001F, &font16},	
+N{"ª÷∏¥≥…π¶", 500, 400, WHITE, BLUE, &font16},			//8
+X{"ª÷∏¥≥…π¶", 500, 400, 0xFFFF, 0x001F, &font16},			
+N{"Ãı¬Î",	500, 400, WHITE, BLUE, &font48},	//9
+X{"Ãı¬Î",	500, 400, 0xFFFF, 0x001F, &font48},	
+N
+N//ªıµ¿≤‚ ‘
+N{"ª˙πÒ", 		0 , 	0, WHITE, BLUE, &font16, 4*8, 0},		//10
+X{"ª˙πÒ", 		0 , 	0, 0xFFFF, 0x001F, &font16, 4*8, 0},		
+N{"Õ–≈Ã", 		5*8 , 	0, WHITE, BLUE, &font16, 9*8, 0},		//11
+X{"Õ–≈Ã", 		5*8 , 	0, 0xFFFF, 0x001F, &font16, 9*8, 0},		
+N{"0123456789", 	0 , 	2, WHITE, BLACK, &font16, 4, 6},		//12	±Ì æªıµ¿,valxŒ™ªıµ¿ πƒ‹◊›◊¯±Í£¨valyŒ™ªıµ¿◊¥Ã¨◊›◊¯±Í
+X{"0123456789", 	0 , 	2, 0xFFFF, 0x0000, &font16, 4, 6},		
+N{" ‰»Î", 		11*8 , 	0, WHITE, BLUE, &font16, 12*8, 2},		//13	
+X{" ‰»Î", 		11*8 , 	0, 0xFFFF, 0x001F, &font16, 12*8, 2},		
+N
+N//…Ã∆∑…Ë÷√
+N{"…Ã∆∑" , 0, 0, WHITE, BLUE, &font16, 5*8, 0},	//14
+X{"…Ã∆∑" , 0, 0, 0xFFFF, 0x001F, &font16, 5*8, 0},	
+N{"ø‚¥Ê" , 0, 2, WHITE, BLUE, &font16, 5*8, 2},	//15
+X{"ø‚¥Ê" , 0, 2, 0xFFFF, 0x001F, &font16, 5*8, 2},	
+N{"º€∏Ò" , 0, 4, WHITE, BLUE, &font16, 5*8, 4},	//16
+X{"º€∏Ò" , 0, 4, 0xFFFF, 0x001F, &font16, 5*8, 4},	
+N{"Ãı¬Î" , 0, 0, WHITE, BLUE, &font16, 5*8, 0},	//17
+X{"Ãı¬Î" , 0, 0, 0xFFFF, 0x001F, &font16, 5*8, 0},	
+N
+N//ª˙∆˜…Ë÷√
+N{"ID:",			0, 0, WHITE, BLUE, &font16, 6*8, 0},			//18
+X{"ID:",			0, 0, 0xFFFF, 0x001F, &font16, 6*8, 0},			
+N{"¡¨Õ¯√‹¬Î:" , 0, 2, WHITE, BLUE, &font16, 10*8, 2},			//19
+X{"¡¨Õ¯√‹¬Î:" , 0, 2, 0xFFFF, 0x001F, &font16, 10*8, 2},			
+N{"¡¨Õ¯(0πÿ1ø™):" , 0, 4, WHITE, BLUE, &font16, 14*8, 4},			//20
+X{"¡¨Õ¯(0πÿ1ø™):" , 0, 4, 0xFFFF, 0x001F, &font16, 14*8, 4},			
+N{"”Ô—‘(0”¢1÷–):" , 0, 0, WHITE, BLUE, &font16, 14*8, 0},			//21
+X{"”Ô—‘(0”¢1÷–):" , 0, 0, 0xFFFF, 0x001F, &font16, 14*8, 0},			
+N{"ª˙πÒ ˝(1-9):" , 0, 2, WHITE, BLUE, &font16, 14*8, 2},			//22
+X{"ª˙πÒ ˝(1-9):" , 0, 2, 0xFFFF, 0x001F, &font16, 14*8, 2},			
+N{"–° ˝Œª(0-8):" , 0, 4, WHITE, BLUE, &font16, 14*8, 4},			//23
+X{"–° ˝Œª(0-8):" , 0, 4, 0xFFFF, 0x001F, &font16, 14*8, 4},			
+N{"º€∏ÒŒª(1-9):" , 0, 0, WHITE, BLUE, &font48, 14*8, 0},			//24
+X{"º€∏ÒŒª(1-9):" , 0, 0, 0xFFFF, 0x001F, &font48, 14*8, 0},			
+N{" ‰»ÎŒª(1-9):" , 0, 2, WHITE, BLUE, &font16, 14*8, 2},			//25
+X{" ‰»ÎŒª(1-9):" , 0, 2, 0xFFFF, 0x001F, &font16, 14*8, 2},			
+N{"ªıµ¿Œª(1-3):" , 0, 4, WHITE, BLUE, &font16, 14*8, 4},			//26
+X{"ªıµ¿Œª(1-3):" , 0, 4, 0xFFFF, 0x001F, &font16, 14*8, 4},			
+N{"ª÷∏¥≥ˆ≥ß(1»∑»œ)" , 0, 2, WHITE, BLUE, &font16, 12*8, 2},		//27
+X{"ª÷∏¥≥ˆ≥ß(1»∑»œ)" , 0, 2, 0xFFFF, 0x001F, &font16, 12*8, 2},		
+N
+N//÷ß∏∂…Ë÷√
+N{"…®¬Î(0πÿ1ø™):" , 0, 0, WHITE, BLUE, &font16, 14*8, 0},		//28
+X{"…®¬Î(0πÿ1ø™):" , 0, 0, 0xFFFF, 0x001F, &font16, 14*8, 0},		
+N{"À¢ø®Ω”ø⁄:" , 0, 2, WHITE, BLUE, &font16, 10*8, 2},			//29
+X{"À¢ø®Ω”ø⁄:" , 0, 2, 0xFFFF, 0x001F, &font16, 10*8, 2},			
+N{"»°ªıΩ”ø⁄:" , 0, 4, WHITE, BLUE, &font16, 10*8, 4},			//30
+X{"»°ªıΩ”ø⁄:" , 0, 4, 0xFFFF, 0x001F, &font16, 10*8, 4},			
+N
+N//Œ¬∂»…Ë÷√
+N{"ƒø±ÍŒ¬∂»:" , 	0, 0, WHITE, BLUE, &font16, 10*8, 0},		//31
+X{"ƒø±ÍŒ¬∂»:" , 	0, 0, 0xFFFF, 0x001F, &font16, 10*8, 0},		
+N{"ø™∆Ù:" , 		0, 2, WHITE, BLUE, &font16, 6*8,  2},		//32
+X{"ø™∆Ù:" , 		0, 2, 0xFFFF, 0x001F, &font16, 6*8,  2},		
+N{"πÿ±’:" , 		0, 4, WHITE, BLUE, &font16, 6*8,  4},		//33 
+X{"πÿ±’:" , 		0, 4, 0xFFFF, 0x001F, &font16, 6*8,  4},		
+N{"∑Ω Ω(0¿‰1»»)", 0, 0, WHITE, BLUE, &font16, 14*8, 0},		//34
+X{"∑Ω Ω(0¿‰1»»)", 0, 0, 0xFFFF, 0x001F, &font16, 14*8, 0},		
+N
+N//øÿ÷∆ªÿ¬∑…Ë÷√
+N{"∑Áª˙:" ,	 	0, 0, 	WHITE, BLUE, &font16, 6*8, 0},				//35
+X{"∑Áª˙:" ,	 	0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},				
+N{"ø™∆Ù:" , 		0, 2, 	WHITE, BLUE, &font16, 6*8, 2},				//36
+X{"ø™∆Ù:" , 		0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},				
+N{"πÿ±’:" , 		0, 4, 	WHITE, BLUE, &font16, 6*8, 4},				//37 
+X{"πÿ±’:" , 		0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},				
+N{"’’√˜:" , 		0, 0, 	WHITE, BLUE, &font16, 6*8, 0},				//38
+X{"’’√˜:" , 		0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},				
+N{"ø™∆Ù:" , 		0, 2, 	WHITE, BLUE, &font16, 6*8, 2},				//39
+X{"ø™∆Ù:" , 		0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},				
+N{"πÿ±’:" , 		0, 4, 	WHITE, BLUE, &font16, 6*8, 4},				//40 
+X{"πÿ±’:" , 		0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},				
+N{"œ˚∂æ:" , 		0, 0, 	WHITE, BLUE, &font16, 6*8, 0},				//41
+X{"œ˚∂æ:" , 		0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},				
+N{"ø™∆Ù:" , 		0, 2, 	WHITE, BLUE, &font16, 6*8, 2},				//42
+X{"ø™∆Ù:" , 		0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},				
+N{"πÿ±’:" , 		0, 4, 	WHITE, BLUE, &font16, 6*8, 4},				//43 
+X{"πÿ±’:" , 		0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},				
+N{"≤£¡ßº”»»:",	0, 0, 	WHITE, BLUE, &font16, 6*8, 0},				//44
+X{"≤£¡ßº”»»:",	0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},				
+N{"ø™∆Ù:" , 		0, 2, 	WHITE, BLUE, &font16, 6*8, 2},				//45
+X{"ø™∆Ù:" , 		0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},				
+N{"πÿ±’:" , 		0, 4, 	WHITE, BLUE, &font16, 6*8, 4},				//46 
+X{"πÿ±’:" , 		0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},				
+N{"±∏”√2" , 		0, 0, 	WHITE, BLUE, &font16, 6*8, 0},				//47
+X{"±∏”√2" , 		0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},				
+N{"ø™∆Ù:" , 		0, 2, 	WHITE, BLUE, &font16, 6*8, 2},				//48
+X{"ø™∆Ù:" , 		0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},				
+N{"πÿ±’:" , 		0, 4, 	WHITE, BLUE, &font16, 6*8, 4},				//49 
+X{"πÿ±’:" , 		0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},				
+N
+N//ªıµ¿…Ë÷√
+N{"ªıµ¿:" , 	0, 0, 	WHITE, BLUE, &font16, 6*8, 0},				//50
+X{"ªıµ¿:" , 	0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},				
+N{"»¶ ˝:" , 	0, 2, 	WHITE, BLUE, &font16, 6*8, 2},				//51
+X{"»¶ ˝:" , 	0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},				
+N{" πƒ‹:" , 	0, 4, 	WHITE, BLUE, &font16, 6*8, 4},				//52 
+X{" πƒ‹:" , 	0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},				
+N
+N//ªıµ¿≤‚ ‘
+N{"ªıµ¿≤‚ ‘:" , 	0, 0, 	WHITE, BLUE, &font16, 10*8, 0},				//53
+X{"ªıµ¿≤‚ ‘:" , 	0, 0, 	0xFFFF, 0x001F, &font16, 10*8, 0},				
+N{"Õ–≈Ã≤‚ ‘:" , 	0, 2, 	WHITE, BLUE, &font16, 10*8, 2},				//54
+X{"Õ–≈Ã≤‚ ‘:" , 	0, 2, 	0xFFFF, 0x001F, &font16, 10*8, 2},				
+N{"’˚ª˙≤‚ ‘:" , 	0, 4, 	WHITE, BLUE, &font16, 2*7, 6},				//55 (’‚∏ˆ∫Û√Ê¡Ω∏ˆŒª÷√≤Œ ˝±Ì æ≤‚ ‘ ±µƒµ±«∞ªıµ¿∫≈Ã· æŒª÷√)
+X{"’˚ª˙≤‚ ‘:" , 	0, 4, 	0xFFFF, 0x001F, &font16, 2*7, 6},				
+N{"   Œﬁ¥Àª˙πÒ", 2*7 , 6, WHITE, BLUE, &font16},						//56
+X{"   Œﬁ¥Àª˙πÒ", 2*7 , 6, 0xFFFF, 0x001F, &font16},						
+N
+N//ª˙∆˜…Ë÷√
+N{"Õ–≈Ã ˝(0-8):" , 0, 0, WHITE, BLUE, &font16, 14*8, 0},		//57
+X{"Õ–≈Ã ˝(0-8):" , 0, 0, 0xFFFF, 0x001F, &font16, 14*8, 0},		
+N{"«Âø’ ˝æ›(1»∑»œ)" , 0, 0, WHITE, BLUE, &font16, 12*8, 0},	//58
+X{"«Âø’ ˝æ›(1»∑»œ)" , 0, 0, 0xFFFF, 0x001F, &font16, 12*8, 0},	
+N
+N//ªıµ¿≤‚ ‘Ω·π˚
+N{"÷¥––", 11*8, 4, WHITE, BLUE, &font16, 12*8, 6},	//59
+X{"÷¥––", 11*8, 4, 0xFFFF, 0x001F, &font16, 12*8, 6},	
+N
+N//»’∆⁄ ±º‰…Ë÷√
+N{"»’∆⁄:", 0, 2, WHITE, BLUE, &font16, 6*8, 2},	//60
+X{"»’∆⁄:", 0, 2, 0xFFFF, 0x001F, &font16, 6*8, 2},	
+N{" ±º‰:", 0, 4, WHITE, BLUE, &font16, 6*8, 4},	//61
+X{" ±º‰:", 0, 4, 0xFFFF, 0x001F, &font16, 6*8, 4},	
+N
+N//œ˙ €Õ≥º∆
+N{"ªıµ¿", 0, 0, 	   WHITE, BLUE, &font16, 7*8, 0},//62
+X{"ªıµ¿", 0, 0, 	   0xFFFF, 0x001F, &font16, 7*8, 0},
+N{"œ˙ €¡ø", 0, 2, WHITE, BLUE, &font16, 7*8, 2},//63
+X{"œ˙ €¡ø", 0, 2, 0xFFFF, 0x001F, &font16, 7*8, 2},
+N{"œ˙ €∂Ó", 0, 4, WHITE, BLUE, &font16, 7*8, 4},//64
+X{"œ˙ €∂Ó", 0, 4, 0xFFFF, 0x001F, &font16, 7*8, 4},
+N{"«Â≥˝’˚ª˙Õ≥º∆ ˝æ›", 0, 3, WHITE, BLUE, &font16},	//65
+X{"«Â≥˝’˚ª˙Õ≥º∆ ˝æ›", 0, 3, 0xFFFF, 0x001F, &font16},	
+N{"1.»∑»œ", 0, 6, WHITE, BLUE, &font16},//66
+X{"1.»∑»œ", 0, 6, 0xFFFF, 0x001F, &font16},
+N{"    «Â≥˝≥…π¶    ", 0, 3, WHITE, BLUE, &font16},//67
+X{"    «Â≥˝≥…π¶    ", 0, 3, 0xFFFF, 0x001F, &font16},
+N{"    ’˝‘⁄«Â≥˝    ", 0, 3, WHITE, BLUE, &font16},//68
+X{"    ’˝‘⁄«Â≥˝    ", 0, 3, 0xFFFF, 0x001F, &font16},
+N
+N
+N};	
+N
+N
+N/*
+N–≈œ¢ΩÁ√Ê
+N*/
+Nconst WORD chs_info[] = {
+N	
+N	{"÷˜∞Â-->" , 	0, 0, 	WHITE, BLUE, &font16, 0, 2},	//0	∫Û√Ê¡Ω∏ˆ◊¯±Í±Ì æøÏΩ›º¸≤Èø¥–≈œ¢µƒ∞Ê±æ∫≈Œª÷√
+X	{"÷˜∞Â-->" , 	0, 0, 	0xFFFF, 0x001F, &font16, 0, 2},	
+N	{"∞Ê±æ:" , 	0, 2, 	WHITE, BLUE, &font16, 5*8, 2},		//1
+X	{"∞Ê±æ:" , 	0, 2, 	0xFFFF, 0x001F, &font16, 5*8, 2},		
+N	{"FLASH:", 	0 ,4, 	WHITE, BLUE, &font16, 6*8, 4},		//2
+X	{"FLASH:", 	0 ,4, 	0xFFFF, 0x001F, &font16, 6*8, 4},		
+N	{"ID:" , 	0, 6, 	WHITE, BLUE, &font16, 4*8, 6},		//3
+X	{"ID:" , 	0, 6, 	0xFFFF, 0x001F, &font16, 4*8, 6},		
+N	
+N	{"«˝∂Ø∞Â-->" , 0, 0, 	WHITE, BLUE, &font16, 0, 4},		//4	∫Û√Ê¡Ω∏ˆ◊¯±Í±Ì æøÏΩ›º¸≤Èø¥–≈œ¢µƒ∞Ê±æ∫≈Œª÷√
+X	{"«˝∂Ø∞Â-->" , 0, 0, 	0xFFFF, 0x001F, &font16, 0, 4},		
+N	{"∞Ê±æ:" , 	0, 2, 	WHITE, BLUE, &font16, 6*8, 2},		//5
+X	{"∞Ê±æ:" , 	0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},		
+N	{"Œ¬∂»1:", 	0 ,4, 	WHITE, BLUE, &font16, 6*8, 4},		//6
+X	{"Œ¬∂»1:", 	0 ,4, 	0xFFFF, 0x001F, &font16, 6*8, 4},		
+N	{"Œ¬∂»2:", 	0 ,6, 	WHITE, BLUE, &font16, 6*8, 6},		//7
+X	{"Œ¬∂»2:", 	0 ,6, 	0xFFFF, 0x001F, &font16, 6*8, 6},		
+N	{"—πÀıª˙:", 	0 ,0, 	WHITE, BLUE, &font16, 6*8, 0},		//8
+X	{"—πÀıª˙:", 	0 ,0, 	0xFFFF, 0x001F, &font16, 6*8, 0},		
+N	{"∑Áª˙:", 	0 ,2, 	WHITE, BLUE, &font16, 6*8, 2},		//9
+X	{"∑Áª˙:", 	0 ,2, 	0xFFFF, 0x001F, &font16, 6*8, 2},		
+N	{"’’√˜:", 	0 ,4, 	WHITE, BLUE, &font16, 6*8, 4},		//10
+X	{"’’√˜:", 	0 ,4, 	0xFFFF, 0x001F, &font16, 6*8, 4},		
+N	{"œ˚∂æ:", 	0 ,6, 	WHITE, BLUE, &font16, 6*8, 6},		//11
+X	{"œ˚∂æ:", 	0 ,6, 	0xFFFF, 0x001F, &font16, 6*8, 6},		
+N	{"±∏”√1:", 	0 ,0, 	WHITE, BLUE, &font16, 6*8, 0},		//12
+X	{"±∏”√1:", 	0 ,0, 	0xFFFF, 0x001F, &font16, 6*8, 0},		
+N	{"±∏”√2:", 	0 ,2, 	WHITE, BLUE, &font16, 6*8, 2},		//13
+X	{"±∏”√2:", 	0 ,2, 	0xFFFF, 0x001F, &font16, 6*8, 2},		
+N
+N	{"∂¡ø®∆˜-->" , 0, 4, 	WHITE, BLUE, &font16},		//14
+X	{"∂¡ø®∆˜-->" , 0, 4, 	0xFFFF, 0x001F, &font16},		
+N	{"◊¥Ã¨:" , 	0, 6, 	WHITE, BLUE, &font16, 8*8, 6},		//15
+X	{"◊¥Ã¨:" , 	0, 6, 	0xFFFF, 0x001F, &font16, 8*8, 6},		
+N
+N
+N	{"Õ¯¬Á-->" , 0, 0, 	WHITE, BLUE, &font16,},		//16
+X	{"Õ¯¬Á-->" , 0, 0, 	0xFFFF, 0x001F, &font16,},		
+N	{"◊¥Ã¨:" , 	0, 2, 	WHITE, BLUE, &font16, 8*8, 2},		//17
+X	{"◊¥Ã¨:" , 	0, 2, 	0xFFFF, 0x001F, &font16, 8*8, 2},		
+N	{"¥˝∑¢:", 	0 ,4, 	WHITE, BLUE, &font16, 8*8, 4},		//18
+X	{"¥˝∑¢:", 	0 ,4, 	0xFFFF, 0x001F, &font16, 8*8, 4},		
+N	{"¥Ê¥¢:", 	0 ,6, 	WHITE, BLUE, &font16, 8*8, 6},		//19
+X	{"¥Ê¥¢:", 	0 ,6, 	0xFFFF, 0x001F, &font16, 8*8, 6},		
+N	{"“—”√:" , 	0, 0, 	WHITE, BLUE, &font16, 8*8, 0},		//20
+X	{"“—”√:" , 	0, 0, 	0xFFFF, 0x001F, &font16, 8*8, 0},		
+N	{"∂¡–Ú∫≈:",	0, 2, 	WHITE, BLUE, &font16, 8*8, 2},		//21
+X	{"∂¡–Ú∫≈:",	0, 2, 	0xFFFF, 0x001F, &font16, 8*8, 2},		
+N	{"–¥–Ú∫≈:", 	0 ,4, 	WHITE, BLUE, &font16, 8*8, 4},		//22
+X	{"–¥–Ú∫≈:", 	0 ,4, 	0xFFFF, 0x001F, &font16, 8*8, 4},		
+N	{"Ωª“◊∫≈:", 	0 ,6, 	WHITE, BLUE, &font16, 8*8, 6},		//23
+X	{"Ωª“◊∫≈:", 	0 ,6, 	0xFFFF, 0x001F, &font16, 8*8, 6},		
+N	{"¡˜ÀÆ∫≈:", 	0 ,0, 	WHITE, BLUE, &font16, 8*8, 0},		//24
+X	{"¡˜ÀÆ∫≈:", 	0 ,0, 	0xFFFF, 0x001F, &font16, 8*8, 0},		
+N
+N	{"”≤±“∆˜-->" , 0, 2, 	WHITE, BLUE, &font16, 6*8, 2},		//25
+X	{"”≤±“∆˜-->" , 0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},		
+N	{"◊¥Ã¨:" , 	0, 4, 	WHITE, BLUE, &font16, 6*8, 4},		//26
+X	{"◊¥Ã¨:" , 	0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},		
+N	{"≤„º∂:", 	0 ,6, 	WHITE, BLUE, &font16, 6*8, 6},		//27
+X	{"≤„º∂:", 	0 ,6, 	0xFFFF, 0x001F, &font16, 6*8, 6},		
+N	{"–° ˝:" ,  0, 0, 	WHITE, BLUE, &font16, 6*8, 0},		//28
+X	{"–° ˝:" ,  0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},		
+N	{"π˙º“¥˙¬Î:",0 ,2, 	WHITE, BLUE, &font16, 6*8, 2},		//29
+X	{"π˙º“¥˙¬Î:",0 ,2, 	0xFFFF, 0x001F, &font16, 6*8, 2},		
+N	{"Õ®µ¿:" , 0, 4, 	WHITE, BLUE, &font16, 6*8, 4},		//30
+X	{"Õ®µ¿:" , 0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},		
+N	{"√Ê÷µ:" , 	0, 6, 	WHITE, BLUE, &font16, 6*8, 6},		//31
+X	{"√Ê÷µ:" , 	0, 6, 	0xFFFF, 0x001F, &font16, 6*8, 6},		
+N	{"Ω∂Ó:", 	0 ,0, 	WHITE, BLUE, &font16, 6*8, 0},		//32
+X	{"Ω∂Ó:", 	0 ,0, 	0xFFFF, 0x001F, &font16, 6*8, 0},		
+N
+N	{"÷Ω±“∆˜-->:", 0 ,2, 	WHITE, BLUE, &font16, 6*8, 2},		//33
+X	{"÷Ω±“∆˜-->:", 0 ,2, 	0xFFFF, 0x001F, &font16, 6*8, 2},		
+N	{"◊¥Ã¨:" , 	0, 4, 	WHITE, BLUE, &font16, 6*8, 4},		//34
+X	{"◊¥Ã¨:" , 	0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},		
+N	{"≤„º∂:", 	0 ,6, 	WHITE, BLUE, &font16, 6*8, 6},		//35
+X	{"≤„º∂:", 	0 ,6, 	0xFFFF, 0x001F, &font16, 6*8, 6},		
+N	{"–° ˝:" , 	0, 0, 	WHITE, BLUE, &font16, 6*8, 0},		//36
+X	{"–° ˝:" , 	0, 0, 	0xFFFF, 0x001F, &font16, 6*8, 0},		
+N	{"π˙º“¥˙¬Î:",0 ,2, 	WHITE, BLUE, &font16, 6*8, 2},		//37
+X	{"π˙º“¥˙¬Î:",0 ,2, 	0xFFFF, 0x001F, &font16, 6*8, 2},		
+N	{"Õ®µ¿:" , 	0, 4, 	WHITE, BLUE, &font16, 6*8, 4},		//38
+X	{"Õ®µ¿:" , 	0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},		
+N	{"√Ê÷µ:" , 	0, 6, 	WHITE, BLUE, &font16, 6*8, 6},		//39
+X	{"√Ê÷µ:" , 	0, 6, 	0xFFFF, 0x001F, &font16, 6*8, 6},		
+N	{"Ω∂Ó:", 	0 ,0, 	WHITE, BLUE, &font16, 6*8, 0},		//40
+X	{"Ω∂Ó:", 	0 ,0, 	0xFFFF, 0x001F, &font16, 6*8, 0},		
+N	{"‘›¥Êœ‰Õ®µ¿:" , 0, 2, 	WHITE, BLUE, &font16, 6*8, 2},	//41
+X	{"‘›¥Êœ‰Õ®µ¿:" , 0, 2, 	0xFFFF, 0x001F, &font16, 6*8, 2},	
+N	{"’“¡„œ‰√Ê÷µ:" , 0, 4, 	WHITE, BLUE, &font16, 6*8, 4},	//42
+X	{"’“¡„œ‰√Ê÷µ:" , 0, 4, 	0xFFFF, 0x001F, &font16, 6*8, 4},	
+N	{"’“¡„œ‰Ω∂Ó:",	0 ,6, 	WHITE, BLUE, &font16, 6*8, 6},	//43
+X	{"’“¡„œ‰Ω∂Ó:",	0 ,6, 	0xFFFF, 0x001F, &font16, 6*8, 6},	
+N
+N	{"CPU->",	0 ,0, 	WHITE, BLUE, &font16, 6*8, 0},		//44
+X	{"CPU->",	0 ,0, 	0xFFFF, 0x001F, &font16, 6*8, 0},		
+N
+N};
+N
+N/*
+N«˝∂Ø∞Â…Ë÷√ΩÁ√Ê
+N*/
+Nconst WORD chs_drvset[] = {
+N	{"  ≈‰¿‡–Õ(0N1J)" , 	0, 0, 	WHITE, BLUE, &font16, 8*15, 0},		//0
+X	{"  ≈‰¿‡–Õ(0N1J)" , 	0, 0, 	0xFFFF, 0x001F, &font16, 8*15, 0},		
+N	{"Œ¬∂»¿‡–Õ(0-2)" , 	0, 2, 	WHITE, BLUE, &font16, 8*15, 2},		//1
+X	{"Œ¬∂»¿‡–Õ(0-2)" , 	0, 2, 	0xFFFF, 0x001F, &font16, 8*15, 2},		
+N	{"∆Ù∂ØµÁ¡˜(MA)" , 	0, 4, 	WHITE, BLUE, &font16, 8*12, 4},		//2
+X	{"∆Ù∂ØµÁ¡˜(MA)" , 	0, 4, 	0xFFFF, 0x001F, &font16, 8*12, 4},		
+N	{"∂Ã¬∑µÁ¡˜(MA)" , 	0, 0, 	WHITE, BLUE, &font16, 8*12, 0},		//3
+X	{"∂Ã¬∑µÁ¡˜(MA)" , 	0, 0, 	0xFFFF, 0x001F, &font16, 8*12, 0},		
+N	{"π˝‘ÿµÁ¡˜(MA)" , 	0, 2, 	WHITE, BLUE, &font16, 8*12, 2},		//4
+X	{"π˝‘ÿµÁ¡˜(MA)" , 	0, 2, 	0xFFFF, 0x001F, &font16, 8*12, 2},		
+N	{"π˝‘ÿ ±º‰(MS)" , 	0, 4, 	WHITE, BLUE, &font16, 8*12, 4},		//5
+X	{"π˝‘ÿ ±º‰(MS)" , 	0, 4, 	0xFFFF, 0x001F, &font16, 8*12, 4},		
+N	{"≥¨ ±Œ¥∆Ù∂Ø(S)" , 	0, 0, 	WHITE, BLUE, &font16, 8*14, 0},	//6
+X	{"≥¨ ±Œ¥∆Ù∂Ø(S)" , 	0, 0, 	0xFFFF, 0x001F, &font16, 8*14, 0},	
+N	{"≥¨ ±Œ¥Õ£÷π(S)" , 	0, 2, 	WHITE, BLUE, &font16, 8*14, 2},	//7
+X	{"≥¨ ±Œ¥Õ£÷π(S)" , 	0, 2, 	0xFFFF, 0x001F, &font16, 8*14, 2},	
+N	{"Õ£÷π—” ±(MS)" ,	0, 4, 	WHITE, BLUE, &font16, 8*12, 4},	//8
+X	{"Õ£÷π—” ±(MS)" ,	0, 4, 	0xFFFF, 0x001F, &font16, 8*12, 4},	
+N	{"≥ˆªı–≈∫≈¥Œ ˝" , 	0, 0, 	WHITE, BLUE, &font16, 8*14, 0},	//9
+X	{"≥ˆªı–≈∫≈¥Œ ˝" , 	0, 0, 	0xFFFF, 0x001F, &font16, 8*14, 0},	
+N	{"–≈∫≈º‰∏Ù(US)" ,	0, 2, 	WHITE, BLUE, &font16, 8*12, 2},	//10
+X	{"–≈∫≈º‰∏Ù(US)" ,	0, 2, 	0xFFFF, 0x001F, &font16, 8*12, 2},	
+N	{"≤È—Ø–≈∫≈¥Œ ˝:" , 	0, 4, 	WHITE, BLUE, &font48, 8*14, 4},	//11
+X	{"≤È—Ø–≈∫≈¥Œ ˝:" , 	0, 4, 	0xFFFF, 0x001F, &font48, 8*14, 4},	
+N	{"–≈∫≈º‰∏Ù(US):" ,	0, 0, 	WHITE, BLUE, &font48, 8*12, 0},	//12
+X	{"–≈∫≈º‰∏Ù(US):" ,	0, 0, 	0xFFFF, 0x001F, &font48, 8*12, 0},	
+N	
+N	{"ª÷∏¥ƒ¨»œ(1»∑»œ)" ,	0, 2, 	WHITE, BLUE, &font16},			//13
+X	{"ª÷∏¥ƒ¨»œ(1»∑»œ)" ,	0, 2, 	0xFFFF, 0x001F, &font16},			
+N	{"«˝∂Ø∞Â…Ë÷√" , 	3*8, 0, 	WHITE, BLUE, &font16},			//14
+X	{"«˝∂Ø∞Â…Ë÷√" , 	3*8, 0, 	0xFFFF, 0x001F, &font16},			
+N	{"«Î ‰»Î√‹¬Î" , 	3*8, 2, 	WHITE, BLUE, &font16, 3*8, 4},	//15
+X	{"«Î ‰»Î√‹¬Î" , 	3*8, 2, 	0xFFFF, 0x001F, &font16, 3*8, 4},	
+N	{"«˝∂Ø∞ÂŒ¥¡¨Ω”",	2*8, 2, WHITE, BLUE, &font16},				//16
+X	{"«˝∂Ø∞ÂŒ¥¡¨Ω”",	2*8, 2, 0xFFFF, 0x001F, &font16},				
+N};
+N
+N#elif ((SCREEN == SCREENILI9806) || (SCREEN == SCREENRA8875))
+S
+S
+S/*============================================================================================
+S==============================================================================================
+S≤ …´∆¡ƒª£¨∫·∆¡
+S==============================================================================================
+S============================================================================================*/
+S
+S
+S/*
+SæØ∏ÊÃ· æ–≈œ¢
+S*/
+S
+Sconst WORD chs_warring[] = {
+S{"…Ë÷√≥…π¶", 	400, 400, WHITE, BLUE, &font48},	//0
+S{"…Ë÷√ ß∞‹", 	400, 400, WHITE, BLUE, &font48},	//1
+S{"…Ë÷√≥¨œﬁ", 	400, 400, WHITE, BLUE, &font48},	//2
+S{"…Ë÷√Œª ˝≤ª◊„", 400, 400, WHITE, BLUE, &font48},	//3
+S{"’˝‘⁄≤‚ ‘÷–", 	400, 400, WHITE, BLUE, &font48},	//4
+S{"’˝‘⁄ª÷∏¥÷–...",400, 400, WHITE, BLUE, &font48},	//5
+S{"ª÷∏¥≥…π¶     ", 400, 400, WHITE, BLUE, &font48},	//6
+S{"œ‘ æ ±º‰", 			0, 0, WHITE, BLUE, &font48},//7
+S{"HardFault_Handler", 	0, 0, WHITE, BLUE, &font48},//8
+S{"Ãñ", 		130, 100, WHITE, BLUE, &font48},	//9
+S{"ÈT", 		210, 100, WHITE, BLUE, &font48},	//10
+S{"ôC", 		290, 100, WHITE, BLUE, &font48},	//11
+S{"EEPROMª÷∏¥≥…π¶", 	30, 200, WHITE, BLUE, &font48},	//12
+S{"RTC≥ı ºªØ", 		30, 0, WHITE, BLUE, &font48},	//13
+S{"RTC≈‰÷√≥…π¶", 		30, 50, WHITE, BLUE, &font48},		//14
+S{"CRYSTAL ERR", 	30, 100, WHITE, BLUE, &font48},	//15
+S{"Éˆ", 370,  100, WHITE, BLUE, &font48, },//÷∆¿‰Õº±Í	//16
+S{"üÙ", 450,  100, WHITE, BLUE, &font48, },//’’√˜Õº±Í	//17
+S{"ö¢", 530,  100, WHITE, BLUE, &font48, },//…±∂æÕº±Í	//18
+S{"îz", 1000, 0, WHITE, BLUE, &font48, },//Œ¥◊∞Œ¬∂»ÃΩÕ∑Õº±Í //19
+S{"ü·", 7*8, 0, WHITE, BLUE, &font48, },//÷∆»»Õº±Í //20
+S{"ì‹", 1000, 6, WHITE, BLUE, &font48, },//≤£¡ßº”»»Õº±Í 	//21
+S{"îµ", 13*8, 6, WHITE, BLUE, &font48, },//¥˝∑¢ÀÕ ˝æ›Õº±Í 	//22
+S{"úÿ", 2*8, 0, WHITE, BLUE, &font48,  6*8, 0},//…„ œ∂»Õº±Í 	//23 ∫Û√Ê2∏ˆ◊¯±Í±Ì æøÏΩ›º¸≤È—ØŒ¬∂»Õº±Íµƒ¡Ì“ª∏ˆŒª÷√
+S{"◊x", 0, 4, WHITE, BLUE, &font48, 6*8, 4},//À¢ø®∆˜Õº±Í	//24
+S
+S};
+S
+S
+S/*
+S¥˝ª˙
+S*/
+Sconst WORD chs_standby[] = {
+S{"ª∂”≠π‚¡Ÿ", 200, 180, WHITE, BLUE, &font96},		//0
+S{"ª∂”≠π‚¡Ÿ", 200, 180, WHITE, BLUE, &font96},		//1
+S{"ª∂”≠π‚¡Ÿ", 200, 180, WHITE, BLUE, &font96},		//2
+S{"ª∂”≠π‚¡Ÿ", 200, 180, WHITE, BLUE, &font96},		//3
+S//#º¸≤È—Ø‘⁄œﬂø®–≈œ¢ΩÁ√Ê
+S{"ø®∫≈:", 		30, 30, WHITE, BLUE, &font48, 200, 30},		//4
+S{"”‡∂Ó:", 		30, 80, WHITE, BLUE, &font48, 200, 80},		//5
+S{"œﬁπ∫:", 		30, 130, WHITE, BLUE, &font48,200, 130},		//6
+S{"«ÎÀ¢ø®≤È—Ø", 	30, 400, WHITE, BLUE, &font48, 600, 400},	//7
+S{"Õ¯¬ÁŒ¥¡¨Ω”", 	30, 400, WHITE, BLUE, &font48, 600, 400},	//8
+S{"≤ªœﬁ", 		200, 130, WHITE, BLUE, &font48},			//9
+S{"¥Œ", 			250, 130, WHITE, BLUE, &font48},			//10
+S{"ø®≤ª¥Ê‘⁄ ", 	30, 400, WHITE, BLUE, &font48, 14*8,6},		//11
+S{"Œﬁ–ßø®   ", 	30, 400, WHITE, BLUE, &font48, 14*8,6},		//12
+S{"∑«±æ–£ø® ", 	30, 400, WHITE, BLUE, &font48, 14*8,6},		//13
+S{"≤‚ ‘ø®   ", 	30, 400, WHITE, BLUE, &font48, 14*8,6},		//14
+S{"∑«±æª˙ø® ", 	30, 400, WHITE, BLUE, &font48, 14*8,6},		//15
+S{"¥¶¿Ì“Ï≥£ ", 	30, 400, WHITE, BLUE, &font48, 14*8,6},		//16
+S
+S//ª∂”≠π‚¡Ÿ∏®÷˙Ã· æ
+S{"Õ¯¬Áπ ’œŒﬁ∑®œ˚∑—", 200, 400, WHITE, BLUE, &font48},		//17
+S{"À¢ø®π ’œŒﬁ∑®œ˚∑—", 200, 400, WHITE, BLUE, &font48},		//18
+S{"ª˙∆˜π ’œŒﬁ∑®œ˚∑—", 200, 400, WHITE, BLUE, &font48},		//19
+S{"«Î—°‘Ò…Ã∆∑      ", 200, 400, WHITE, BLUE, &font48},		//20
+S
+S};
+S
+S/*
+Sø™ª˙ΩÁ√Ê
+S*/
+Sconst WORD chs_start[] = {
+S	{"’˝‘⁄ºÏ≤‚…Ë±∏...", 0, 0, WHITE, BLUE, &font48},		//0
+S	{"÷Ω±“∆˜’˝≥£",		0, 150, WHITE, BLUE, &font48},		//1
+S	{"”≤±“∆˜’˝≥£", 		0, 100, WHITE, BLUE, &font48},		//2
+S	{"÷Ω±“∆˜Œ¥¡¨Ω”", 	0, 150, WHITE, BLUE, &font48},		//3
+S	{"”≤±“∆˜Œ¥¡¨Ω”", 	0, 100, WHITE, BLUE, &font48},		//4
+S	{"«˝∂Ø∞Â’˝≥£", 		0, 250, WHITE, BLUE, &font48},		//5
+S	{"«˝∂Ø∞ÂŒ¥¡¨Ω”", 	0, 250, WHITE, BLUE, &font48},		//6
+S	{"∂¡ø®∆˜’˝≥£", 		0, 200, WHITE, BLUE, &font48},		//7
+S	{"∂¡ø®∆˜Œ¥¡¨Ω”", 	0, 200, WHITE, BLUE, &font48},		//8
+S};
+S
+S/*
+S—°ªıΩÁ√Ê
+S*/	
+Sconst WORD chs_choose[] = {
+S	{"…Ã∆∑:" , 30, 30, WHITE, BLUE, &font48, 180, 30},			//0
+S	{"º€∏Ò:" , 30, 80, WHITE, BLUE, &font48, 180, 80},				//1
+S	{"ø‚¥Ê:" , 30, 130, WHITE, BLUE, &font48, 180, 130},			//2
+S{"Œﬁ¥Àªıµ¿", 30, 400, WHITE, BLUE, &font48}, 		//3
+S{"ªıµ¿“—Ω˚”√", 30, 400, WHITE, BLUE, &font48}, 		//4
+S{"…Ã∆∑“— €ø’", 30, 400, WHITE, BLUE, &font48}, 		//5
+S{"ªıµ¿Õ£÷π∑˛ŒÒ", 30, 400, WHITE, BLUE, &font48}, 	//6
+S{"Õ¯¬ÁŒ¥¡¨Ω”", 30, 400, WHITE, BLUE, &font48},		//7
+S{"«ÎÀ¢ø®π∫ŒÔ", 30, 400, WHITE, BLUE, &font48, 600, 400}, 		//8
+S{"«ÎÀ¢ø®ªÚ…®√Ë∂˛Œ¨¬Î", 30, 400, WHITE, BLUE, &font48},	//9
+S{"“—∂¡ø®∫ÛÃ®’˝—È÷§  ", 30, 400, WHITE, BLUE, &font48},	//10
+S//‘⁄œﬂø®≥ˆªı
+S{"ø®∫≈:", 30, 180, WHITE, BLUE, &font48, 180, 180},			//11
+S{"ª˙πÒ‘›Õ£∑˛ŒÒ", 30, 400, WHITE, BLUE, &font48}, 	//12
+S{"”‡∂Ó:", 		30, 230, WHITE, BLUE, &font48, 180, 230},	//13
+S{"ø®≤ª¥Ê‘⁄≤ªƒ‹œ˚∑—", 30, 400, WHITE, BLUE, &font48},	//14
+S{" Œﬁ–ßø®≤ªƒ‹œ˚∑— ", 30, 400, WHITE, BLUE, &font48},	//15
+S{"∑«±æ–£ø®≤ªƒ‹œ˚∑—", 30, 400, WHITE, BLUE, &font48},	//16
+S{"¥Œ ˝≥¨œﬁ≤ªƒ‹œ˚∑—", 30, 400, WHITE, BLUE, &font48},	//17
+S{"∑«±æª˙ø®≤ªƒ‹œ˚∑—", 30, 400, WHITE, BLUE, &font48},	//18
+S{"”‡∂Ó≤ª◊„≤ªƒ‹œ˚∑—", 30, 400, WHITE, BLUE, &font48},	//19
+S{"µ⁄ ≤„…Ã∆∑Õ£ €   ", 30, 400, WHITE, BLUE, &font48, 78, 400},	//20
+S{"ø€øÓ ß∞‹        ", 30, 400, WHITE, BLUE, &font48},	//21
+S{"¥¶¿Ì“Ï≥£≤ªƒ‹œ˚∑—", 30, 400, WHITE, BLUE, &font48},	//22
+S{"Õ®÷™π‹¿Ì‘±      ", 30, 400, WHITE, BLUE, &font48},	//23
+S{"‘›Õ£∑˛ŒÒ        ", 30, 400, WHITE, BLUE, &font48}, //24
+S{"«Î…®¬Î÷ß∏∂      ", 30, 400, WHITE, BLUE, &font48}, //25
+S};
+S
+S/*
+S≤Àµ•ΩÁ√Ê
+S*/
+Sconst WORD chs_menu[] = {
+S{"…Ã∆∑…Ë÷√" , 0, 50, WHITE, BLUE, &font48},//0
+S{"ªıµ¿≤‚ ‘" , 0, 100, WHITE, BLUE, &font48},//1
+S{"ªıµ¿…Ë÷√" , 0, 150, WHITE, BLUE, &font48},//2
+S{"Œ¬øÿ…Ë÷√" , 0, 200, WHITE, BLUE, &font48},//3
+S{"øÿ÷∆…Ë÷√" , 0, 250, WHITE, BLUE, &font48},//4
+S{"÷ß∏∂…Ë÷√" , 0, 300, WHITE, BLUE, &font48},//5
+S{"ª˙∆˜…Ë÷√" , 0, 350, WHITE, BLUE, &font48},//6
+S{"ª˙∆˜–≈œ¢" , 400, 0, WHITE, BLUE, &font48},//7
+S{"Õ®—∂…Ë÷√" , 300, 200, WHITE, BLUE, &font48},//8
+S{"π‹¿Ì…Ë÷√" , 0, 0, WHITE, BLUE, &font48,1000,0}, //9
+S{" €ªıª˙–≈œ¢" , 400, 0, WHITE, BLUE, &font48}, //10
+S{"ª˙∆˜ID:", 300, 50 , WHITE, BLUE, &font48, 480, 50},//11
+S{"∞Ê±æ∫≈:", 300, 100, WHITE, BLUE, &font48, 480, 100},//12
+S{"«˝∂Ø∞Â:", 300, 150, WHITE, BLUE, &font48, 480, 150},//13
+S{"’˝≥£", 	500, 150, WHITE, BLUE, &font48},//14
+S{"Œ¥¡¨Ω”", 	500, 150, WHITE, BLUE, &font48},//15
+S{"∂¡ø®∆˜:", 300, 200, WHITE, BLUE, &font48, 480, 200},//16
+S{"÷Ω±“∆˜:", 300, 250, WHITE, BLUE, &font48, 480, 250},//17
+S{"”≤±“∆˜:", 300, 300, WHITE, BLUE, &font48, 480, 300},//18
+S{"Õ¯  ¬Á:", 300, 350, WHITE, BLUE, &font48, 480, 350},//19
+S{"¡¨Õ¯", 	500, 350, WHITE, BLUE, &font48},//20
+S{"Œ¥¡¨Õ¯", 	500, 350, WHITE, BLUE, &font48},//21
+S{"Œ¬  ∂»:", 300, 400, WHITE, BLUE, &font48, 480, 400},//22
+S{"π ’œ", 	500, 400, WHITE, BLUE, &font48},//23
+S{"Õ®—∂√‹¬Î:",500, 400, WHITE, BLUE, &font48},//24
+S};
+S/*
+S≥ˆªıΩÁ√Ê
+S*/
+Sconst WORD chs_salling[] = {
+S
+S{"”‡∂Ó", 30, 230, WHITE, BLUE, &font48},				//0
+S{"’˝‘⁄≥ˆªı«Î…‘∫Ú     ", 30, 400, WHITE, BLUE, &font48},		//1
+S{"≥ˆªı≥…π¶           ", 30, 400, WHITE, BLUE, &font48},				//2
+S{"≥ˆªı ß∞‹           ", 30, 400, WHITE, BLUE, &font48, 600, 400},	//3
+S{"«Î»°◊ﬂ…Ã∆∑         ", 30, 400, WHITE, BLUE, &font48},				//4
+S};
+S
+S/*
+S…Ë÷√ΩÁ√ÊÃ· æ”Ô
+S*/
+Sconst WORD chs_set[] = {
+S
+S{"…Ë÷√≥…π¶", 500, 400, WHITE, BLUE, &font48},	//0
+S{"…Ë÷√ ß∞‹", 500, 400, WHITE, BLUE, &font48},	//1
+S{"…Ë÷√≥¨œﬁ", 500, 400, WHITE, BLUE, &font48}, 	//2
+S{"…Ë÷√Œª ˝≤ª◊„", 500, 400, WHITE, BLUE, &font48},//3
+S{"’˝‘⁄≤‚ ‘÷–", 500, 400, WHITE, BLUE, &font48},	//4
+S{"’˝≥£µÁª˙ ˝", 500, 400, WHITE, BLUE, &font48},	//5
+S{"≤ª‘⁄ŒªµÁª˙", 500, 400, WHITE, BLUE, &font48},	//6
+S{"’˝‘⁄ª÷∏¥≥ˆ≥ß..." , 500, 400, WHITE, BLUE, &font48},	//7
+S{"ª÷∏¥≥…π¶", 500, 400, WHITE, BLUE, &font48},			//8
+S{"Ãı¬Î",	500, 400, WHITE, BLUE, &font48},	//9
+S{"ªıµ¿’˝≥£", 450 , 400, WHITE, BLUE, &font48},	//10
+S{"ªıµ¿“Ï≥£", 450 , 400, WHITE, BLUE, &font48},	//11
+S{"ªıµ¿Ω˚ƒ‹", 450 , 400, WHITE, BLUE, &font48},	//12
+S{"   Õ£÷π≤‚ ‘ ", 350 , 400, WHITE, BLUE, &font48},	//13
+S//…Ã∆∑…Ë÷√
+S{"…Ã∆∑:" , 300, 50, WHITE, BLUE, &font48, 450, 50},	//14
+S{"ø‚¥Ê:" , 300, 100, WHITE, BLUE, &font48, 450, 100},	//15
+S{"º€∏Ò:" , 300, 150, WHITE, BLUE, &font48, 450, 150},	//16
+S{"Ãı¬Î:" , 300, 200, WHITE, BLUE, &font48, 450, 200},	//17
+S//ª˙∆˜…Ë÷√
+S{"ª˙∆˜ID:" , 300, 50, WHITE, BLUE, &font48, 520, 50},					//18
+S{"¡¨Õ¯√‹¬Î:" , 300, 100, WHITE, BLUE, &font48, 520, 100},				//19
+S{"ø™∆Ù¡¨Õ¯:" , 300, 150, WHITE, BLUE, &font48, 520, 150},				//20
+S{"”Ô—‘(0÷–1”¢):" , 300, 200, WHITE, BLUE, &font48, 600, 200},			//21
+S{"ª˙πÒ ˝¡ø:" , 300, 250, WHITE, BLUE, &font48, 600, 250},				//22
+S{"–° ˝Œª ˝:" , 300, 300, WHITE, BLUE, &font48, 600, 300},				//23
+S{"º€∏ÒŒª ˝:" , 300, 350, WHITE, BLUE, &font48, 600, 350},				//24
+S{" ‰»ÎŒª ˝:" , 300, 100, WHITE, BLUE, &font48, 600, 100},				//25
+S{"ªıµ¿Œª ˝:" , 300, 150, WHITE, BLUE, &font48, 600, 150},				//26
+S{"ª÷∏¥≥ˆ≥ß(1 ª÷∏¥):" , 300, 200, WHITE, BLUE, &font48, 600, 200},		//27
+S//÷ß∏∂…Ë÷√
+S{"…®¬Î÷ß∏∂(1ø™0πÿ):" , 300, 50, WHITE, BLUE, &font48, 750, 50},			//28
+S{"À¢ø®Ω”ø⁄:" , 300, 100, WHITE, BLUE, &font48, 600, 100},				//29
+S{"»°ªıΩ”ø⁄:" , 300, 150, WHITE, BLUE, &font48, 600, 150},				//30
+S//Œ¬∂»…Ë÷√
+S{"ƒø±ÍŒ¬∂»:" , 300, 50, WHITE, BLUE, &font48, 550, 50},					//31
+S{"ø™∆Ù ±º‰:" , 300, 100, WHITE, BLUE, &font48, 550, 100},				//32
+S{"πÿ±’ ±º‰:" , 300, 150, WHITE, BLUE, &font48, 550, 150},				//33
+S{"Œ¬øÿ∑Ω Ω(0¿‰1»»):" , 300, 200, WHITE, BLUE, &font48, 800, 200},		//34
+S//øÿ÷∆ªÿ¬∑…Ë÷√
+S{"∑Áª˙:" , 	300, 50, 	WHITE, BLUE, &font48, 550, 50},				//35
+S{"ø™∆Ù ±º‰:" , 	300, 100, 	WHITE, BLUE, &font48, 550, 100},			//36
+S{"πÿ±’ ±º‰:" , 	300, 150, 	WHITE, BLUE, &font48, 550, 150},			//37 
+S{"’’√˜:" , 	300, 200, 	WHITE, BLUE, &font48, 550, 200},			//38
+S{"ø™∆Ù ±º‰:" , 	300, 250, 	WHITE, BLUE, &font48, 550, 250},			//39
+S{"πÿ±’ ±º‰:" , 	300, 300, 	WHITE, BLUE, &font48, 550, 300},			//40 
+S{"œ˚∂æ:" , 	300, 350, 	WHITE, BLUE, &font48, 550, 350},			//41
+S{"ø™∆Ù ±º‰:" , 	300, 50, 	WHITE, BLUE, &font48, 550, 50},				//42
+S{"πÿ±’ ±º‰:" , 	300, 100, 	WHITE, BLUE, &font48, 550, 100},			//43 
+S{"≤£¡ßº”»»:" , 	300, 150, 	WHITE, BLUE, &font48, 550, 150},			//44
+S{"ø™∆Ù ±º‰:" , 	300, 200, 	WHITE, BLUE, &font48, 550, 200},			//45
+S{"πÿ±’ ±º‰:" , 	300, 250, 	WHITE, BLUE, &font48, 550, 250},			//46 
+S{"±∏”√2:" , 	300, 300, 	WHITE, BLUE, &font48, 550, 300},			//47
+S{"ø™∆Ù ±º‰:" , 	300, 350, 	WHITE, BLUE, &font48, 550, 350},			//48
+S{"πÿ±’ ±º‰:" , 	300, 50, 	WHITE, BLUE, &font48, 550, 50},				//49 
+S//ªıµ¿…Ë÷√
+S{"ªıµ¿:" , 				300, 50, 	WHITE, BLUE, &font48, 550, 50},		//50
+S{"µØª…»¶ ˝:" , 			300, 100, 	WHITE, BLUE, &font48, 550, 100},	//51
+S{"◊¥Ã¨(0Ω˚ƒ‹1 πƒ‹):" , 	300, 150, 	WHITE, BLUE, &font48, 300, 200},	//52 
+S//ªıµ¿≤‚ ‘
+S{"ªıµ¿≤‚ ‘:" , 	300, 50, 	WHITE, BLUE, &font48, 550, 50},			//53
+S{"Õ–≈Ã≤‚ ‘:" , 	300, 100, 	WHITE, BLUE, &font48, 550, 100},		//54
+S{"’˚ª˙≤‚ ‘:" , 	300, 150, 	WHITE, BLUE, &font48, 350, 400},		//55  //’‚∏ˆ∫Û√Êµƒ≤Œ ˝ «œ‘ æªıµ¿◊¥Ã¨ ±£¨ªıµ¿◊¥Ã¨«∞√Êµƒªıµ¿∫≈µƒŒª÷√
+S{"   Œﬁ¥Àª˙πÒ", 350 , 400, WHITE, BLUE, &font48},					//56
+S//ª˙∆˜…Ë÷√
+S{"Õ–≈Ã ˝¡ø:" , 0, 0, WHITE, BLUE, &font48, 10*8, 0},			//57
+S{"«Âø’ ˝æ›(1»∑»œ)" , 0, 4, WHITE, BLUE, &font48, 12*8, 2},	//58
+S
+S//ªıµ¿≤‚ ‘Ω·π˚
+S{"÷¥––", 11*8, 4, WHITE, BLUE, &font48, 12*8, 6},	//59
+S
+S//»’∆⁄ ±º‰…Ë÷√
+S{"»’∆⁄:", 0, 2, WHITE, BLUE, &font48, 6*8, 2},	//60
+S{" ±º‰:", 0, 4, WHITE, BLUE, &font48, 6*8, 4},	//61
+S
+S};	
+S
+S/*
+S–≈œ¢ΩÁ√Ê
+S*/
+Sconst WORD chs_info[] = {
+S	
+S	{"÷˜∞Â-" , 	0, 0, 	WHITE, BLUE, &font48, },			//0
+S	{"∞Ê±æ:" , 	0, 2, 	WHITE, BLUE, &font48, 6*8, 2},		//1
+S	{"ID:" , 	0, 4, 	WHITE, BLUE, &font48, 6*8, 4},		//2
+S	{"FLASH:", 	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},		//3
+S
+S	{"«˝∂Ø∞Â-" , 0, 0, 	WHITE, BLUE, &font48, 6*8, 2},		//4
+S	{"∞Ê±æ:" , 	0, 2, 	WHITE, BLUE, &font48, 6*8, 4},		//5
+S	{"Œ¬∂»1:", 	0 ,4, 	WHITE, BLUE, &font48, 6*8, 6},		//6
+S	{"Œ¬∂»2:", 	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},		//7
+S	{"—πÀıª˙:", 	0 ,0, 	WHITE, BLUE, &font48, 6*8, 6},		//8
+S	{"∑Áª˙:", 	0 ,2, 	WHITE, BLUE, &font48, 6*8, 6},		//9
+S	{"’’√˜:", 	0 ,4, 	WHITE, BLUE, &font48, 6*8, 6},		//10
+S	{"œ˚∂æ:", 	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},		//11
+S	{"±∏”√1:", 	0 ,0, 	WHITE, BLUE, &font48, 6*8, 6},		//12
+S	{"±∏”√2:", 	0 ,2, 	WHITE, BLUE, &font48, 6*8, 6},		//13
+S
+S	{"∂¡ø®∆˜-" , 0, 4, 	WHITE, BLUE, &font48, 6*8, 2},		//14
+S	{"◊¥Ã¨:" , 	0, 6, 	WHITE, BLUE, &font48, 6*8, 4},		//15
+S
+S
+S	{"Õ¯¬Á-" , 0, 0, 	WHITE, BLUE, &font48, 6*8, 2},		//16
+S	{"◊¥Ã¨:" , 	0, 2, 	WHITE, BLUE, &font48, 6*8, 4},		//17
+S	{"¥˝∑¢:", 	0 ,4, 	WHITE, BLUE, &font48, 6*8, 6},		//18
+S	{"¥Ê¥¢:", 	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},		//19
+S	{"“—”√" , 	0, 0, 	WHITE, BLUE, &font48, 6*8, 2},		//20
+S	{"∂¡–Ú∫≈:",	0, 2, 	WHITE, BLUE, &font48, 6*8, 4},		//21
+S	{"–¥–Ú∫≈:", 	0 ,4, 	WHITE, BLUE, &font48, 6*8, 6},		//22
+S	{"Ωª“◊∫≈:", 	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},		//23
+S	{"¡˜ÀÆ∫≈:", 	0 ,0, 	WHITE, BLUE, &font48, 6*8, 6},		//24
+S
+S	{"”≤±“∆˜-" , 0, 2, 	WHITE, BLUE, &font48, 6*8, 2},		//25
+S	{"◊¥Ã¨:" , 	0, 4, 	WHITE, BLUE, &font48, 6*8, 4},		//26
+S	{"≤„º∂:", 	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},		//27
+S	{"–° ˝:" ,  0, 0, 	WHITE, BLUE, &font48, 6*8, 2},		//28
+S	{"π˙º“¥˙¬Î:",0 ,2, 	WHITE, BLUE, &font48, 6*8, 6},	//29
+S	{"Õ®µ¿:" , 0, 4, 	WHITE, BLUE, &font48, 6*8, 2},		//30
+S	{"√Ê÷µ:" , 	0, 6, 	WHITE, BLUE, &font48, 6*8, 4},		//31
+S	{"◊‹Ω∂Ó:", 	0 ,0, 	WHITE, BLUE, &font48, 6*8, 6},		//32
+S
+S	{"÷Ω±“∆˜-:", 0 ,2, 	WHITE, BLUE, &font48, 6*8, 6},		//33
+S	{"◊¥Ã¨:" , 	0, 4, 	WHITE, BLUE, &font48, 6*8, 4},		//34
+S	{"≤„º∂:", 	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},		//35
+S	{"–° ˝:" , 	0, 0, 	WHITE, BLUE, &font48, 6*8, 2},		//36
+S	{"π˙º“¥˙¬Î:",0 ,2, 	WHITE, BLUE, &font48, 6*8, 6},		//37
+S	{"Õ®µ¿:" , 	0, 4, 	WHITE, BLUE, &font48, 6*8, 2},		//38
+S	{"√Ê÷µ:" , 	0, 6, 	WHITE, BLUE, &font48, 6*8, 4},		//39
+S	{"◊‹Ω∂Ó:", 	0 ,0, 	WHITE, BLUE, &font48, 6*8, 6},		//40
+S	{"‘›¥Êœ‰Õ®µ¿:" , 0, 2, 	WHITE, BLUE, &font48, 6*8, 4},	//41
+S	{"’“¡„œ‰√Ê÷µ:" , 0, 4, 	WHITE, BLUE, &font48, 6*8, 2},	//42
+S	{"’“¡„œ‰Ω∂Ó",	0 ,6, 	WHITE, BLUE, &font48, 6*8, 6},	//43
+S
+S	{"CPU",	0 ,0, 	WHITE, BLUE, &font48, 6*8, 6},		//44
+S
+S};
+S
+S/*
+S«˝∂Ø∞Â…Ë÷√ΩÁ√Ê
+S*/
+Sconst WORD chs_drvset[] = {
+S	{"  ≈‰¿‡–Õ(0N1J)" , 	0, 0, 	WHITE, BLUE, &font48, 8*15, 0},		//0
+S	{"Œ¬∂»¿‡–Õ(0-2)" , 	0, 2, 	WHITE, BLUE, &font48, 8*15, 2},		//1
+S	{"∆Ù∂ØµÁ¡˜(MA)" , 	0, 4, 	WHITE, BLUE, &font48, 8*12, 4},		//2
+S	{"∂Ã¬∑µÁ¡˜(MA)" , 	0, 0, 	WHITE, BLUE, &font48, 8*12, 0},		//3
+S	{"π˝‘ÿµÁ¡˜(MA)" , 	0, 2, 	WHITE, BLUE, &font48, 8*12, 2},		//4
+S	{"π˝‘ÿ ±º‰(MS)" , 	0, 4, 	WHITE, BLUE, &font48, 8*12, 4},		//5
+S	{"≥¨ ±Œ¥∆Ù∂Ø(S)" , 	0, 0, 	WHITE, BLUE, &font48, 8*14, 0},	//6
+S	{"≥¨ ±Œ¥Õ£÷π(S)" , 	0, 2, 	WHITE, BLUE, &font48, 8*14, 2},	//7
+S	{"Õ£÷π—” ±(MS)" ,	0, 4, 	WHITE, BLUE, &font48, 8*12, 4},	//8
+S	{"–≈∫≈ºÏ≤‚¥Œ ˝" , 	0, 0, 	WHITE, BLUE, &font48, 8*14, 0},	//9
+S	{"ºÏ≤‚º‰∏Ù(US)" ,	0, 2, 	WHITE, BLUE, &font48, 8*12, 2},	//10
+S	{"ª÷∏¥ƒ¨»œ(1»∑»œ)" ,	0, 4, 	WHITE, BLUE, &font48},			//11
+S	{"«˝∂Ø∞Â…Ë÷√" , 	3*8, 0, 	WHITE, BLUE, &font48},			//12
+S	{"«Î ‰»Î√‹¬Î" , 	3*8, 2, 	WHITE, BLUE, &font48, 3*8, 4},	//13
+S};
+S
+S#elif SCREEN == V_SCREENRA8875
+S/*============================================================================================
+S==============================================================================================
+S≤ …´∆¡ƒª  ˙∆¡£®ƒø«∞÷ª÷ß≥÷RA8875£©
+S==============================================================================================
+S============================================================================================*/
+S
+S/*
+SæØ∏ÊÃ· æ–≈œ¢
+S*/
+Sconst WORD chs_warring[] = {
+S{"…Ë÷√≥…π¶", 	140, 750, WHITE, BLUE, &font48},	//0
+S{"…Ë÷√ ß∞‹", 	140, 750, WHITE, BLUE, &font48},	//1
+S{"…Ë÷√≥¨œﬁ", 	140, 750, WHITE, BLUE, &font48},	//2
+S{"…Ë÷√Œª ˝≤ª◊„", 140, 750, WHITE, BLUE, &font48},	//3
+S{"’˝‘⁄≤‚ ‘÷–", 	140, 750, WHITE, BLUE, &font48},	//4
+S{"’˝‘⁄ª÷∏¥÷–...",140, 750, WHITE, BLUE, &font48},	//5
+S{"ª÷∏¥≥…π¶     ",140, 750, WHITE, BLUE, &font48},	//6
+S{"œ‘ æ ±º‰", 			0, 0, WHITE, BLUE, &font48},//7
+S{"HardFault_Handler", 	0, 0, WHITE, BLUE, &font48},//8
+S
+S//Õº±Í
+S{"Ãñ", 		10,  100, WHITE, BLUE, &font48},	//–≈∫≈Õº±Í			//9	
+S{"ÈT", 		70, 100, WHITE, BLUE, &font48},	//√≈Õº±Í					//10
+S{"ôC", 		130,100, WHITE, BLUE, &font48},	//ª˙πÒÕº±Í				//11
+S
+S//RTCÃ· æ
+S{"EEPROMª÷∏¥≥…π¶", 	30, 200, WHITE, BLUE, &font48},	//12
+S{"RTC≥ı ºªØ", 		30, 0, WHITE, BLUE, &font48},	//13
+S{"RTC≈‰÷√≥…π¶", 		30, 50, WHITE, BLUE, &font48},	//14
+S{"CRYSTAL ERR", 	30, 100, WHITE, BLUE, &font48},	//15
+S
+S//Õº±Í
+S{"Éˆ", 	190, 100, WHITE, BLUE, &font48},//÷∆¿‰Õº±Í					//16
+S{"üÙ", 	250, 100, WHITE, BLUE, &font48},//’’√˜Õº±Í					//17
+S{"ö¢", 	310, 100, WHITE, BLUE, &font48},//…±∂æÕº±Í 					//18
+S{"îz", 10, 400, WHITE, BLUE, &font48, 110, 400},//Œ¥◊∞Œ¬∂»ÃΩÕ∑Õº±Í 	//19 ∫Û√Ê◊¯±Í±Ì æøÏΩ›º¸≤È—Ø÷–’˝≥£Œ¬∂»÷µµƒŒª÷√
+S{"ü·", 190, 100, WHITE, BLUE, &font48},//÷∆»»Õº±Í 					//20
+S{"ì‹", 370, 100, WHITE, BLUE, &font48},//≤£¡ßº”»»Õº±Í 				//21
+S{"îµ", 230, 400, WHITE, BLUE, &font48, 280, 400},//¥˝∑¢ÀÕ ˝æ›Õº±Í 	//22
+S{"úÿ", 60, 400, WHITE, BLUE, &font48, 160, 400},//…„ œ∂»Õº±Í 		//23 ∫Û√Ê2∏ˆ◊¯±Í±Ì æøÏΩ›º¸≤È—ØŒ¬∂»Õº±Íµƒ¡Ì“ª∏ˆŒª÷√
+S{"◊x", 0, 6, WHITE, BLUE, &font48, 6*8, 6},//À¢ø®∆˜Õº±Í				//24
+S
+S};
+S
+S
+S/*
+S¥˝ª˙
+S*/
+Sconst WORD chs_standby[] = {
+S{"ª∂”≠π‚¡Ÿ",	50, 300, WHITE, BLUE, &font96},			//0
+S{"ª∂”≠π‚¡Ÿ",	50, 300, WHITE, BLUE, &font96},			//1
+S{"ª∂”≠π‚¡Ÿ",	50, 300, WHITE, BLUE, &font96},			//2
+S{"ª∂”≠π‚¡Ÿ",	50, 300, WHITE, BLUE, &font96},			//3
+S//#º¸≤È—Ø‘⁄œﬂø®–≈œ¢ΩÁ√Ê
+S{"ø®∫≈:", 		30, 30, WHITE, BLUE, &font48, 200, 30},		//4
+S{"”‡∂Ó:", 		30, 80, WHITE, BLUE, &font48, 200, 80},		//5
+S{"œﬁπ∫:", 		30, 130, WHITE, BLUE, &font48,200, 130},		//6
+S{"«ÎÀ¢ø®≤È—Ø", 	30, 700, WHITE, BLUE, &font48, 600, 400},	//7
+S{"Õ¯¬ÁŒ¥¡¨Ω”", 	30, 700, WHITE, BLUE, &font48, 600, 400},	//8
+S{"≤ªœﬁ", 		200, 130, WHITE, BLUE, &font48},			//9
+S{"¥Œ", 			250, 130, WHITE, BLUE, &font48},			//10
+S{"ø®≤ª¥Ê‘⁄  ", 	30, 700, WHITE, BLUE, &font48, 14*8,6},		//11
+S{"Œﬁ–ßø®    ", 	30, 700, WHITE, BLUE, &font48, 14*8,6},		//12
+S{"∑«±æ–£ø®  ", 	30, 700, WHITE, BLUE, &font48, 14*8,6},		//13
+S{"≤‚ ‘ø®    ", 	30, 700, WHITE, BLUE, &font48, 14*8,6},		//14
+S{"∑«±æª˙ø®  ", 	30, 700, WHITE, BLUE, &font48, 14*8,6},		//15
+S{"¥¶¿Ì“Ï≥£  ", 	30, 700, WHITE, BLUE, &font48, 14*8,6},		//16
+S
+S//ª∂”≠π‚¡Ÿ∏®÷˙Ã· æ
+S{"Õ¯¬Áπ ’œŒﬁ∑®œ˚∑—", 50, 600, WHITE, BLUE, &font48},		//17
+S{"À¢ø®π ’œŒﬁ∑®œ˚∑—", 50, 600, WHITE, BLUE, &font48},		//18
+S{"ª˙∆˜π ’œŒﬁ∑®œ˚∑—", 50, 600, WHITE, BLUE, &font48},		//19
+S{"   «Î—°‘Ò…Ã∆∑   ", 50, 600, WHITE, BLUE, &font48},		//20
+S
+S};
+S
+S/*
+Sø™ª˙ΩÁ√Ê
+S*/
+Sconst WORD chs_start[] = {
+S	{"’˝‘⁄ºÏ≤‚…Ë±∏...",  0, 0, WHITE, BLUE, &font48},		//0
+S	{"÷Ω±“∆˜’˝≥£",		0, 150, WHITE, BLUE, &font48},		//1
+S	{"”≤±“∆˜’˝≥£", 		0, 100, WHITE, BLUE, &font48},		//2
+S	{"÷Ω±“∆˜Œ¥¡¨Ω”", 	0, 150, WHITE, BLUE, &font48},		//3
+S	{"”≤±“∆˜Œ¥¡¨Ω”", 	0, 100, WHITE, BLUE, &font48},		//4
+S	{"«˝∂Ø∞Â’˝≥£", 		0, 250, WHITE, BLUE, &font48},		//5
+S	{"«˝∂Ø∞ÂŒ¥¡¨Ω”", 	0, 250, WHITE, BLUE, &font48},		//6
+S	{"∂¡ø®∆˜’˝≥£", 		0, 200, WHITE, BLUE, &font48},		//7
+S	{"∂¡ø®∆˜Œ¥¡¨Ω”", 	0, 200, WHITE, BLUE, &font48},		//8
+S};
+S
+S/*
+S—°ªıΩÁ√Ê
+S*/	
+Sconst WORD chs_choose[] = {
+S{"…Ã∆∑:",  30, 30, WHITE, BLUE, &font48, 180, 30},		//0
+S{"º€∏Ò:" , 30, 80, WHITE, BLUE, &font48, 180, 80},		//1
+S{"ø‚¥Ê:" , 30, 130, WHITE, BLUE, &font48, 180, 130},	//2
+S{"Œﬁ¥Àªıµ¿", 	30, 700, WHITE, BLUE, &font48}, 		//3
+S{"ªıµ¿“—Ω˚”√", 	30, 700, WHITE, BLUE, &font48}, 		//4
+S{"…Ã∆∑“— €ø’", 	30, 700, WHITE, BLUE, &font48}, 		//5
+S{"ªıµ¿Õ£÷π∑˛ŒÒ", 30, 700, WHITE, BLUE, &font48}, 	//6
+S{"Õ¯¬ÁŒ¥¡¨Ω”", 	30, 700, WHITE, BLUE, &font48},		//7
+S{"«ÎÀ¢ø®π∫ŒÔ", 	30, 700, WHITE, BLUE, &font48, 600, 400}, 		//8
+S{"«ÎÀ¢ø®ªÚ…®√Ë∂˛Œ¨¬Î", 30, 700, WHITE, BLUE, &font48},	//9
+S{"“—∂¡ø®∫ÛÃ®’˝—È÷§  ", 30, 700, WHITE, BLUE, &font48},	//10
+S//‘⁄œﬂø®≥ˆªı
+S{"ø®∫≈:", 30, 180, WHITE, BLUE, &font48, 180, 180},			//11
+S{"ª˙πÒ‘›Õ£∑˛ŒÒ", 30, 700, WHITE, BLUE, &font48}, 	//12
+S{"”‡∂Ó:", 		30, 230, WHITE, BLUE, &font48, 180, 230},	//13
+S{"ø®≤ª¥Ê‘⁄≤ªƒ‹œ˚∑—", 30, 700, WHITE, BLUE, &font48},	//14
+S{" Œﬁ–ßø®≤ªƒ‹œ˚∑— ", 30, 700, WHITE, BLUE, &font48},	//15
+S{"∑«±æ–£ø®≤ªƒ‹œ˚∑—", 30, 700, WHITE, BLUE, &font48},	//16
+S{"¥Œ ˝≥¨œﬁ≤ªƒ‹œ˚∑—", 30, 700, WHITE, BLUE, &font48},	//17
+S{"∑«±æª˙ø®≤ªƒ‹œ˚∑—", 30, 700, WHITE, BLUE, &font48},	//18
+S{"”‡∂Ó≤ª◊„≤ªƒ‹œ˚∑—", 30, 700, WHITE, BLUE, &font48},	//19
+S{"µ⁄ ≤„…Ã∆∑Õ£ €   ", 30, 700, WHITE, BLUE, &font48, 78, 400},	//20
+S{"ø€øÓ ß∞‹        ", 30, 700, WHITE, BLUE, &font48},	//21
+S{"¥¶¿Ì“Ï≥£≤ªƒ‹œ˚∑—", 30, 700, WHITE, BLUE, &font48},	//22
+S{"Õ®÷™π‹¿Ì‘±      ", 30, 700, WHITE, BLUE, &font48},	//23
+S{"‘›Õ£∑˛ŒÒ        ", 30, 700, WHITE, BLUE, &font48}, //24
+S{"«Î…®¬Î÷ß∏∂      ", 30, 700, WHITE, BLUE, &font48}, //25
+S
+S{"º€∏Ò¥ÌŒÛ«Î÷ÿ—°ªı",  30, 700, WHITE, BLUE, &font48},	//26	
+S{"ø‚¥Ê¥ÌŒÛ«Î÷ÿ—°ªı",  30, 700, WHITE, BLUE, &font48},	//27	
+S
+S};
+S
+S/*
+S≤Àµ•ΩÁ√Ê
+S*/
+Sconst WORD chs_menu[] = {
+S{"…Ã∆∑…Ë÷√" , 0, 50, WHITE, BLUE, &font48},//0
+S{"ªıµ¿≤‚ ‘" , 0, 100, WHITE, BLUE, &font48},//1
+S{"ªıµ¿…Ë÷√" , 0, 150, WHITE, BLUE, &font48},//2
+S{"Œ¬øÿ…Ë÷√" , 0, 200, WHITE, BLUE, &font48},//3
+S{"øÿ÷∆…Ë÷√" , 0, 250, WHITE, BLUE, &font48},//4
+S{"÷ß∏∂…Ë÷√" , 0, 300, WHITE, BLUE, &font48},//5
+S{"ª˙∆˜…Ë÷√" , 0, 350, WHITE, BLUE, &font48},//6
+S{"ª˙∆˜–≈œ¢" , 1000, 0, WHITE, BLUE, &font48},//7		//’‚∏ˆ≤ªœ‘ æ
+S{"Õ®—∂…Ë÷√" , 300, 200, WHITE, BLUE, &font48},//8
+S{"π‹¿Ì…Ë÷√" , 0, 0, WHITE, BLUE, &font48, 300, 0}, //9
+S{" €ªıª˙–≈œ¢" , 1000, 0, WHITE, BLUE, &font48}, //10			//’‚∏ˆ≤ªœ‘ æ
+S//≤‡±ﬂ¿∏œ‘ æ
+S{"ª˙∆˜ID:", 0, 400 , WHITE, BLUE, &font48, 180, 400},//11
+S{"∞Ê±æ∫≈:", 0, 450,  WHITE, BLUE, &font48, 180, 450},//12
+S{"«˝∂Ø∞Â:", 0, 500,  WHITE, BLUE, &font48, 180, 500},//13
+S{"’˝≥£", 	0, 150, WHITE, BLUE, &font48},//14
+S{"Œ¥¡¨Ω”", 	0, 150, WHITE, BLUE, &font48},//15
+S{"∂¡ø®∆˜:", 0, 550, WHITE, BLUE, &font48, 180, 550},//16
+S{"÷Ω±“∆˜:", 0, 600, WHITE, BLUE, &font48, 180, 600},//17
+S{"”≤±“∆˜:", 0, 650, WHITE, BLUE, &font48, 180, 650},//18
+S{"Õ¯  ¬Á:", 0, 700, WHITE, BLUE, &font48, 180, 700},//19
+S{"¡¨Õ¯", 	0, 350, WHITE, BLUE, &font48},//20
+S{"Œ¥¡¨Õ¯", 	0, 350, WHITE, BLUE, &font48},//21
+S{"Œ¬  ∂»:", 0, 750, WHITE, BLUE, &font48, 180, 750},//22
+S{"π ’œ", 	0, 400, WHITE, BLUE, &font48},//23
+S{"Õ®—∂√‹¬Î:",0, 400, WHITE, BLUE, &font48},//24
+S};
+S/*
+S≥ˆªıΩÁ√Ê
+S*/
+Sconst WORD chs_salling[] = {
+S
+S{"”‡∂Ó", 30, 230, WHITE, BLUE, &font48},							//0
+S{"’˝‘⁄≥ˆªı«Î…‘∫Ú     ", 30, 700, WHITE, BLUE, &font48},				//1
+S{"≥ˆªı≥…π¶           ", 30, 700, WHITE, BLUE, &font48},				//2
+S{"≥ˆªı ß∞‹           ", 30, 700, WHITE, BLUE, &font48, 400, 700},	//3
+S{"«Î»°◊ﬂ…Ã∆∑         ", 30, 700, WHITE, BLUE, &font48},				//4
+S};
+S
+S/*
+S…Ë÷√ΩÁ√ÊÃ· æ”Ô
+S*/
+Sconst WORD chs_set[] = {
+S
+S{"…Ë÷√≥…π¶", 	140, 750, WHITE, BLUE, &font48},	//0
+S{"…Ë÷√ ß∞‹", 	140, 750, WHITE, BLUE, &font48},	//1
+S{"…Ë÷√≥¨œﬁ", 	140, 750, WHITE, BLUE, &font48}, 	//2
+S{"…Ë÷√Œª ˝≤ª◊„", 140, 750, WHITE, BLUE, &font48},	//3
+S{"’˝‘⁄≤‚ ‘", 148, 750, WHITE, BLUE, &font48},	//4
+S{"’˝≥£µÁª˙ ˝", 500, 400, WHITE, BLUE, &font48},	//5
+S{"≤ª‘⁄ŒªµÁª˙", 500, 400, WHITE, BLUE, &font48},	//6
+S{"’˝‘⁄ª÷∏¥≥ˆ≥ß..." , 500, 400, WHITE, BLUE, &font48},	//7
+S{"ª÷∏¥≥…π¶", 500, 400, WHITE, BLUE, &font48},			//8
+S{"Ãı¬Î",	500, 400, WHITE, BLUE, &font48},			//9
+S
+S//ªıµ¿≤‚ ‘
+S{"ª˙πÒ", 		0 , 	400, WHITE, BLUE, &font48, 96, 	400},		//10
+S{"Õ–≈Ã", 		144 , 	400, WHITE, BLUE, &font48, 240, 400},		//11
+S{"0123456789", 	0 , 	450, WHITE, BLUE, &font48, 500,	550},		//12	±Ì æªıµ¿,valxŒ™ªıµ¿ πƒ‹◊›◊¯±Í£¨valyŒ™ªıµ¿◊¥Ã¨◊›◊¯±Í
+S{" ‰»Î", 		288 , 	400, WHITE, BLUE, &font48, 290, 450},		//13	
+S
+S//…Ã∆∑…Ë÷√
+S{"…Ã∆∑:" , 0, 400, WHITE, BLUE, &font48, 150, 400},	//14
+S{"ø‚¥Ê:" , 0, 450, WHITE, BLUE, &font48, 150, 450},	//15
+S{"º€∏Ò:" , 0, 500, WHITE, BLUE, &font48, 150, 500},	//16
+S{"Ãı¬Î:" , 0, 550, WHITE, BLUE, &font48, 150, 550},	//17
+S//ª˙∆˜…Ë÷√
+S{"ª˙∆˜ID:" ,   			0, 400, WHITE, BLUE, &font48, 200, 400},		//18
+S{"¡¨Õ¯√‹¬Î:" , 			0, 450, WHITE, BLUE, &font48, 250, 450},		//19
+S{"ø™∆Ù¡¨Õ¯(0πÿ1ø™):" , 	0, 500, WHITE, BLUE, &font48, 430, 500},		//20
+S{"œµÕ≥”Ô—‘(0÷–1”¢):" , 	0, 550, WHITE, BLUE, &font48, 430, 550},		//21
+S{"ª˙πÒ ˝¡ø(1-9):" , 	0, 600, WHITE, BLUE, &font48, 430, 600},		//22
+S{"–° ˝Œª ˝(0-8):" ,	 	0, 650, WHITE, BLUE, &font48, 430, 650},		//23
+S{"º€∏ÒŒª ˝(1-9):" , 	0, 700, WHITE, BLUE, &font48, 430, 700},		//24
+S{" ‰»ÎŒª ˝(1-9):" , 	0, 400, WHITE, BLUE, &font48, 430, 400},		//25
+S{"ªıµ¿Œª ˝(1-3):" , 	0, 450, WHITE, BLUE, &font48, 430, 450},		//26
+S{"ª÷∏¥≥ˆ≥ß(1 »∑»œ) ",	0, 700, WHITE, BLUE, &font48, 400, 700},		//27
+S//÷ß∏∂…Ë÷√
+S{"…®¬Î÷ß∏∂(0πÿ1ø™):",	0, 400, WHITE, BLUE, &font48, 430, 400},	//28
+S{"À¢ø®Ω”ø⁄:" , 	0, 450, WHITE, BLUE, &font48, 300, 450},			//29
+S{"»°ªıΩ”ø⁄:" , 	0, 500, WHITE, BLUE, &font48, 300, 500},			//30
+S//Œ¬∂»…Ë÷√
+S{"ƒø±ÍŒ¬∂»:" , 			0, 400, WHITE, BLUE, &font48, 250, 400},	//31
+S{"ø™∆Ù ±º‰:" , 			0, 450, WHITE, BLUE, &font48, 250, 450},	//32
+S{"πÿ±’ ±º‰:" , 			0, 500, WHITE, BLUE, &font48, 250, 500},	//33
+S{"Œ¬øÿ∑Ω Ω(0¿‰1»»):" , 	0, 550, WHITE, BLUE, &font48, 400, 550},	//34
+S//øÿ÷∆ªÿ¬∑…Ë÷√
+S{"∑Áª˙:" , 		0, 400, 	WHITE, BLUE, &font48, 300, 400},	//35
+S{"ø™∆Ù ±º‰:" , 	0, 450, 	WHITE, BLUE, &font48, 300, 450},	//36
+S{"πÿ±’ ±º‰:" , 	0, 500, 	WHITE, BLUE, &font48, 300, 500},	//37 
+S{"’’√˜:" , 		0, 550, 	WHITE, BLUE, &font48, 300, 550},	//38
+S{"ø™∆Ù ±º‰:" , 	0, 600, 	WHITE, BLUE, &font48, 300, 600},	//39
+S{"πÿ±’ ±º‰:" , 	0, 650, 	WHITE, BLUE, &font48, 300, 650},	//40 
+S{"œ˚∂æ:" , 		0, 700, 	WHITE, BLUE, &font48, 300, 700},	//41
+S{"ø™∆Ù ±º‰:" , 	0, 400, 	WHITE, BLUE, &font48, 300, 400},	//42
+S{"πÿ±’ ±º‰:" , 	0, 450, 	WHITE, BLUE, &font48, 300, 450},	//43 
+S{"≤£¡ßº”»»:" , 	0, 500, 	WHITE, BLUE, &font48, 300, 500},	//44
+S{"ø™∆Ù ±º‰:" , 	0, 550, 	WHITE, BLUE, &font48, 300, 550},	//45
+S{"πÿ±’ ±º‰:" , 	0, 600, 	WHITE, BLUE, &font48, 300, 600},	//46 
+S{"±∏”√2:" , 	0, 650, 	WHITE, BLUE, &font48, 300, 650},	//47
+S{"ø™∆Ù ±º‰:" , 	0, 700, 	WHITE, BLUE, &font48, 300, 700},	//48
+S{"πÿ±’ ±º‰:" , 	0, 400, 	WHITE, BLUE, &font48, 300, 400},	//49 
+S//ªıµ¿…Ë÷√
+S{"ªıµ¿:" , 				0, 400, 	WHITE, BLUE, &font48, 300, 400},	//50
+S{"µØª…»¶ ˝:" , 			0, 450, 	WHITE, BLUE, &font48, 300, 450},	//51
+S{"◊¥Ã¨(0Ω˚ƒ‹1 πƒ‹):" , 	0, 500, 	WHITE, BLUE, &font48, 30, 550},		//52 	//’‚∏ˆªıµ¿ πƒ‹Ω˚ƒ‹œ‘ æµΩœ¬“ª––
+S//ªıµ¿≤‚ ‘
+S{"ªıµ¿≤‚ ‘:" , 	0, 400, 	WHITE, BLUE, &font48, 300, 400},	//53
+S{"Õ–≈Ã≤‚ ‘:" , 	0, 450, 	WHITE, BLUE, &font48, 300, 450},	//54
+S{"’˚ª˙≤‚ ‘:" , 	0, 500, 	WHITE, BLUE, &font48, 50, 750},	//55  //’‚∏ˆ∫Û√Êµƒ≤Œ ˝ «œ‘ æªıµ¿◊¥Ã¨ ±£¨ªıµ¿◊¥Ã¨«∞√Êµƒªıµ¿∫≈µƒŒª÷√
+S{"   Œﬁ¥Àª˙πÒ", 50 , 750, WHITE, BLUE, &font48},		//56
+S
+S//ª˙∆˜…Ë÷√
+S{"Õ–≈Ã ˝¡ø:" , 			0, 500, WHITE, BLUE, &font48, 430, 500},	//57
+S{"«Âø’ ˝æ›(1 »∑»œ)" , 	0, 650, WHITE, BLUE, &font48, 0, 650},	//58
+S
+S//ªıµ¿≤‚ ‘Ω·π˚
+S{"÷¥––", 288, 500, WHITE, BLUE, &font48, 290, 550},	//59
+S
+S//»’∆⁄ ±º‰…Ë÷√
+S{"»’∆⁄:", 0, 550, WHITE, BLUE, &font48, 150, 550},	//60
+S{" ±º‰:", 0, 600, WHITE, BLUE, &font48, 150, 600},	//61
+S
+S};	
+S
+S
+S/*
+S–≈œ¢ΩÁ√Ê
+S*/
+Sconst WORD chs_info[] = {
+S	
+S	{"÷˜∞Â-->" ,10, 400, 	WHITE, BLUE, &font48, 10, 450},	//0	∫Û√Ê¡Ω∏ˆ◊¯±Í±Ì æøÏΩ›º¸≤Èø¥–≈œ¢µƒ∞Ê±æ∫≈Œª÷√
+S	{"∞Ê±æ:" , 	10, 450, 	WHITE, BLUE, &font48, 6*24, 450},	//1
+S	{"FLASH:", 	10 ,500, 	WHITE, BLUE, &font48, 8*24, 500},	//2
+S	{"ID:" , 	10, 550, 	WHITE, BLUE, &font48, 6*24, 550},	//3
+S	
+S	{"«˝∂Ø∞Â-->" , 10, 600, 	WHITE, BLUE, &font48, 10, 500},		//4	∫Û√Ê¡Ω∏ˆ◊¯±Í±Ì æøÏΩ›º¸≤Èø¥–≈œ¢µƒ∞Ê±æ∫≈Œª÷√
+S	{"∞Ê±æ:" , 	10, 650, 	WHITE, BLUE, &font48, 6*24, 650},		//5
+S	{"Œ¬∂»1:", 	10 ,700, 	WHITE, BLUE, &font48, 8*24, 700},		//6
+S	{"Œ¬∂»2:", 	10 ,750, 	WHITE, BLUE, &font48, 8*24, 750},		//7
+S	{"—πÀıª˙:", 10 ,400, 	WHITE, BLUE, &font48, 6*24, 400},		//8
+S	{"∑Áª˙:", 	10 ,450, 	WHITE, BLUE, &font48, 6*24, 450},		//9
+S	{"’’√˜:", 	10 ,500, 	WHITE, BLUE, &font48, 6*24, 500},		//10
+S	{"œ˚∂æ:", 	10 ,550, 	WHITE, BLUE, &font48, 6*24, 550},		//11
+S	{"±∏”√1:", 	10 ,600, 	WHITE, BLUE, &font48, 6*24, 600},		//12
+S	{"±∏”√2:", 	10 ,650, 	WHITE, BLUE, &font48, 6*24, 650},		//13
+S
+S	{"∂¡ø®∆˜-->" , 10, 700, 	WHITE, BLUE, &font48},		//14
+S	{"◊¥Ã¨:" , 	10, 750, 	WHITE, BLUE, &font48, 8*24, 750},		//15
+S
+S
+S	{"Õ¯¬Á-->" ,10, 400, 	WHITE, BLUE, &font48,},		//16
+S	{"◊¥Ã¨:" , 	10, 450, 	WHITE, BLUE, &font48, 8*24, 450},		//17
+S	{"¥˝∑¢:", 	10 ,500, 	WHITE, BLUE, &font48, 8*24, 500},		//18
+S	{"¥Ê¥¢:", 	10 ,550, 	WHITE, BLUE, &font48, 8*24, 550},		//19
+S	{"“—”√:" , 	10, 600, 	WHITE, BLUE, &font48, 8*24, 600},		//20
+S	{"∂¡–Ú∫≈:",	10, 650, 	WHITE, BLUE, &font48, 8*24, 650},		//21
+S	{"–¥–Ú∫≈:", 10 ,700, 	WHITE, BLUE, &font48, 8*24, 700},		//22
+S	{"Ωª“◊∫≈:", 10 ,750, 	WHITE, BLUE, &font48, 8*24, 750},		//23
+S	{"¡˜ÀÆ∫≈:", 10 ,400, 	WHITE, BLUE, &font48, 8*24, 400},		//24
+S
+S	{"”≤±“∆˜-->" , 10, 450, 	WHITE, BLUE, &font48, 6*24, 450},		//25
+S	{"◊¥Ã¨:" , 	10, 500, 	WHITE, BLUE, &font48, 6*24, 500},		//26
+S	{"≤„º∂:", 	10 ,550, 	WHITE, BLUE, &font48, 6*24, 550},		//27
+S	{"–° ˝:" ,  10, 600, 	WHITE, BLUE, &font48, 6*24, 600},		//28
+S	{"π˙º“¥˙¬Î:",10 ,650, 	WHITE, BLUE, &font48, 6*24, 650},		//29
+S	{"Õ®µ¿:" , 10, 700, 	WHITE, BLUE, &font48, 6*24, 700},		//30
+S	{"√Ê÷µ:" , 10, 750, 	WHITE, BLUE, &font48, 6*24, 750},		//31
+S	{"Ω∂Ó:",  10 ,400, 	WHITE, BLUE, &font48, 6*24, 400},		//32
+S
+S	{"÷Ω±“∆˜-->", 10 ,450, 	WHITE, BLUE, &font48, 6*24, 450},		//33
+S	{"◊¥Ã¨:" , 	10, 500, 	WHITE, BLUE, &font48, 6*24, 500},		//34
+S	{"≤„º∂:", 	10 ,550, 	WHITE, BLUE, &font48, 6*24, 550},		//35
+S	{"–° ˝:" , 	10, 600, 	WHITE, BLUE, &font48, 6*24, 600},		//36
+S	{"π˙º“¥˙¬Î:",10 ,650, 	WHITE, BLUE, &font48, 6*24, 650},		//37
+S	{"Õ®µ¿:" , 	10, 700, 	WHITE, BLUE, &font48, 6*24, 700},		//38
+S	{"√Ê÷µ:" , 	10, 750, 	WHITE, BLUE, &font48, 6*24, 750},		//39
+S	{"Ω∂Ó:", 	10 ,400, 	WHITE, BLUE, &font48, 6*24, 400},		//40
+S	{"‘›¥Êœ‰Õ®µ¿:" ,10, 450, 	WHITE, BLUE, &font48, 6*24, 450},	//41
+S	{"’“¡„œ‰√Ê÷µ:" , 10, 500, 	WHITE, BLUE, &font48, 6*24, 500},	//42
+S	{"’“¡„œ‰Ω∂Ó:",	10 ,550, 	WHITE, BLUE, &font48, 6*24, 550},	//43
+S
+S	{"CPU->",	10 ,600, 	WHITE, BLUE, &font48, 6*8, 0},		//44
+S
+S};
+S
+S/*
+S«˝∂Ø∞Â…Ë÷√ΩÁ√Ê
+S*/
+Sconst WORD chs_drvset[] = {
+S	{"  ≈‰¿‡–Õ(0N1J):" , 	10, 400, 	WHITE, BLUE, &font48, 24*16, 400},		//0
+S	{"Œ¬∂»¿‡–Õ(0-2):" , 	10, 450, 	WHITE, BLUE, &font48, 24*16, 450},	//1
+S	{"∆Ù∂ØµÁ¡˜(MA):" , 	10, 500, 	WHITE, BLUE, &font48, 24*14, 500},	//2
+S	{"∂Ã¬∑µÁ¡˜(MA):" , 	10, 550, 	WHITE, BLUE, &font48, 24*14, 550},	//3
+S	{"π˝‘ÿµÁ¡˜(MA):" , 	10, 600, 	WHITE, BLUE, &font48, 24*14, 600},	//4
+S	{"π˝‘ÿ ±º‰(MS):" , 	10, 650, 	WHITE, BLUE, &font48, 24*14, 650},	//5
+S	{"≥¨ ±Œ¥∆Ù∂Ø(S):" , 	10, 700, 	WHITE, BLUE, &font48, 24*14, 700},	//6
+S	{"≥¨ ±Œ¥Õ£÷π(S):" , 	10, 400, 	WHITE, BLUE, &font48, 24*14, 400},	//7
+S	{"Õ£÷π—” ±(MS):" ,	10, 450, 	WHITE, BLUE, &font48, 24*14, 450},	//8
+S	{"≥ˆªı–≈∫≈¥Œ ˝:" , 	10, 500, 	WHITE, BLUE, &font48, 24*14, 500},	//9
+S	{"–≈∫≈º‰∏Ù(US):" ,	10, 550, 	WHITE, BLUE, &font48, 24*14, 550},	//10
+S	{"≤È—Ø–≈∫≈¥Œ ˝:" , 	10, 600, 	WHITE, BLUE, &font48, 24*14, 600},	//11
+S	{"–≈∫≈º‰∏Ù(US):" ,	10, 650, 	WHITE, BLUE, &font48, 24*14, 650},	//12
+S	{"ª÷∏¥ƒ¨»œ(1»∑»œ):" ,10, 700, 	WHITE, BLUE, &font48},				//13
+S	
+S	{"«˝∂Ø∞Â…Ë÷√:" , 	3*24, 450, 	WHITE, BLUE, &font48},				//14
+S	{"«Î ‰»Î√‹¬Î:" , 	3*24, 500, 	WHITE, BLUE, &font48, 3*24, 550},	//15
+S	{"«˝∂Ø∞ÂŒ¥¡¨Ω”:",	2*24, 500, WHITE, BLUE, &font48},				//16
+S};
+S
+S
+N#endif
+N
+N
+N
+N
+N
+N
+NCHARACTER pt_word; 
+N
+N
+N/*
+N∞Ê±æ∫≈≥ı ºªØ
+N∞Ê±æ∫≈µ⁄∂˛Œª±Ì æ∆¡ƒª¿‡–Õ£¨∂‘”¶screen÷µ
+N*/
+Nstatic void version_init(void)
+N{
+N	version[1] = SCREEN + '0';
+X	version[1] = 4 + '0';
+N	version[2] = YICHU_DOOR + '0';
+X	version[2] = 1 + '0';
+N	version[3] = ZJ_VS_XY + '0';
+X	version[3] = 1 + '0';
+N}
+N
+N/*
+N◊÷∑˚ΩÁ√Ê≥ı ºªØ
+N*/
+Nvoid word_init(void)
+N{
+N	version_init();
+N	if(g_vm.language == 1)//”¢Œƒ
+N	{
+N		
+N		
+N	}
+N	else
+N	{
+N		pt_word.standby = chs_standby;
+N		pt_word.choose = chs_choose;
+N		pt_word.menu = chs_menu;
+N		pt_word.salling = chs_salling;
+N		pt_word.set = chs_set;
+N		pt_word.start = chs_start; 
+N		pt_word.warring = chs_warring;
+N		pt_word.info = chs_info;
+N		pt_word.drvset = chs_drvset;
+N	}
+N	
+N}
+N
+N

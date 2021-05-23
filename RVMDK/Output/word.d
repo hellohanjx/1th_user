@@ -1,0 +1,9 @@
+.\output\word.o: ..\USR\Global\word.c
+.\output\word.o: ..\USR\Global\word.h
+.\output\word.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\word.o: ..\LCD\font_header.h
+.\output\word.o: ..\USR\stm32\configure.h
+.\output\word.o: ..\LCD\lcd_header.h
+.\output\word.o: ..\USR\Global\global.h
+.\output\word.o: ..\USR\MSG\msg.h
+.\output\word.o: ..\USR\main.h

@@ -1,0 +1,2182 @@
+L 1 "..\USR\Global\global.c"
+N/*
+NÈ«¾ÖÒªÓÃµÄ±äÁ¿»ò·½·¨
+N*/
+N#include "global.h"
+L 1 "..\USR\Global\global.h" 1
+N/*
+Nå…¨å±€è¦ç”¨çš„å˜é‡æˆ–æ–¹æ³•
+N*/
+N#ifndef _GOLBAL_H_
+N#define _GOLBAL_H_
+N
+N#include "stdint.h"
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
+N/* Copyright (C) ARM Ltd., 1999,2014 */
+N/* All rights reserved */
+N
+N/*
+N * RCS $Revision$
+N * Checkin $Date$
+N * Revising $Author: agrant $
+N */
+N
+N#ifndef __stdint_h
+N#define __stdint_h
+N#define __ARMCLIB_VERSION 5060037
+N
+N  #ifdef __INT64_TYPE__
+S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
+S    #define __INT64 __INT64_TYPE__
+N  #else
+N    /* armcc has builtin '__int64' which can be used in --strict mode */
+N    #define __INT64 __int64
+N    #define __INT64_C_SUFFIX__ ll
+N  #endif
+N  #define __PASTE2(x, y) x ## y
+N  #define __PASTE(x, y) __PASTE2(x, y)
+N  #define __INT64_C(x)  __ESCAPE__(__PASTE(x, __INT64_C_SUFFIX__))
+N  #define __UINT64_C(x)  __ESCAPE__(__PASTE(x ## u, __INT64_C_SUFFIX__))
+N  #if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
+X  #if 0L || (1L && !0L)
+N    /* armclang and non-strict armcc allow 'long long' in system headers */
+N    #define __LONGLONG long long
+N  #else
+S    /* strict armcc has '__int64' */
+S    #define __LONGLONG __int64
+N  #endif
+N
+N  #ifndef __STDINT_DECLS
+N  #define __STDINT_DECLS
+N
+N    #undef __CLIBNS
+N
+N    #ifdef __cplusplus
+S      namespace std {
+S          #define __CLIBNS std::
+S          extern "C" {
+N    #else
+N      #define __CLIBNS
+N    #endif  /* __cplusplus */
+N
+N
+N/*
+N * 'signed' is redundant below, except for 'signed char' and if
+N * the typedef is used to declare a bitfield.
+N */
+N
+N    /* 7.18.1.1 */
+N
+N    /* exact-width signed integer types */
+Ntypedef   signed          char int8_t;
+Ntypedef   signed short     int int16_t;
+Ntypedef   signed           int int32_t;
+Ntypedef   signed       __INT64 int64_t;
+Xtypedef   signed       __int64 int64_t;
+N
+N    /* exact-width unsigned integer types */
+Ntypedef unsigned          char uint8_t;
+Ntypedef unsigned short     int uint16_t;
+Ntypedef unsigned           int uint32_t;
+Ntypedef unsigned       __INT64 uint64_t;
+Xtypedef unsigned       __int64 uint64_t;
+N
+N    /* 7.18.1.2 */
+N
+N    /* smallest type of at least n bits */
+N    /* minimum-width signed integer types */
+Ntypedef   signed          char int_least8_t;
+Ntypedef   signed short     int int_least16_t;
+Ntypedef   signed           int int_least32_t;
+Ntypedef   signed       __INT64 int_least64_t;
+Xtypedef   signed       __int64 int_least64_t;
+N
+N    /* minimum-width unsigned integer types */
+Ntypedef unsigned          char uint_least8_t;
+Ntypedef unsigned short     int uint_least16_t;
+Ntypedef unsigned           int uint_least32_t;
+Ntypedef unsigned       __INT64 uint_least64_t;
+Xtypedef unsigned       __int64 uint_least64_t;
+N
+N    /* 7.18.1.3 */
+N
+N    /* fastest minimum-width signed integer types */
+Ntypedef   signed           int int_fast8_t;
+Ntypedef   signed           int int_fast16_t;
+Ntypedef   signed           int int_fast32_t;
+Ntypedef   signed       __INT64 int_fast64_t;
+Xtypedef   signed       __int64 int_fast64_t;
+N
+N    /* fastest minimum-width unsigned integer types */
+Ntypedef unsigned           int uint_fast8_t;
+Ntypedef unsigned           int uint_fast16_t;
+Ntypedef unsigned           int uint_fast32_t;
+Ntypedef unsigned       __INT64 uint_fast64_t;
+Xtypedef unsigned       __int64 uint_fast64_t;
+N
+N    /* 7.18.1.4 integer types capable of holding object pointers */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+Stypedef   signed       __INT64 intptr_t;
+Stypedef unsigned       __INT64 uintptr_t;
+N#else
+Ntypedef   signed           int intptr_t;
+Ntypedef unsigned           int uintptr_t;
+N#endif
+N
+N    /* 7.18.1.5 greatest-width integer types */
+Ntypedef   signed     __LONGLONG intmax_t;
+Xtypedef   signed     long long intmax_t;
+Ntypedef unsigned     __LONGLONG uintmax_t;
+Xtypedef unsigned     long long uintmax_t;
+N
+N
+N#if !defined(__cplusplus) || defined(__STDC_LIMIT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.2.1 */
+N
+N    /* minimum values of exact-width signed integer types */
+N#define INT8_MIN                   -128
+N#define INT16_MIN                -32768
+N#define INT32_MIN          (~0x7fffffff)   /* -2147483648 is unsigned */
+N#define INT64_MIN  __INT64_C(~0x7fffffffffffffff) /* -9223372036854775808 is unsigned */
+N
+N    /* maximum values of exact-width signed integer types */
+N#define INT8_MAX                    127
+N#define INT16_MAX                 32767
+N#define INT32_MAX            2147483647
+N#define INT64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of exact-width unsigned integer types */
+N#define UINT8_MAX                   255
+N#define UINT16_MAX                65535
+N#define UINT32_MAX           4294967295u
+N#define UINT64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.2 */
+N
+N    /* minimum values of minimum-width signed integer types */
+N#define INT_LEAST8_MIN                   -128
+N#define INT_LEAST16_MIN                -32768
+N#define INT_LEAST32_MIN          (~0x7fffffff)
+N#define INT_LEAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of minimum-width signed integer types */
+N#define INT_LEAST8_MAX                    127
+N#define INT_LEAST16_MAX                 32767
+N#define INT_LEAST32_MAX            2147483647
+N#define INT_LEAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of minimum-width unsigned integer types */
+N#define UINT_LEAST8_MAX                   255
+N#define UINT_LEAST16_MAX                65535
+N#define UINT_LEAST32_MAX           4294967295u
+N#define UINT_LEAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.3 */
+N
+N    /* minimum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MIN           (~0x7fffffff)
+N#define INT_FAST16_MIN          (~0x7fffffff)
+N#define INT_FAST32_MIN          (~0x7fffffff)
+N#define INT_FAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MAX             2147483647
+N#define INT_FAST16_MAX            2147483647
+N#define INT_FAST32_MAX            2147483647
+N#define INT_FAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of fastest minimum-width unsigned integer types */
+N#define UINT_FAST8_MAX            4294967295u
+N#define UINT_FAST16_MAX           4294967295u
+N#define UINT_FAST32_MAX           4294967295u
+N#define UINT_FAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.4 */
+N
+N    /* minimum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MIN INT64_MIN
+N#else
+N#define INTPTR_MIN INT32_MIN
+N#endif
+N
+N    /* maximum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MAX INT64_MAX
+N#else
+N#define INTPTR_MAX INT32_MAX
+N#endif
+N
+N    /* maximum value of pointer-holding unsigned integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define UINTPTR_MAX UINT64_MAX
+N#else
+N#define UINTPTR_MAX UINT32_MAX
+N#endif
+N
+N    /* 7.18.2.5 */
+N
+N    /* minimum value of greatest-width signed integer type */
+N#define INTMAX_MIN  __ESCAPE__(~0x7fffffffffffffffll)
+N
+N    /* maximum value of greatest-width signed integer type */
+N#define INTMAX_MAX  __ESCAPE__(9223372036854775807ll)
+N
+N    /* maximum value of greatest-width unsigned integer type */
+N#define UINTMAX_MAX __ESCAPE__(18446744073709551615ull)
+N
+N    /* 7.18.3 */
+N
+N    /* limits of ptrdiff_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define PTRDIFF_MIN INT64_MIN
+S#define PTRDIFF_MAX INT64_MAX
+N#else
+N#define PTRDIFF_MIN INT32_MIN
+N#define PTRDIFF_MAX INT32_MAX
+N#endif
+N
+N    /* limits of sig_atomic_t */
+N#define SIG_ATOMIC_MIN (~0x7fffffff)
+N#define SIG_ATOMIC_MAX   2147483647
+N
+N    /* limit of size_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define SIZE_MAX UINT64_MAX
+N#else
+N#define SIZE_MAX UINT32_MAX
+N#endif
+N
+N    /* limits of wchar_t */
+N    /* NB we have to undef and redef because they're defined in both
+N     * stdint.h and wchar.h */
+N#undef WCHAR_MIN
+N#undef WCHAR_MAX
+N
+N#if defined(__WCHAR32) || (defined(__ARM_SIZEOF_WCHAR_T) && __ARM_SIZEOF_WCHAR_T == 4)
+X#if 0L || (0L && __ARM_SIZEOF_WCHAR_T == 4)
+S  #define WCHAR_MIN   0
+S  #define WCHAR_MAX   0xffffffffU
+N#else
+N  #define WCHAR_MIN   0
+N  #define WCHAR_MAX   65535
+N#endif
+N
+N    /* limits of wint_t */
+N#define WINT_MIN (~0x7fffffff)
+N#define WINT_MAX 2147483647
+N
+N#endif /* __STDC_LIMIT_MACROS */
+N
+N#if !defined(__cplusplus) || defined(__STDC_CONSTANT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.4.1 macros for minimum-width integer constants */
+N#define INT8_C(x)   (x)
+N#define INT16_C(x)  (x)
+N#define INT32_C(x)  (x)
+N#define INT64_C(x)  __INT64_C(x)
+N
+N#define UINT8_C(x)  (x ## u)
+N#define UINT16_C(x) (x ## u)
+N#define UINT32_C(x) (x ## u)
+N#define UINT64_C(x) __UINT64_C(x)
+N
+N    /* 7.18.4.2 macros for greatest-width integer constants */
+N#define INTMAX_C(x)  __ESCAPE__(x ## ll)
+N#define UINTMAX_C(x) __ESCAPE__(x ## ull)
+N
+N#endif /* __STDC_CONSTANT_MACROS */
+N
+N    #ifdef __cplusplus
+S         }  /* extern "C" */
+S      }  /* namespace std */
+N    #endif /* __cplusplus */
+N  #endif /* __STDINT_DECLS */
+N
+N  #ifdef __cplusplus
+S    #ifndef __STDINT_NO_EXPORTS
+S      using ::std::int8_t;
+S      using ::std::int16_t;
+S      using ::std::int32_t;
+S      using ::std::int64_t;
+S      using ::std::uint8_t;
+S      using ::std::uint16_t;
+S      using ::std::uint32_t;
+S      using ::std::uint64_t;
+S      using ::std::int_least8_t;
+S      using ::std::int_least16_t;
+S      using ::std::int_least32_t;
+S      using ::std::int_least64_t;
+S      using ::std::uint_least8_t;
+S      using ::std::uint_least16_t;
+S      using ::std::uint_least32_t;
+S      using ::std::uint_least64_t;
+S      using ::std::int_fast8_t;
+S      using ::std::int_fast16_t;
+S      using ::std::int_fast32_t;
+S      using ::std::int_fast64_t;
+S      using ::std::uint_fast8_t;
+S      using ::std::uint_fast16_t;
+S      using ::std::uint_fast32_t;
+S      using ::std::uint_fast64_t;
+S      using ::std::intptr_t;
+S      using ::std::uintptr_t;
+S      using ::std::intmax_t;
+S      using ::std::uintmax_t;
+S    #endif
+N  #endif /* __cplusplus */
+N
+N#undef __INT64
+N#undef __LONGLONG
+N
+N#endif /* __stdint_h */
+N
+N/* end of stdint.h */
+L 8 "..\USR\Global\global.h" 2
+N#include "msg.h" 
+L 1 "..\USR\MSG\msg.h" 1
+N/*
+NçŠ¶æ€æœºæ–‡ä»¶
+N
+N*/
+N#ifndef _MSH_H_
+N#define _MSH_H_
+N
+N#include "stdint.h"
+N
+N//å®šä¹‰æ¶ˆæ¯ç±»å‹
+N#define MsgSYS    0    //çŠ¶æ€æœºæ¶ˆæ¯
+N#define MsgKEY    1    //æŒ‰é”®æ¶ˆæ¯
+N#define MsgCOIN   2    //ç¡¬å¸å™¨æ¶ˆæ¯
+N#define MsgBILL   3    //çº¸å¸å™¨æ¶ˆæ¯
+N#define MsgCARD   4    //è¯»å¡å™¨æ¶ˆæ¯
+N#define MsgPHONE  5    //æ‰‹æœºå¡è¯»å¡å™¨æ¶ˆæ¯
+N#define MsgCHAN   6    //å‡ºè´§æœºæ„æ¶ˆæ¯
+N#define MsgEVN    7    //ç¯å¢ƒç³»ç»Ÿæ¶ˆæ¯
+N#define MsgCOMIT  8    //é€šè®¯æ¨¡å—æ¶ˆæ¯ã€‚
+N#define MsgEVENT  9    //äº‹ä»¶
+N#define MsgASSIS  10   //ç§˜ä¹¦æ¶ˆæ¯ã€‚
+N#define MsgDROP   11   //è°ƒè´§æ£€æµ‹æ¶ˆæ¯
+N#define MsgLIFT   12   //å‡é™æœºä¿¡æ¯
+N#define MsgPC     13   //ä¸Šä½æœºæ¶ˆæ¯
+N#define MsgHT     14   //åå°æ¶ˆæ¯
+N#define MsgSCAN   15	//ç½‘ç»œæ¶ˆè´¹ä¿¡æ¯
+N#define MsgLftEx   16   //å‡é™æœºæ‹“å±•æ¶ˆæ¯
+N#define MsgVoice   17   //è¯­éŸ³æ¨¡å—ä¿¡æ¯
+N#define MsgSensor  18	//äººä½“æ„Ÿåº”å™¨
+N#define MsgQkPass	19	//quick pass è®¾å¤‡
+N#define MsgRemote	20	//è¿œç¨‹æ§åˆ¶æ¶ˆæ¯
+N#define MsgOnline	21	//åœ¨çº¿å¡
+N#define MsgQrcode	22	//äºŒç»´ç 
+N
+N
+N#define FSMMSG_SIZE_DEFAULT	0//é»˜è®¤æ¶ˆæ¯å¤§å°
+N/*
+Nå®šä¹‰ç³»ç»Ÿæ¶ˆæ¯ç»“æ„
+N*/
+Ntypedef struct FSMMSG	
+N{
+N	uint8_t   type; 	//æ¶ˆæ¯ç±»å‹
+N	uint8_t   stype; 	//æ¶ˆæ¯å­ç±»å‹
+N	uint32_t  value; 	//æ¶ˆæ¯çš„å€¼
+N	uint16_t  exLen;	//é™„åŠ æ•°æ®é•¿åº¦
+N	void  *dat;			//é™„åŠ æ•°æ®æŒ‡é’ˆ
+N}FSMMSG;
+N
+N
+N
+Nvoid SYSMsgInit(void); //æ¶ˆæ¯ç³»ç»Ÿåˆå§‹åŒ–
+NFSMMSG* apply_fsm_msg(uint16_t size); //ç”³è¯·ä¸€ä¸ªæ¶ˆæ¯ã€‚
+Nvoid  release_fsm_msg(FSMMSG * msg);//é‡Šæ”¾ä¸€ä¸ªæ¶ˆæ¯
+Nuint8_t send_fsm_msg(FSMMSG *msg);  //å‘é€ä¸€ä¸ªç³»ç»Ÿæ¶ˆæ¯ã€‚
+Nuint8_t SendFSYSMSG(FSMMSG *msg);  //å‘é€ä¸€ä¸ªç³»ç»Ÿæ¶ˆæ¯ï¼Œå¹¶æ’åˆ°é˜Ÿåˆ—æœ€å‰é¢ã€‚
+NFSMMSG * WaitSYSMSG(uint16_t timeout,uint8_t *err);//ç­‰å¾…ä¸€ä¸ªç³»ç»Ÿæ¶ˆæ¯
+N
+N
+N#endif
+L 9 "..\USR\Global\global.h" 2
+N#include "main.h"
+L 1 "..\USR\main.h" 1
+N/*
+N@ÕâÀï¶¨ÒåµÄ¶«Î÷£¬Ê¹µÃ³ÌĞòÓë»úÆ÷²»Ïë¹Ø
+N*/
+N#ifndef _MAIN_H_
+N#define _MAIN_H_
+N
+Ntypedef enum{FALSE, TRUE}bool;
+N
+N#endif
+L 10 "..\USR\Global\global.h" 2
+N
+N
+N#define MAX_H_SIZE 	8	//æ‰˜ç›˜æ•°
+N#define MAX_L_SIZE  10	//è´§é“æ•°
+N
+N//æ–­è¨€å£°æ˜
+Nvoid assert_failed(uint8_t* file, uint32_t line);
+N//ç”¨æˆ·æ—¥å¿—è¾“å‡º
+Nvoid log_fail(uint8_t* file, uint32_t line);
+N
+N/*
+Näº¤æ˜“è¡Œä¸ºæè¿°
+N*/
+Ntypedef struct CLASS_TRADE 
+N{
+N	//å½“å‰æœºæŸœæè¿°
+N	struct {
+N		uint8_t  container; //å½“å‰è´§ç®±
+N		uint8_t  tray;    	//å½“å‰æ‰˜ç›˜
+N		uint8_t  col;    	//å½“å‰è´§é“ï¼ˆè¿™ä¸ªç”¨backupåŒºæ¥å­˜å‚¨ï¼‰
+N	}curDiverBoard;
+N	
+N	//å½“å‰é€‰æ‹©æè¿°
+N	struct {
+N		char   select[11];	//ç¬¬11å­—èŠ‚ç”¨æ¥åšåœæ­¢å­—ç¬¦
+N		uint8_t	state;  	//å½“å‰çš„é€‰æ‹©çŠ¶æ€ 0 æœªé€‰ï¼Œ1æŒ‡å®šäº†æ‰˜ç›˜ï¼Œ2æŒ‡å®šäº†è´§é“
+N		uint32_t value;  	//å½“å‰é€‰æ‹©çš„å€¼
+N	}select;
+N	
+N	struct {
+N		uint8_t state;		//è¾“å…¥çŠ¶æ€ï¼ˆå…¶å®æ˜¯ç”¨æ¥è®°å½•è¾“å…¥ä½æ•°ï¼‰
+N		char numchar[12];	//ä¸ºäº†æ˜¾ç¤º,å› ä¸ºå¦‚æœè¾“å…¥é‡‘é¢å°æ•°ç‚¹ä¼šå¤šä¸€ä½ï¼Œæ‰€ä»¥è¿™é‡Œå…è®¸12å­—èŠ‚é•¿åº¦
+N		uint32_t value;		//è¾“å…¥å€¼ï¼ˆè¾“å…¥å‡ ä½è®¡ç®—å‡ ä½ï¼‰
+N		uint8_t lenn;		//è¾“å…¥é•¿åº¦(è¯»è®¾ç½®,æ¯æ¬¡è®¾ç½®çŠ¶æ€æ—¶è¯»)
+N		uint8_t backup;		//å¤‡ä»½
+N		bool flag;			//ä¸€ä¸ªçŠ¶æ€æ ‡å¿—
+N	}inputNum;
+N	
+N	//è´§é“ä¿¡æ¯æè¿°
+N	struct{
+N		uint32_t price; //ä»·æ ¼ï¼ˆåŠ¨æ€è¯»è®¾ç½®ï¼‰
+N		uint16_t store;	//åº“å­˜ï¼ˆåŠ¨æ€è¯»è®¾ç½®ï¼‰
+N	}channel;
+N	
+N	//äºŒç»´ç ç›¸å…³
+N	struct{
+N		uint8_t token[18];
+N		char *timeStamp;//æ—¶é—´æˆ³
+N		uint8_t type;//æ”¯ä»˜ç±»å‹ 0x32æ”¯ä»˜å®ï¼Œ0x33å¾®ä¿¡
+N		uint8_t stamp[14];//è®°å½•æ—¶é—´æˆ³
+N	}qrcode;
+N	
+N	uint8_t businessmode; //0ç°é‡‘ 1 ICå¡ 2 æ‰‹æœºæ”¯ä»˜
+N	uint32_t saleCostTime;//å‡ºè´§è€—è´¹æ—¶é—´
+N}CLASS_TRADE;
+N
+N/*
+NçŠ¶æ€å‚æ•°ï¼Œç”¨äºæ§åˆ¶çŠ¶æ€çš„è¡Œä¸º
+N*/
+Ntypedef struct CLASS_FSM_STATUS  
+N{
+N	uint8_t mode; 	//æŒ‡ç¤ºç›®æ ‡çŠ¶æ€è¿›å…¥æŸç§æ¨¡å¼
+N	uint8_t status; //ç”¨äºè®°å½•çŠ¶æ€å†…éƒ¨å¤„ç†æ—¶äº§ç”Ÿçš„ä¸­é—´æ€
+N	uint8_t count; 	//ç”¨äºçŠ¶æ€å†…éƒ¨è®¡æ•°ï¼Œ
+N	uint8_t shortcut; //å¿«æ·æ–¹å¼æ ‡å¿—
+N	uint16_t num;	//çŠ¶æ€æ—¶é—´è®¡æ•°
+N
+N}CLASS_FSM_STATUS;
+N
+N
+N
+N/*
+Næè¿°å”®è´§æœºæ•´æœºå‚æ•°
+Nè¿™é‡Œçš„å‚æ•°éƒ½æ˜¯å¼€æœºå°±è¯»å–çš„
+N*/
+Ntypedef struct CLASS_VM_SET
+N{
+N	uint8_t DT;	//å¼ºåˆ¶è´­ä¹°
+N	uint8_t comDtu;//
+N	
+N	uint8_t language;	//è¯­è¨€
+N	uint8_t point;		//å°æ•°ç‚¹ä½æ•°ï¼ˆå¼€æœºè¯»è¯»è®¾ç½®,å„ç§è¾“å…¥é•¿åº¦ï¼Œä»¥åŠé‡‘é¢è¾“å…¥é•¿åº¦ï¼‰
+N	uint8_t priceBit;	//ä»·æ ¼ä½æ•°
+N	uint8_t channelBit;	//è´§é“ä½æ•°
+N	uint8_t storeBit;	//åº“å­˜ä½æ•°
+N	uint8_t goodsIdBit;	//æ¡ç ä½æ•°
+N	uint8_t keyState;	//é”®ç›˜è§¦å‘æ–¹å¼åˆ‡æ¢
+N	uint8_t door;		//é—¨ç¢° 
+N	
+N	uint8_t linkState;	//è¿ç½‘çŠ¶æ€
+N	uint8_t linkNum;	//é€šè®¯æµæ°´å·
+N	
+N	uint8_t storeEnable;//åº“å­˜ä½¿èƒ½
+N	uint8_t applyEnable;//äºŒç»´ç æ”¯ä»˜å¼€å…³
+N	
+N	uint8_t maxChannelNum;	//æ¯æ‰˜ç›˜è´§é“æ•°
+N	uint8_t maxtrayNum;		//æ‰˜ç›˜æ•°
+N	uint8_t maxContainerNum;//æœºæŸœæ•°ç›®
+N}CLASS_VM_SET;
+N
+N
+N/*
+Næç¤ºä¿¡æ¯ç»“æ„ä½“
+Nå®ç°å®šæ—¶æ¸…é™¤
+Nè®¤ä¸ºæç¤ºåªæ˜¯ä¸€è¡Œ
+Nå¹¶ä¸”å›å¤åº•è‰²æ˜¯èƒŒæ™¯è‰²
+N*/
+Ntypedef struct CLASS_PROMPT
+N{
+N	uint8_t fontsize;//å•å­—ç¬¦ä¸€è¾¹ç‚¹é˜µæ•°
+N	uint16_t x;
+N	uint16_t y;
+N	uint32_t len;
+N}CLASS_PROMPT;
+N
+N
+N
+N
+N/*
+Næè¿°æ¶ˆæ¯åŠ©æ‰‹
+N*/
+Ntypedef struct CLASS_ASSISIT{
+N	uint8_t  state;
+N	uint16_t value;
+N
+N}CLASS_ASSISIT;
+N
+N
+N
+N//æš‚æ—¶ç”¨çš„(è¿™äº›åé¢éƒ½è¦æ›¿æ¢æ‰)
+Nextern uint8_t CA306;
+Nextern volatile uint8_t coin_level;			//ç¡¬å¸å™¨å±‚çº§æ§åˆ¶
+Nextern uint32_t sysfactor;
+Nextern uint8_t check_w_power_on;
+N
+N
+N
+N
+N
+N
+N
+N/*
+Nå…¨å±€å˜é‡å£°æ˜
+N*/
+Nextern volatile CLASS_VM_SET g_vm;	//å”®è´§æœºå‚æ•°
+Nextern volatile CLASS_FSM_STATUS g_fsm;	//çŠ¶æ€æœºçŠ¶æ€
+Nextern volatile CLASS_TRADE g_trade;//äº¤æ˜“ç›¸å…³
+N
+N/*
+Nå£°æ˜
+N*/
+N	
+Nvoid tradenumadd(void);
+Nvoid select_goods(uint8_t key);
+Nchar *select_char_get(void);
+Nbool select_state_get(void);
+Nvoid select_clear(void);
+Nuint16_t select_value_get(void);
+N
+Nvoid input_num(uint8_t key);
+Nvoid input_money(uint8_t key);
+Nvoid input_clear(void);
+Nvoid input_len_set(uint8_t len);
+Nchar* input_char_get(void);
+Nuint8_t input_time(uint8_t key);
+Nuint8_t input_len_get(void);
+Nvoid fsm_value_clear(void);
+N
+Nuint32_t input_value_get(void);
+Nuint8_t input_data(uint8_t key);
+N
+N#endif
+L 5 "..\USR\Global\global.c" 2
+N#include "log.h "
+L 1 "..\USR\Bsp\log.h " 1
+N/*
+Nlogæ—¥å¿—æ¥å£å¤´æ–‡ä»¶
+N
+N*/
+N#ifndef _LOG_H_
+N#define _LOG_H_
+N
+N#include "stdint.h"
+N
+Nvoid log_init(void);
+Nvoid log_send(uint8_t *dat, uint16_t line);
+N
+N#endif
+L 6 "..\USR\Global\global.c" 2
+N#include "bsp_bkp.h"
+L 1 "..\USR\Bsp\bsp_bkp.h" 1
+N/*
+Nbkp Ê¹ÓÃÍ·ÎÄ¼ş
+N*/
+N
+N#ifndef _BSP_BKP_H_
+N#define _BSP_BKP_H_
+N
+N#include "stdint.h"
+N
+Nvoid bsp_bkp_init(void);
+Nuint32_t credit_get(void);
+Nvoid credit_set(uint32_t money);
+Nuint32_t mailcount_get(void);
+Nvoid mailcount_set(uint32_t num);
+Nuint32_t mailnum_get(void);
+Nvoid mailnum_set(uint32_t num);
+Nuint32_t flashqueue_head_get(void);
+Nvoid flashqueue_head_set(uint32_t num);
+Nuint32_t flashqueue_rear_get(void);
+Nvoid flashqueue_rear_set(uint32_t num);
+Nuint32_t mailusedsec_get(void);
+Nvoid mailusedsec_set(uint32_t num);
+Nuint32_t nochanger_get(void);
+Nvoid nochanger_set(uint32_t num);
+Nvoid tradenum_set(uint32_t num);
+Nuint32_t tradenum_get(void);
+Nvoid tradenum_add(void); 
+Nvoid loop_channel_set(uint8_t id, uint8_t num);
+Nvoid loop_channel_add(uint8_t id);
+Nuint8_t loop_channel_get(uint8_t id);
+N
+Nvoid bkp_trayStore_reset(void);
+Nvoid bkp_trayStore_set(uint8_t tray, uint8_t num);
+Nuint8_t bkp_trayStore_get(uint8_t tray);
+N
+Nvoid bkp_trayStatistic_reset(void);
+Nvoid bkp_trayStatistic_add(uint8_t tray, uint8_t num, uint16_t money );
+Nvoid bkp_trayStatistic_get(uint8_t tray, uint8_t *num, uint16_t *money );
+Nvoid bkp_trayStatistic_set(uint8_t tray, uint8_t num, uint16_t money );
+N
+Nvoid bkp_wholeStatistic_reset(void);
+Nvoid bkp_wholeStatistic_add(uint8_t num, uint16_t money );
+Nvoid bkp_wholeStatistic_get(uint32_t *num, uint32_t *money );
+N
+N
+N
+N#endif
+N
+N
+L 7 "..\USR\Global\global.c" 2
+N#include "stdlib.h"
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h" 1
+N/* stdlib.h: ANSI draft (X3J11 May 88) library header, section 4.10 */
+N/* Copyright (C) Codemist Ltd., 1988-1993.                          */
+N/* Copyright 1991-1998,2014 ARM Limited. All rights reserved.       */
+N/*
+N * RCS $Revision$
+N * Checkin $Date$
+N * Revising $Author: agrant $
+N */
+N 
+N/*
+N * stdlib.h declares four types, several general purpose functions,
+N * and defines several macros.
+N */
+N
+N#ifndef __stdlib_h
+N#define __stdlib_h
+N#define __ARMCLIB_VERSION 5060037
+N
+N#if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
+X#if 0L || (1L && !0L)
+N  /* armclang and non-strict armcc allow 'long long' in system headers */
+N  #define __LONGLONG long long
+N#else
+S  /* strict armcc has '__int64' */
+S  #define __LONGLONG __int64
+N#endif
+N
+N#define _ARMABI __declspec(__nothrow)
+N#define _ARMABI_PURE __declspec(__nothrow) __attribute__((const))
+N#define _ARMABI_NORETURN __declspec(__nothrow) __declspec(__noreturn)
+N#define _ARMABI_THROW
+N
+N  #ifndef __STDLIB_DECLS
+N  #define __STDLIB_DECLS
+N
+N  /*
+N   * Some of these declarations are new in C99.  To access them in C++
+N   * you can use -D__USE_C99_STDLIB (or -D__USE_C99ALL).
+N   */
+N  #ifndef __USE_C99_STDLIB
+N    #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+X    #if 0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+S      #define __USE_C99_STDLIB 1
+N    #endif
+N  #endif
+N
+N    #undef __CLIBNS
+N
+N    #ifdef __cplusplus
+S      namespace std {
+S          #define __CLIBNS ::std::
+S          extern "C" {
+N    #else
+N      #define __CLIBNS
+N    #endif  /* __cplusplus */
+N
+N#if defined(__cplusplus) || !defined(__STRICT_ANSI__)
+X#if 0L || !0L
+N /* unconditional in C++ and non-strict C for consistency of debug info */
+N  #if __sizeof_ptr == 8
+X  #if 4 == 8
+S    typedef unsigned long size_t;   /* see <stddef.h> */
+N  #else
+N    typedef unsigned int size_t;   /* see <stddef.h> */
+N  #endif
+N#elif !defined(__size_t)
+S  #define __size_t 1
+S  #if __sizeof_ptr == 8
+S    typedef unsigned long size_t;   /* see <stddef.h> */
+S  #else
+S    typedef unsigned int size_t;   /* see <stddef.h> */
+S  #endif
+N#endif
+N
+N#undef NULL
+N#define NULL 0                   /* see <stddef.h> */
+N
+N#ifndef __cplusplus  /* wchar_t is a builtin type for C++ */
+N  #if !defined(__STRICT_ANSI__)
+X  #if !0L
+N   /* unconditional in non-strict C for consistency of debug info */
+N   #if defined(__WCHAR32) || (defined(__ARM_SIZEOF_WCHAR_T) && __ARM_SIZEOF_WCHAR_T == 4)
+X   #if 0L || (0L && __ARM_SIZEOF_WCHAR_T == 4)
+S    typedef unsigned int wchar_t; /* see <stddef.h> */
+N   #else
+N    typedef unsigned short wchar_t; /* see <stddef.h> */
+N   #endif
+N  #elif !defined(__wchar_t)
+S    #define __wchar_t 1
+S   #if defined(__WCHAR32) || (defined(__ARM_SIZEOF_WCHAR_T) && __ARM_SIZEOF_WCHAR_T == 4)
+S    typedef unsigned int wchar_t; /* see <stddef.h> */
+S   #else
+S    typedef unsigned short wchar_t; /* see <stddef.h> */
+S   #endif
+N  #endif
+N#endif
+N
+Ntypedef struct div_t { int quot, rem; } div_t;
+N   /* type of the value returned by the div function. */
+Ntypedef struct ldiv_t { long int quot, rem; } ldiv_t;
+N   /* type of the value returned by the ldiv function. */
+N#if !defined(__STRICT_ANSI__) || __USE_C99_STDLIB
+X#if !0L || __USE_C99_STDLIB
+Ntypedef struct lldiv_t { __LONGLONG quot, rem; } lldiv_t;
+Xtypedef struct lldiv_t { long long quot, rem; } lldiv_t;
+N   /* type of the value returned by the lldiv function. */
+N#endif
+N
+N#ifdef __EXIT_FAILURE
+S#  define EXIT_FAILURE __EXIT_FAILURE
+S   /*
+S    * an integral expression which may be used as an argument to the exit
+S    * function to return unsuccessful termination status to the host
+S    * environment.
+S    */
+N#else
+N#  define EXIT_FAILURE 1  /* unixoid */
+N#endif
+N#define EXIT_SUCCESS 0
+N   /*
+N    * an integral expression which may be used as an argument to the exit
+N    * function to return successful termination status to the host
+N    * environment.
+N    */
+N
+N   /*
+N    * Defining __USE_ANSI_EXAMPLE_RAND at compile time switches to
+N    * the example implementation of rand() and srand() provided in
+N    * the ANSI C standard. This implementation is very poor, but is
+N    * provided for completeness.
+N    */
+N#ifdef __USE_ANSI_EXAMPLE_RAND
+S#define srand _ANSI_srand
+S#define rand _ANSI_rand
+S#define RAND_MAX 0x7fff
+N#else
+N#define RAND_MAX 0x7fffffff
+N#endif
+N   /*
+N    * RAND_MAX: an integral constant expression, the value of which
+N    * is the maximum value returned by the rand function.
+N    */
+Nextern _ARMABI int __aeabi_MB_CUR_MAX(void);
+Xextern __declspec(__nothrow) int __aeabi_MB_CUR_MAX(void);
+N#define MB_CUR_MAX ( __aeabi_MB_CUR_MAX() )
+N   /*
+N    * a positive integer expression whose value is the maximum number of bytes
+N    * in a multibyte character for the extended character set specified by the
+N    * current locale (category LC_CTYPE), and whose value is never greater
+N    * than MB_LEN_MAX.
+N    */
+N
+N   /*
+N    * If the compiler supports signalling nans as per N965 then it
+N    * will define __SUPPORT_SNAN__, in which case a user may define
+N    * _WANT_SNAN in order to obtain a compliant version of the strtod
+N    * family of functions.
+N    */
+N#if defined(__SUPPORT_SNAN__) && defined(_WANT_SNAN)
+X#if 0L && 0L
+S#pragma import(__use_snan)
+N#endif
+N
+Nextern _ARMABI double atof(const char * /*nptr*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) double atof(const char *  ) __attribute__((__nonnull__(1)));
+N   /*
+N    * converts the initial part of the string pointed to by nptr to double
+N    * representation.
+N    * Returns: the converted value.
+N    */
+Nextern _ARMABI int atoi(const char * /*nptr*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) int atoi(const char *  ) __attribute__((__nonnull__(1)));
+N   /*
+N    * converts the initial part of the string pointed to by nptr to int
+N    * representation.
+N    * Returns: the converted value.
+N    */
+Nextern _ARMABI long int atol(const char * /*nptr*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) long int atol(const char *  ) __attribute__((__nonnull__(1)));
+N   /*
+N    * converts the initial part of the string pointed to by nptr to long int
+N    * representation.
+N    * Returns: the converted value.
+N    */
+N#if !defined(__STRICT_ANSI__) || __USE_C99_STDLIB
+X#if !0L || __USE_C99_STDLIB
+Nextern _ARMABI __LONGLONG atoll(const char * /*nptr*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) long long atoll(const char *  ) __attribute__((__nonnull__(1)));
+N   /*
+N    * converts the initial part of the string pointed to by nptr to
+N    * long long int representation.
+N    * Returns: the converted value.
+N    */
+N#endif
+N
+Nextern _ARMABI double strtod(const char * __restrict /*nptr*/, char ** __restrict /*endptr*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) double strtod(const char * __restrict  , char ** __restrict  ) __attribute__((__nonnull__(1)));
+N   /*
+N    * converts the initial part of the string pointed to by nptr to double
+N    * representation. First it decomposes the input string into three parts:
+N    * an initial, possibly empty, sequence of white-space characters (as
+N    * specified by the isspace function), a subject sequence resembling a
+N    * floating point constant; and a final string of one or more unrecognised
+N    * characters, including the terminating null character of the input string.
+N    * Then it attempts to convert the subject sequence to a floating point
+N    * number, and returns the result. A pointer to the final string is stored
+N    * in the object pointed to by endptr, provided that endptr is not a null
+N    * pointer.
+N    * Returns: the converted value if any. If no conversion could be performed,
+N    *          zero is returned. If the correct value is outside the range of
+N    *          representable values, plus or minus HUGE_VAL is returned
+N    *          (according to the sign of the value), and the value of the macro
+N    *          ERANGE is stored in errno. If the correct value would cause
+N    *          underflow, zero is returned and the value of the macro ERANGE is
+N    *          stored in errno.
+N    */
+N#if !defined(__STRICT_ANSI__) || __USE_C99_STDLIB
+X#if !0L || __USE_C99_STDLIB
+Nextern _ARMABI float strtof(const char * __restrict /*nptr*/, char ** __restrict /*endptr*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) float strtof(const char * __restrict  , char ** __restrict  ) __attribute__((__nonnull__(1)));
+Nextern _ARMABI long double strtold(const char * __restrict /*nptr*/, char ** __restrict /*endptr*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) long double strtold(const char * __restrict  , char ** __restrict  ) __attribute__((__nonnull__(1)));
+N   /*
+N    * same as strtod, but return float and long double respectively.
+N    */
+N#endif
+Nextern _ARMABI long int strtol(const char * __restrict /*nptr*/,
+Xextern __declspec(__nothrow) long int strtol(const char * __restrict  ,
+N                        char ** __restrict /*endptr*/, int /*base*/) __attribute__((__nonnull__(1)));
+N   /*
+N    * converts the initial part of the string pointed to by nptr to long int
+N    * representation. First it decomposes the input string into three parts:
+N    * an initial, possibly empty, sequence of white-space characters (as
+N    * specified by the isspace function), a subject sequence resembling an
+N    * integer represented in some radix determined by the value of base, and a
+N    * final string of one or more unrecognised characters, including the
+N    * terminating null character of the input string. Then it attempts to
+N    * convert the subject sequence to an integer, and returns the result.
+N    * If the value of base is 0, the expected form of the subject sequence is
+N    * that of an integer constant (described in ANSI Draft, section 3.1.3.2),
+N    * optionally preceded by a '+' or '-' sign, but not including an integer
+N    * suffix. If the value of base is between 2 and 36, the expected form of
+N    * the subject sequence is a sequence of letters and digits representing an
+N    * integer with the radix specified by base, optionally preceded by a plus
+N    * or minus sign, but not including an integer suffix. The letters from a
+N    * (or A) through z (or Z) are ascribed the values 10 to 35; only letters
+N    * whose ascribed values are less than that of the base are permitted. If
+N    * the value of base is 16, the characters 0x or 0X may optionally precede
+N    * the sequence of letters and digits following the sign if present.
+N    * A pointer to the final string is stored in the object
+N    * pointed to by endptr, provided that endptr is not a null pointer.
+N    * Returns: the converted value if any. If no conversion could be performed,
+N    *          zero is returned and nptr is stored in *endptr.
+N    *          If the correct value is outside the range of
+N    *          representable values, LONG_MAX or LONG_MIN is returned
+N    *          (according to the sign of the value), and the value of the
+N    *          macro ERANGE is stored in errno.
+N    */
+Nextern _ARMABI unsigned long int strtoul(const char * __restrict /*nptr*/,
+Xextern __declspec(__nothrow) unsigned long int strtoul(const char * __restrict  ,
+N                                       char ** __restrict /*endptr*/, int /*base*/) __attribute__((__nonnull__(1)));
+N   /*
+N    * converts the initial part of the string pointed to by nptr to unsigned
+N    * long int representation. First it decomposes the input string into three
+N    * parts: an initial, possibly empty, sequence of white-space characters (as
+N    * determined by the isspace function), a subject sequence resembling an
+N    * unsigned integer represented in some radix determined by the value of
+N    * base, and a final string of one or more unrecognised characters,
+N    * including the terminating null character of the input string. Then it
+N    * attempts to convert the subject sequence to an unsigned integer, and
+N    * returns the result. If the value of base is zero, the expected form of
+N    * the subject sequence is that of an integer constant (described in ANSI
+N    * Draft, section 3.1.3.2), optionally preceded by a '+' or '-' sign, but
+N    * not including an integer suffix. If the value of base is between 2 and
+N    * 36, the expected form of the subject sequence is a sequence of letters
+N    * and digits representing an integer with the radix specified by base,
+N    * optionally preceded by a '+' or '-' sign, but not including an integer
+N    * suffix. The letters from a (or A) through z (or Z) stand for the values
+N    * 10 to 35; only letters whose ascribed values are less than that of the
+N    * base are permitted. If the value of base is 16, the characters 0x or 0X
+N    * may optionally precede the sequence of letters and digits following the
+N    * sign, if present. A pointer to the final string is stored in the object
+N    * pointed to by endptr, provided that endptr is not a null pointer.
+N    * Returns: the converted value if any. If no conversion could be performed,
+N    *          zero is returned and nptr is stored in *endptr.
+N    *          If the correct value is outside the range of
+N    *          representable values, ULONG_MAX is returned, and the value of
+N    *          the macro ERANGE is stored in errno.
+N    */
+N
+N/* C90 reserves all names beginning with 'str' */
+Nextern _ARMABI __LONGLONG strtoll(const char * __restrict /*nptr*/,
+Xextern __declspec(__nothrow) long long strtoll(const char * __restrict  ,
+N                                  char ** __restrict /*endptr*/, int /*base*/)
+N                          __attribute__((__nonnull__(1)));
+N   /*
+N    * as strtol but returns a long long int value.  If the correct value is
+N    * outside the range of representable values,  LLONG_MAX or LLONG_MIN is
+N    * returned (according to the sign of the value), and the value of the
+N    * macro ERANGE is stored in errno.
+N    */
+Nextern _ARMABI unsigned __LONGLONG strtoull(const char * __restrict /*nptr*/,
+Xextern __declspec(__nothrow) unsigned long long strtoull(const char * __restrict  ,
+N                                            char ** __restrict /*endptr*/, int /*base*/)
+N                                   __attribute__((__nonnull__(1)));
+N   /*
+N    * as strtoul but returns an unsigned long long int value.  If the correct
+N    * value is outside the range of representable values, ULLONG_MAX is returned,
+N    * and the value of the macro ERANGE is stored in errno.
+N    */
+N
+Nextern _ARMABI int rand(void);
+Xextern __declspec(__nothrow) int rand(void);
+N   /*
+N    * Computes a sequence of pseudo-random integers in the range 0 to RAND_MAX.
+N    * Uses an additive generator (Mitchell & Moore) of the form:
+N    *   Xn = (X[n-24] + X[n-55]) MOD 2^31
+N    * This is described in section 3.2.2 of Knuth, vol 2. It's period is
+N    * in excess of 2^55 and its randomness properties, though unproven, are
+N    * conjectured to be good. Empirical testing since 1958 has shown no flaws.
+N    * Returns: a pseudo-random integer.
+N    */
+Nextern _ARMABI void srand(unsigned int /*seed*/);
+Xextern __declspec(__nothrow) void srand(unsigned int  );
+N   /*
+N    * uses its argument as a seed for a new sequence of pseudo-random numbers
+N    * to be returned by subsequent calls to rand. If srand is then called with
+N    * the same seed value, the sequence of pseudo-random numbers is repeated.
+N    * If rand is called before any calls to srand have been made, the same
+N    * sequence is generated as when srand is first called with a seed value
+N    * of 1.
+N    */
+N
+Nstruct _rand_state { int __x[57]; };
+Nextern _ARMABI int _rand_r(struct _rand_state *);
+Xextern __declspec(__nothrow) int _rand_r(struct _rand_state *);
+Nextern _ARMABI void _srand_r(struct _rand_state *, unsigned int);
+Xextern __declspec(__nothrow) void _srand_r(struct _rand_state *, unsigned int);
+Nstruct _ANSI_rand_state { int __x[1]; };
+Nextern _ARMABI int _ANSI_rand_r(struct _ANSI_rand_state *);
+Xextern __declspec(__nothrow) int _ANSI_rand_r(struct _ANSI_rand_state *);
+Nextern _ARMABI void _ANSI_srand_r(struct _ANSI_rand_state *, unsigned int);
+Xextern __declspec(__nothrow) void _ANSI_srand_r(struct _ANSI_rand_state *, unsigned int);
+N   /*
+N    * Re-entrant variants of both flavours of rand, which operate on
+N    * an explicitly supplied state buffer.
+N    */
+N
+Nextern _ARMABI void *calloc(size_t /*nmemb*/, size_t /*size*/);
+Xextern __declspec(__nothrow) void *calloc(size_t  , size_t  );
+N   /*
+N    * allocates space for an array of nmemb objects, each of whose size is
+N    * 'size'. The space is initialised to all bits zero.
+N    * Returns: either a null pointer or a pointer to the allocated space.
+N    */
+Nextern _ARMABI void free(void * /*ptr*/);
+Xextern __declspec(__nothrow) void free(void *  );
+N   /*
+N    * causes the space pointed to by ptr to be deallocated (i.e., made
+N    * available for further allocation). If ptr is a null pointer, no action
+N    * occurs. Otherwise, if ptr does not match a pointer earlier returned by
+N    * calloc, malloc or realloc or if the space has been deallocated by a call
+N    * to free or realloc, the behaviour is undefined.
+N    */
+Nextern _ARMABI void *malloc(size_t /*size*/);
+Xextern __declspec(__nothrow) void *malloc(size_t  );
+N   /*
+N    * allocates space for an object whose size is specified by 'size' and whose
+N    * value is indeterminate.
+N    * Returns: either a null pointer or a pointer to the allocated space.
+N    */
+Nextern _ARMABI void *realloc(void * /*ptr*/, size_t /*size*/);
+Xextern __declspec(__nothrow) void *realloc(void *  , size_t  );
+N   /*
+N    * changes the size of the object pointed to by ptr to the size specified by
+N    * size. The contents of the object shall be unchanged up to the lesser of
+N    * the new and old sizes. If the new size is larger, the value of the newly
+N    * allocated portion of the object is indeterminate. If ptr is a null
+N    * pointer, the realloc function behaves like a call to malloc for the
+N    * specified size. Otherwise, if ptr does not match a pointer earlier
+N    * returned by calloc, malloc or realloc, or if the space has been
+N    * deallocated by a call to free or realloc, the behaviour is undefined.
+N    * If the space cannot be allocated, the object pointed to by ptr is
+N    * unchanged. If size is zero and ptr is not a null pointer, the object it
+N    * points to is freed.
+N    * Returns: either a null pointer or a pointer to the possibly moved
+N    *          allocated space.
+N    */
+N#if !defined(__STRICT_ANSI__)
+X#if !0L
+Nextern _ARMABI int posix_memalign(void ** /*ret*/, size_t /*alignment*/, size_t /*size*/);
+Xextern __declspec(__nothrow) int posix_memalign(void **  , size_t  , size_t  );
+N   /*
+N    * allocates space for an object of size 'size', aligned to a
+N    * multiple of 'alignment' (which must be a power of two and at
+N    * least 4).
+N    *
+N    * On success, a pointer to the allocated object is stored in
+N    * *ret, and zero is returned. On failure, the return value is
+N    * either ENOMEM (allocation failed because no suitable piece of
+N    * memory was available) or EINVAL (the 'alignment' parameter was
+N    * invalid).
+N    */
+N#endif
+Ntypedef int (*__heapprt)(void *, char const *, ...);
+Nextern _ARMABI void __heapstats(int (* /*dprint*/)(void * /*param*/,
+Xextern __declspec(__nothrow) void __heapstats(int (*  )(void *  ,
+N                                           char const * /*format*/, ...),
+N                        void * /*param*/) __attribute__((__nonnull__(1)));
+N   /*
+N    * reports current heap statistics (eg. number of free blocks in
+N    * the free-list). Output is as implementation-defined free-form
+N    * text, provided via the dprint function. `param' gives an
+N    * extra data word to pass to dprint. You can call
+N    * __heapstats(fprintf,stdout) by casting fprintf to the above
+N    * function type; the typedef `__heapprt' is provided for this
+N    * purpose.
+N    *
+N    * `dprint' will not be called while the heap is being examined,
+N    * so it can allocate memory itself without trouble.
+N    */
+Nextern _ARMABI int __heapvalid(int (* /*dprint*/)(void * /*param*/,
+Xextern __declspec(__nothrow) int __heapvalid(int (*  )(void *  ,
+N                                           char const * /*format*/, ...),
+N                       void * /*param*/, int /*verbose*/) __attribute__((__nonnull__(1)));
+N   /*
+N    * performs a consistency check on the heap. Errors are reported
+N    * through dprint, like __heapstats. If `verbose' is nonzero,
+N    * full diagnostic information on the heap state is printed out.
+N    *
+N    * This routine probably won't work if the heap isn't a
+N    * contiguous chunk (for example, if __user_heap_extend has been
+N    * overridden).
+N    *
+N    * `dprint' may be called while the heap is being examined or
+N    * even in an invalid state, so it must perform no memory
+N    * allocation. In particular, if `dprint' calls (or is) a stdio
+N    * function, the stream it outputs to must already have either
+N    * been written to or been setvbuf'ed, or else the system will
+N    * allocate buffer space for it on the first call to dprint.
+N    */
+Nextern _ARMABI_NORETURN void abort(void);
+Xextern __declspec(__nothrow) __declspec(__noreturn) void abort(void);
+N   /*
+N    * causes abnormal program termination to occur, unless the signal SIGABRT
+N    * is being caught and the signal handler does not return. Whether open
+N    * output streams are flushed or open streams are closed or temporary
+N    * files removed is implementation-defined.
+N    * An implementation-defined form of the status 'unsuccessful termination'
+N    * is returned to the host environment by means of a call to
+N    * raise(SIGABRT).
+N    */
+N
+Nextern _ARMABI int atexit(void (* /*func*/)(void)) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) int atexit(void (*  )(void)) __attribute__((__nonnull__(1)));
+N   /*
+N    * registers the function pointed to by func, to be called without its
+N    * arguments at normal program termination. It is possible to register at
+N    * least 32 functions.
+N    * Returns: zero if the registration succeeds, nonzero if it fails.
+N    */
+N#if defined(__EDG__) && !defined(__GNUC__)
+X#if 1L && !0L
+N#define __LANGUAGE_LINKAGE_CHANGES_FUNCTION_TYPE
+N#endif
+N#if defined(__cplusplus) && defined(__LANGUAGE_LINKAGE_CHANGES_FUNCTION_TYPE) 
+X#if 0L && 1L 
+S    /* atexit that takes a ptr to a function with C++ linkage 
+S     * but not in GNU mode  
+S     */
+S    typedef void (* __C_exitfuncptr)();
+S    extern "C++"
+S    inline int atexit(void (* __func)()) {
+S      return atexit((__C_exitfuncptr)__func);
+S    }
+N#endif
+N
+N
+Nextern _ARMABI_NORETURN void exit(int /*status*/);
+Xextern __declspec(__nothrow) __declspec(__noreturn) void exit(int  );
+N   /*
+N    * causes normal program termination to occur. If more than one call to the
+N    * exit function is executed by a program, the behaviour is undefined.
+N    * First, all functions registered by the atexit function are called, in the
+N    * reverse order of their registration.
+N    * Next, all open output streams are flushed, all open streams are closed,
+N    * and all files created by the tmpfile function are removed.
+N    * Finally, control is returned to the host environment. If the value of
+N    * status is zero or EXIT_SUCCESS, an implementation-defined form of the
+N    * status 'successful termination' is returned. If the value of status is
+N    * EXIT_FAILURE, an implementation-defined form of the status
+N    * 'unsuccessful termination' is returned. Otherwise the status returned
+N    * is implementation-defined.
+N    */
+N
+Nextern _ARMABI_NORETURN void _Exit(int /*status*/);
+Xextern __declspec(__nothrow) __declspec(__noreturn) void _Exit(int  );
+N   /*
+N    * causes normal program termination to occur. No functions registered
+N    * by the atexit function are called.
+N    * In this implementation, all open output streams are flushed, all
+N    * open streams are closed, and all files created by the tmpfile function
+N    * are removed.
+N    * Control is returned to the host environment. The status returned to
+N    * the host environment is determined in the same way as for 'exit'.
+N    */     
+N
+Nextern _ARMABI char *getenv(const char * /*name*/) __attribute__((__nonnull__(1)));
+Xextern __declspec(__nothrow) char *getenv(const char *  ) __attribute__((__nonnull__(1)));
+N   /*
+N    * searches the environment list, provided by the host environment, for a
+N    * string that matches the string pointed to by name. The set of environment
+N    * names and the method for altering the environment list are
+N    * implementation-defined.
+N    * Returns: a pointer to a string associated with the matched list member.
+N    *          The array pointed to shall not be modified by the program, but
+N    *          may be overwritten by a subsequent call to the getenv function.
+N    *          If the specified name cannot be found, a null pointer is
+N    *          returned.
+N    */
+N
+Nextern _ARMABI int  system(const char * /*string*/);
+Xextern __declspec(__nothrow) int  system(const char *  );
+N   /*
+N    * passes the string pointed to by string to the host environment to be
+N    * executed by a command processor in an implementation-defined manner.
+N    * A null pointer may be used for string, to inquire whether a command
+N    * processor exists.
+N    *
+N    * Returns: If the argument is a null pointer, the system function returns
+N    *          non-zero only if a command processor is available. If the
+N    *          argument is not a null pointer, the system function returns an
+N    *          implementation-defined value.
+N    */
+N
+Nextern _ARMABI_THROW void *bsearch(const void * /*key*/, const void * /*base*/,
+Xextern  void *bsearch(const void *  , const void *  ,
+N              size_t /*nmemb*/, size_t /*size*/,
+N              int (* /*compar*/)(const void *, const void *)) __attribute__((__nonnull__(1,2,5)));
+N   /*
+N    * searches an array of nmemb objects, the initial member of which is
+N    * pointed to by base, for a member that matches the object pointed to by
+N    * key. The size of each member of the array is specified by size.
+N    * The contents of the array shall be in ascending sorted order according to
+N    * a comparison function pointed to by compar, which is called with two
+N    * arguments that point to the key object and to an array member, in that
+N    * order. The function shall return an integer less than, equal to, or
+N    * greater than zero if the key object is considered, respectively, to be
+N    * less than, to match, or to be greater than the array member.
+N    * Returns: a pointer to a matching member of the array, or a null pointer
+N    *          if no match is found. If two members compare as equal, which
+N    *          member is matched is unspecified.
+N    */
+N#if defined(__cplusplus) && defined(__LANGUAGE_LINKAGE_CHANGES_FUNCTION_TYPE)
+X#if 0L && 1L
+S    /* bsearch that takes a ptr to a function with C++ linkage 
+S     * but not in GNU mode
+S     */
+S    typedef int (* __C_compareprocptr)(const void *, const void *);
+S    extern "C++"
+S    void *bsearch(const void * __key, const void * __base,
+S              size_t __nmemb, size_t __size,
+S              int (* __compar)(const void *, const void *)) __attribute__((__nonnull__(1,2,5)));
+S    extern "C++"
+S    inline void *bsearch(const void * __key, const void * __base,
+S              size_t __nmemb, size_t __size,
+S              int (* __compar)(const void *, const void *)) {
+S      return bsearch(__key, __base, __nmemb, __size, (__C_compareprocptr)__compar);
+S    }
+N#endif
+N
+N
+Nextern _ARMABI_THROW void qsort(void * /*base*/, size_t /*nmemb*/, size_t /*size*/,
+Xextern  void qsort(void *  , size_t  , size_t  ,
+N           int (* /*compar*/)(const void *, const void *)) __attribute__((__nonnull__(1,4)));
+N   /*
+N    * sorts an array of nmemb objects, the initial member of which is pointed
+N    * to by base. The size of each object is specified by size.
+N    * The contents of the array shall be in ascending order according to a
+N    * comparison function pointed to by compar, which is called with two
+N    * arguments that point to the objects being compared. The function shall
+N    * return an integer less than, equal to, or greater than zero if the first
+N    * argument is considered to be respectively less than, equal to, or greater
+N    * than the second. If two members compare as equal, their order in the
+N    * sorted array is unspecified.
+N    */
+N
+N#if defined(__cplusplus) && defined(__LANGUAGE_LINKAGE_CHANGES_FUNCTION_TYPE)
+X#if 0L && 1L
+S    /* qsort that takes a ptr to a function with C++ linkage 
+S     * but not in GNU mode
+S     */    
+S    extern "C++"
+S    void qsort(void * __base, size_t __nmemb, size_t __size,
+S               int (* __compar)(const void *, const void *)) __attribute__((__nonnull__(1,4)));
+S    extern "C++"
+S    inline void qsort(void * __base, size_t __nmemb, size_t __size,
+S                      int (* __compar)(const void *, const void *)) {
+S      qsort(__base, __nmemb, __size, (__C_compareprocptr)__compar);
+S    }
+N#endif
+N
+Nextern _ARMABI_PURE int abs(int /*j*/);
+Xextern __declspec(__nothrow) __attribute__((const)) int abs(int  );
+N   /*
+N    * computes the absolute value of an integer j. If the result cannot be
+N    * represented, the behaviour is undefined.
+N    * Returns: the absolute value.
+N    */
+N
+Nextern _ARMABI_PURE div_t div(int /*numer*/, int /*denom*/);
+Xextern __declspec(__nothrow) __attribute__((const)) div_t div(int  , int  );
+N   /*
+N    * computes the quotient and remainder of the division of the numerator
+N    * numer by the denominator denom. If the division is inexact, the resulting
+N    * quotient is the integer of lesser magnitude that is the nearest to the
+N    * algebraic quotient. If the result cannot be represented, the behaviour is
+N    * undefined; otherwise, quot * denom + rem shall equal numer.
+N    * Returns: a structure of type div_t, comprising both the quotient and the
+N    *          remainder. the structure shall contain the following members,
+N    *          in either order.
+N    *          int quot; int rem;
+N    */
+Nextern _ARMABI_PURE long int labs(long int /*j*/);
+Xextern __declspec(__nothrow) __attribute__((const)) long int labs(long int  );
+N   /*
+N    * computes the absolute value of an long integer j. If the result cannot be
+N    * represented, the behaviour is undefined.
+N    * Returns: the absolute value.
+N    */
+N#ifdef __cplusplus
+S   extern "C++" inline _ARMABI_PURE long abs(long int x) { return labs(x); }
+N#endif
+N
+Nextern _ARMABI_PURE ldiv_t ldiv(long int /*numer*/, long int /*denom*/);
+Xextern __declspec(__nothrow) __attribute__((const)) ldiv_t ldiv(long int  , long int  );
+N   /*
+N    * computes the quotient and remainder of the division of the numerator
+N    * numer by the denominator denom. If the division is inexact, the sign of
+N    * the resulting quotient is that of the algebraic quotient, and the
+N    * magnitude of the resulting quotient is the largest integer less than the
+N    * magnitude of the algebraic quotient. If the result cannot be represented,
+N    * the behaviour is undefined; otherwise, quot * denom + rem shall equal
+N    * numer.
+N    * Returns: a structure of type ldiv_t, comprising both the quotient and the
+N    *          remainder. the structure shall contain the following members,
+N    *          in either order.
+N    *          long int quot; long int rem;
+N    */
+N#ifdef __cplusplus
+S   extern "C++" inline _ARMABI_PURE ldiv_t div(long int __numer, long int __denom) {
+S       return ldiv(__numer, __denom);
+S   }
+N#endif
+N
+N#if !defined(__STRICT_ANSI__) || __USE_C99_STDLIB
+X#if !0L || __USE_C99_STDLIB
+Nextern _ARMABI_PURE __LONGLONG llabs(__LONGLONG /*j*/);
+Xextern __declspec(__nothrow) __attribute__((const)) long long llabs(long long  );
+N   /*
+N    * computes the absolute value of a long long integer j. If the
+N    * result cannot be represented, the behaviour is undefined.
+N    * Returns: the absolute value.
+N    */
+N#ifdef __cplusplus
+S   extern "C++" inline _ARMABI_PURE __LONGLONG abs(__LONGLONG x) { return llabs(x); }
+N#endif
+N
+Nextern _ARMABI_PURE lldiv_t lldiv(__LONGLONG /*numer*/, __LONGLONG /*denom*/);
+Xextern __declspec(__nothrow) __attribute__((const)) lldiv_t lldiv(long long  , long long  );
+N   /*
+N    * computes the quotient and remainder of the division of the numerator
+N    * numer by the denominator denom. If the division is inexact, the sign of
+N    * the resulting quotient is that of the algebraic quotient, and the
+N    * magnitude of the resulting quotient is the largest integer less than the
+N    * magnitude of the algebraic quotient. If the result cannot be represented,
+N    * the behaviour is undefined; otherwise, quot * denom + rem shall equal
+N    * numer.
+N    * Returns: a structure of type lldiv_t, comprising both the quotient and the
+N    *          remainder. the structure shall contain the following members,
+N    *          in either order.
+N    *          long long quot; long long rem;
+N    */
+N#ifdef __cplusplus
+S   extern "C++" inline _ARMABI_PURE lldiv_t div(__LONGLONG __numer, __LONGLONG __denom) {
+S       return lldiv(__numer, __denom);
+S   }
+N#endif
+N#endif
+N
+N#if !(__ARM_NO_DEPRECATED_FUNCTIONS)
+N/*
+N * ARM real-time divide functions for guaranteed performance
+N */
+Ntypedef struct __sdiv32by16 { int quot, rem; } __sdiv32by16;
+Ntypedef struct __udiv32by16 { unsigned int quot, rem; } __udiv32by16;
+N   /* used int so that values return in separate regs, although 16-bit */
+Ntypedef struct __sdiv64by32 { int rem, quot; } __sdiv64by32;
+N
+N__value_in_regs extern _ARMABI_PURE __sdiv32by16 __rt_sdiv32by16(
+X__value_in_regs extern __declspec(__nothrow) __attribute__((const)) __sdiv32by16 __rt_sdiv32by16(
+N     int /*numer*/,
+N     short int /*denom*/);
+N   /*
+N    * Signed divide: (16-bit quot), (16-bit rem) = (32-bit) / (16-bit)
+N    */
+N__value_in_regs extern _ARMABI_PURE __udiv32by16 __rt_udiv32by16(
+X__value_in_regs extern __declspec(__nothrow) __attribute__((const)) __udiv32by16 __rt_udiv32by16(
+N     unsigned int /*numer*/,
+N     unsigned short /*denom*/);
+N   /*
+N    * Unsigned divide: (16-bit quot), (16-bit rem) = (32-bit) / (16-bit)
+N    */
+N__value_in_regs extern _ARMABI_PURE __sdiv64by32 __rt_sdiv64by32(
+X__value_in_regs extern __declspec(__nothrow) __attribute__((const)) __sdiv64by32 __rt_sdiv64by32(
+N     int /*numer_h*/, unsigned int /*numer_l*/,
+N     int /*denom*/);
+N   /*
+N    * Signed divide: (32-bit quot), (32-bit rem) = (64-bit) / (32-bit)
+N    */
+N#endif
+N
+N/*
+N * ARM floating-point mask/status function (for both hardfp and softfp)
+N */
+Nextern _ARMABI unsigned int __fp_status(unsigned int /*mask*/, unsigned int /*flags*/);
+Xextern __declspec(__nothrow) unsigned int __fp_status(unsigned int  , unsigned int  );
+N   /*
+N    * mask and flags are bit-fields which correspond directly to the
+N    * floating point status register in the FPE/FPA and fplib.  
+N    * __fp_status returns the current value of the status register,
+N    * and also sets the writable bits of the word
+N    * (the exception control and flag bytes) to:
+N    *
+N    *     new = (old & ~mask) ^ flags;
+N    */
+N#define __fpsr_IXE  0x100000
+N#define __fpsr_UFE  0x80000
+N#define __fpsr_OFE  0x40000
+N#define __fpsr_DZE  0x20000
+N#define __fpsr_IOE  0x10000
+N
+N#define __fpsr_IXC  0x10
+N#define __fpsr_UFC  0x8
+N#define __fpsr_OFC  0x4
+N#define __fpsr_DZC  0x2
+N#define __fpsr_IOC  0x1
+N
+N/*
+N * Multibyte Character Functions.
+N * The behaviour of the multibyte character functions is affected by the
+N * LC_CTYPE category of the current locale. For a state-dependent encoding,
+N * each function is placed into its initial state by a call for which its
+N * character pointer argument, s, is a null pointer. Subsequent calls with s
+N * as other than a null pointer cause the internal state of the function to be
+N * altered as necessary. A call with s as a null pointer causes these functions
+N * to return a nonzero value if encodings have state dependency, and a zero
+N * otherwise. After the LC_CTYPE category is changed, the shift state of these
+N * functions is indeterminate.
+N */
+Nextern _ARMABI int mblen(const char * /*s*/, size_t /*n*/);
+Xextern __declspec(__nothrow) int mblen(const char *  , size_t  );
+N   /*
+N    * If s is not a null pointer, the mblen function determines the number of
+N    * bytes compromising the multibyte character pointed to by s. Except that
+N    * the shift state of the mbtowc function is not affected, it is equivalent
+N    * to   mbtowc((wchar_t *)0, s, n);
+N    * Returns: If s is a null pointer, the mblen function returns a nonzero or
+N    *          zero value, if multibyte character encodings, respectively, do
+N    *          or do not have state-dependent encodings. If s is not a null
+N    *          pointer, the mblen function either returns a 0 (if s points to a
+N    *          null character), or returns the number of bytes that compromise
+N    *          the multibyte character (if the next n of fewer bytes form a
+N    *          valid multibyte character), or returns -1 (they do not form a
+N    *          valid multibyte character).
+N    */
+Nextern _ARMABI int mbtowc(wchar_t * __restrict /*pwc*/,
+Xextern __declspec(__nothrow) int mbtowc(wchar_t * __restrict  ,
+N                   const char * __restrict /*s*/, size_t /*n*/);
+N   /*
+N    * If s is not a null pointer, the mbtowc function determines the number of
+N    * bytes that compromise the multibyte character pointed to by s. It then
+N    * determines the code for value of type wchar_t that corresponds to that
+N    * multibyte character. (The value of the code corresponding to the null
+N    * character is zero). If the multibyte character is valid and pwc is not a
+N    * null pointer, the mbtowc function stores the code in the object pointed
+N    * to by pwc. At most n bytes of the array pointed to by s will be examined.
+N    * Returns: If s is a null pointer, the mbtowc function returns a nonzero or
+N    *          zero value, if multibyte character encodings, respectively, do
+N    *          or do not have state-dependent encodings. If s is not a null
+N    *          pointer, the mbtowc function either returns a 0 (if s points to
+N    *          a null character), or returns the number of bytes that
+N    *          compromise the converted multibyte character (if the next n of
+N    *          fewer bytes form a valid multibyte character), or returns -1
+N    *          (they do not form a valid multibyte character).
+N    */
+Nextern _ARMABI int wctomb(char * /*s*/, wchar_t /*wchar*/);
+Xextern __declspec(__nothrow) int wctomb(char *  , wchar_t  );
+N   /*
+N    * determines the number of bytes need to represent the multibyte character
+N    * corresponding to the code whose value is wchar (including any change in
+N    * shift state). It stores the multibyte character representation in the
+N    * array object pointed to by s (if s is not a null pointer). At most
+N    * MB_CUR_MAX characters are stored. If the value of wchar is zero, the
+N    * wctomb function is left in the initial shift state).
+N    * Returns: If s is a null pointer, the wctomb function returns a nonzero or
+N    *          zero value, if multibyte character encodings, respectively, do
+N    *          or do not have state-dependent encodings. If s is not a null
+N    *          pointer, the wctomb function returns a -1 if the value of wchar
+N    *          does not correspond to a valid multibyte character, or returns
+N    *          the number of bytes that compromise the multibyte character
+N    *          corresponding to the value of wchar.
+N    */
+N
+N/*
+N * Multibyte String Functions.
+N * The behaviour of the multibyte string functions is affected by the LC_CTYPE
+N * category of the current locale.
+N */
+Nextern _ARMABI size_t mbstowcs(wchar_t * __restrict /*pwcs*/,
+Xextern __declspec(__nothrow) size_t mbstowcs(wchar_t * __restrict  ,
+N                      const char * __restrict /*s*/, size_t /*n*/) __attribute__((__nonnull__(2)));
+N   /*
+N    * converts a sequence of multibyte character that begins in the initial
+N    * shift state from the array pointed to by s into a sequence of
+N    * corresponding codes and stores not more than n codes into the array
+N    * pointed to by pwcs. No multibyte character that follow a null character
+N    * (which is converted into a code with value zero) will be examined or
+N    * converted. Each multibyte character is converted as if by a call to
+N    * mbtowc function, except that the shift state of the mbtowc function is
+N    * not affected. No more than n elements will be modified in the array
+N    * pointed to by pwcs. If copying takes place between objects that overlap,
+N    * the behaviour is undefined.
+N    * Returns: If an invalid multibyte character is encountered, the mbstowcs
+N    *          function returns (size_t)-1. Otherwise, the mbstowcs function
+N    *          returns the number of array elements modified, not including
+N    *          a terminating zero code, if any.
+N    */
+Nextern _ARMABI size_t wcstombs(char * __restrict /*s*/,
+Xextern __declspec(__nothrow) size_t wcstombs(char * __restrict  ,
+N                      const wchar_t * __restrict /*pwcs*/, size_t /*n*/) __attribute__((__nonnull__(2)));
+N   /*
+N    * converts a sequence of codes that correspond to multibyte characters
+N    * from the array pointed to by pwcs into a sequence of multibyte
+N    * characters that begins in the initial shift state and stores these
+N    * multibyte characters into the array pointed to by s, stopping if a
+N    * multibyte character would exceed the limit of n total bytes or if a
+N    * null character is stored. Each code is converted as if by a call to the
+N    * wctomb function, except that the shift state of the wctomb function is
+N    * not affected. No more than n elements will be modified in the array
+N    * pointed to by s. If copying takes place between objects that overlap,
+N    * the behaviour is undefined.
+N    * Returns: If a code is encountered that does not correspond to a valid
+N    *          multibyte character, the wcstombs function returns (size_t)-1.
+N    *          Otherwise, the wcstombs function returns the number of bytes
+N    *          modified, not including a terminating null character, if any.
+N    */
+N
+Nextern _ARMABI void __use_realtime_heap(void);
+Xextern __declspec(__nothrow) void __use_realtime_heap(void);
+Nextern _ARMABI void __use_realtime_division(void);
+Xextern __declspec(__nothrow) void __use_realtime_division(void);
+Nextern _ARMABI void __use_two_region_memory(void);
+Xextern __declspec(__nothrow) void __use_two_region_memory(void);
+Nextern _ARMABI void __use_no_heap(void);
+Xextern __declspec(__nothrow) void __use_no_heap(void);
+Nextern _ARMABI void __use_no_heap_region(void);
+Xextern __declspec(__nothrow) void __use_no_heap_region(void);
+N
+Nextern _ARMABI char const *__C_library_version_string(void);
+Xextern __declspec(__nothrow) char const *__C_library_version_string(void);
+Nextern _ARMABI int __C_library_version_number(void);
+Xextern __declspec(__nothrow) int __C_library_version_number(void);
+N
+N    #ifdef __cplusplus
+S         }  /* extern "C" */
+S      }  /* namespace std */
+N    #endif /* __cplusplus */
+N  #endif /* __STDLIB_DECLS */
+N
+N  #if _AEABI_PORTABILITY_LEVEL != 0 && !defined _AEABI_PORTABLE
+X  #if _AEABI_PORTABILITY_LEVEL != 0 && !0L
+S    #define _AEABI_PORTABLE
+N  #endif
+N
+N  #ifdef __cplusplus
+S    #ifndef __STDLIB_NO_EXPORTS
+S      #if !defined(__STRICT_ANSI__) || __USE_C99_STDLIB
+S        using ::std::atoll;
+S        using ::std::lldiv_t;
+S      #endif /* !defined(__STRICT_ANSI__) || __USE_C99_STDLIB */
+S      using ::std::div_t;
+S      using ::std::ldiv_t;
+S      using ::std::atof;
+S      using ::std::atoi;
+S      using ::std::atol;
+S      using ::std::strtod;
+S#if !defined(__STRICT_ANSI__) || __USE_C99_STDLIB
+S      using ::std::strtof;
+S      using ::std::strtold;
+S#endif
+S      using ::std::strtol;
+S      using ::std::strtoul;
+S      using ::std::strtoll;
+S      using ::std::strtoull;
+S      using ::std::rand;
+S      using ::std::srand;
+S      using ::std::_rand_state;
+S      using ::std::_rand_r;
+S      using ::std::_srand_r;
+S      using ::std::_ANSI_rand_state;
+S      using ::std::_ANSI_rand_r;
+S      using ::std::_ANSI_srand_r;
+S      using ::std::calloc;
+S      using ::std::free;
+S      using ::std::malloc;
+S      using ::std::realloc;
+S#if !defined(__STRICT_ANSI__)
+S      using ::std::posix_memalign;
+S#endif
+S      using ::std::__heapprt;
+S      using ::std::__heapstats;
+S      using ::std::__heapvalid;
+S      using ::std::abort;
+S      using ::std::atexit;
+S      using ::std::exit;
+S      using ::std::_Exit;
+S      using ::std::getenv;
+S      using ::std::system;
+S      using ::std::bsearch;
+S      using ::std::qsort;
+S      using ::std::abs;
+S      using ::std::div;
+S      using ::std::labs;
+S      using ::std::ldiv;
+S      #if !defined(__STRICT_ANSI__) || __USE_C99_STDLIB
+S        using ::std::llabs;
+S        using ::std::lldiv;
+S      #endif /* !defined(__STRICT_ANSI__) || __USE_C99_STDLIB */
+S#if !(__ARM_NO_DEPRECATED_FUNCTIONS)
+S      using ::std::__sdiv32by16;
+S      using ::std::__udiv32by16;
+S      using ::std::__sdiv64by32;
+S      using ::std::__rt_sdiv32by16;
+S      using ::std::__rt_udiv32by16;
+S      using ::std::__rt_sdiv64by32;
+S#endif
+S      using ::std::__fp_status;
+S      using ::std::mblen;
+S      using ::std::mbtowc;
+S      using ::std::wctomb;
+S      using ::std::mbstowcs;
+S      using ::std::wcstombs;
+S      using ::std::__use_realtime_heap;
+S      using ::std::__use_realtime_division;
+S      using ::std::__use_two_region_memory;
+S      using ::std::__use_no_heap;
+S      using ::std::__use_no_heap_region;
+S      using ::std::__C_library_version_string;
+S      using ::std::__C_library_version_number;
+S      using ::std::size_t;
+S      using ::std::__aeabi_MB_CUR_MAX;
+S    #endif /* __STDLIB_NO_EXPORTS */
+N  #endif /* __cplusplus */
+N
+N#undef __LONGLONG
+N
+N#endif /* __stdlib_h */
+N
+N/* end of stdlib.h */
+L 8 "..\USR\Global\global.c" 2
+N
+N//ÁÙÊ±ÓÃ
+Nuint8_t CA306;
+Nvolatile uint8_t coin_level;			
+Nuint32_t sysfactor = 100;
+N
+N
+N
+N
+N//¿ª»ú¼ì²â
+Nuint8_t check_w_power_on = 0;
+N
+N
+N
+Nvolatile CLASS_TRADE g_trade;
+Nvolatile CLASS_VM_SET g_vm;
+Nvolatile CLASS_FSM_STATUS g_fsm;
+N
+N
+N/*
+NÊäÈë½ğ¶î
+NËµÃ÷£ºÏÈÊäÈëµÄÊÇ¸ßÎ»
+N²ÎÊı£ºkey£º¼üÖµ
+NÓëÊäÈëÊı×ÖµÄÇø±ğÊÇÔö¼ÓÁËÒ»Ğ©Ìõ¼ş¼ì²â
+NÊ¹ÓÃ´Ë·½·¨Ç°£¬ĞèÒªÏÈÇå³ı¸É¾»
+Ng_trade.inputNum.len :ÊäÈëÎ»Êı£¬Ã¿´ÎÉèÖÃÉ¶¾Í¶ÁÉ¶µÄÎ»Êı
+N*/
+Nvoid input_money(uint8_t key)
+N{
+N	
+N	uint8_t i;
+N	uint32_t j,num,k,val;
+N	
+N	if(g_trade.inputNum.backup == 0)
+N		g_trade.inputNum.backup = g_vm.priceBit;
+N	
+N	
+N	if((key >= '0' && key <= '9') || key == '.')
+N	{
+N		if(g_trade.inputNum.backup == 0)g_trade.inputNum.backup = 1;
+N		
+N		if(g_trade.inputNum.state == 0)//µÚÒ»Î»ÊäÈë
+N		{
+N			for(i = 0; i < g_trade.inputNum.backup; i++)
+N				g_trade.inputNum.numchar[i] = '-';
+N			
+N		}
+N			
+N		if(g_trade.inputNum.state < g_trade.inputNum.backup)
+N		{
+N			if(key == '.')
+N			{
+N				if(g_trade.inputNum.flag == FALSE)
+N				{
+N					if(!(g_trade.inputNum.state == 0 || g_trade.inputNum.state == g_trade.inputNum.backup - 1))//Ê×Î»ÓëÄ©Î²²»ÔÊĞíÊäÈëĞ¡Êıµã
+N					{
+N						g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N						
+N						for(i = g_trade.inputNum.state, j = 0; i < g_trade.inputNum.backup; i++, j++)//Ğ¡ÊıµãºóÕ¼Î»·ûÇå³ı
+N						{
+N							g_trade.inputNum.numchar[i] = ' ';
+N						}
+N						
+N						g_trade.inputNum.backup = g_trade.inputNum.state + g_vm.point;//¸üĞÂÊäÈëĞ¡ÊıµãºóµÄÊäÈë×Ü³¤¶È£¨¸ù¾İĞ¡ÊıµãÎ»ÖÃ¼ÆËã£©
+N						
+N						if(g_trade.inputNum.backup > g_vm.priceBit + 1)//ÏŞÖÆ×Ü³¤¶È£¬²»ÄÜ³¬¹ı¼Û¸ñÎ»Êı+1£¨ÒòÎª¶àÁËÒ»¸öĞ¡Êıµã£©
+N							g_trade.inputNum.backup = g_vm.priceBit + 1;
+N						
+N						for(i = g_trade.inputNum.state, j = 0; i < g_trade.inputNum.backup; i++, j++)//Ğ¡ÊıµãºóÕ¼Î»·ûÏÔÊ¾
+N						{
+N							g_trade.inputNum.numchar[i] = '-';
+N						}
+N						
+N						g_trade.inputNum.flag = TRUE;
+N					}
+N				}
+N			}
+N			else
+N			{
+N				g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N				
+N				//¼ÆËã½ğ¶î£¨½ğ¶îÓëĞ¡ÊıµãÎ»ÖÃÓĞ¹Ø£¬ÊÇÒ»¸ö¼ÆËãÖµ£©
+N				for(i  = 0, j = 1; i < g_vm.point; i++ )//·Å´óÏµÊı
+N				{
+N					j *= 10;
+N				}
+N				for(i = 0, num = 0; i < g_trade.inputNum.backup && g_trade.inputNum.numchar[i] != '.'; i++)//ÕÒµ½Ğ¡ÊıµãÎ»ÖÃ
+N				{
+N					;
+N				}
+N				if(i < g_trade.inputNum.backup - 1)
+N				{
+N					i++;
+N					for(num = 0; i < g_trade.inputNum.backup; i++)//¼ÆËãĞ¡ÊıµãºóµÄÎ»Êı
+N					{
+N						if(g_trade.inputNum.numchar[i] <= '9' && g_trade.inputNum.numchar[i] >= '0')
+N						{
+N							num++;
+N						}
+N					}
+N					for(i = 0, k = 1; i < num; i++)//ËõĞ¡ÏµÊı
+N					{
+N						k *= 10;
+N					}
+N
+N				}
+N				else
+N				{
+N					k = 1;
+N				}
+N				
+N				for(i = 0, val = 0; i < g_trade.inputNum.backup; i++)//ÊäÈëÖµ£¨´¿ÊıÖµ£©
+N				{
+N					if(g_trade.inputNum.numchar[i] <= '9' && g_trade.inputNum.numchar[i] >= '0')
+N					val = val*10 + g_trade.inputNum.numchar[i] - '0';
+N					
+N				}
+N				g_trade.inputNum.value = val*(j/k);
+N			
+N			}
+N		}
+N		else//ÖØÍ·¿ªÊ¼ÊäÈë
+N		{
+N			if(key >= '0' && key <= '9')
+N			{
+N				g_trade.inputNum.backup = g_vm.priceBit ;//= g_trade.inputNum.backup;
+N				if(g_trade.inputNum.backup == 0)
+N					g_trade.inputNum.backup = 1;
+N				
+N				for(i = 0; i < (g_vm.priceBit + 1); i++)
+N				{
+N					g_trade.inputNum.numchar[i] = ' ';
+N				}
+N				
+N				for(i = 0; i < g_trade.inputNum.backup; i++)
+N				{
+N					g_trade.inputNum.numchar[i] = '-';
+N				}
+N				
+N				g_trade.inputNum.state = 0;
+N				g_trade.inputNum.value = 0;
+N				g_trade.inputNum.flag = FALSE;
+N				g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N
+N				//¼ÆËã½ğ¶î£¨½ğ¶îÓëĞ¡ÊıµãÎ»ÖÃÓĞ¹Ø£¬ÊÇÒ»¸ö¼ÆËãÖµ£©
+N				for(i  = 0, j = 1; i < g_vm.point; i++ )//·Å´óÏµÊı
+N				{
+N					j *= 10;
+N				}
+N				for(i = 0, num = 0; i < g_trade.inputNum.backup && g_trade.inputNum.numchar[i] != '.'; i++)//ÕÒµ½Ğ¡ÊıµãÎ»ÖÃ
+N				{
+N					;
+N				}
+N				if(i < g_trade.inputNum.backup - 1)
+N				{
+N					i++;
+N					for(num = 0; i < g_trade.inputNum.backup; i++)//¼ÆËãĞ¡ÊıµãºóµÄÎ»Êı
+N					{
+N						if(g_trade.inputNum.numchar[i] <= '9' && g_trade.inputNum.numchar[i] >= '0')
+N						{
+N							num++;
+N						}
+N					}
+N					for(i = 0, k = 1; i < num; i++)//ËõĞ¡ÏµÊı
+N					{
+N						k *= 10;
+N					}
+N
+N				}
+N				else
+N				{
+N					k = 1;
+N				}
+N				
+N				for(i = 0, val = 0; i < g_trade.inputNum.backup; i++)//ÊäÈëÖµ£¨´¿ÊıÖµ£©
+N				{
+N					if(g_trade.inputNum.numchar[i] <= '9' && g_trade.inputNum.numchar[i] >= '0')
+N					val = val*10 + g_trade.inputNum.numchar[i] - '0';
+N					
+N				}
+N				g_trade.inputNum.value = val*(j/k);
+N			}
+N		}
+N	}
+N}
+N
+N/*
+NÇå³ıÊäÈë
+NÕâ¸öºÍÇåÀíÆÁÄ»Ò»ÑùºÜ³£ÓÃ
+N*/
+Nvoid input_clear(void)
+N{
+N	uint8_t i;
+N	for(i = 0; i < 12; i++)
+N		g_trade.inputNum.numchar[i] = ' ';
+N	g_trade.inputNum.value = 0;
+N	g_trade.inputNum.state = 0;
+N	g_trade.inputNum.flag = FALSE;
+N	g_trade.inputNum.lenn = 0;
+N	g_trade.inputNum.backup = 0;
+N}
+N/*
+NÉèÖÃÊäÈë³¤¶È
+N*/
+Nvoid input_len_set(uint8_t len)
+N{
+N	g_trade.inputNum.lenn = len;
+N}
+N/*
+N¶ÁÈ¡ÊäÈë³¤¶È
+N*/
+Nuint8_t input_len_get(void) 
+N{
+N	return g_trade.inputNum.state ;
+N}
+N
+N/*
+N·µ»ØÊäÈë×Ö·û£¬
+N*/
+Nchar* input_char_get(void)
+N{
+N	return (char*)g_trade.inputNum.numchar;
+N}
+N/*
+N·µ»ØÊäÈëÊıÖµ
+N*/
+Nuint32_t input_value_get(void)
+N{
+N	return g_trade.inputNum.value;
+N}
+N
+N
+N/*
+NÊäÈëÊ±¼ä
+N*/
+Nuint8_t input_time(uint8_t key)
+N{
+N	uint8_t i;
+N	if( (key >= '0' && key <= '2' && (g_trade.inputNum.state == 0 || g_trade.inputNum.state == g_trade.inputNum.lenn))							//µÚ1Î»
+N	|| ( (key >= '0' && key <= '3') &&  g_trade.inputNum.state == 1) || (g_trade.inputNum.numchar[0] != '2' && g_trade.inputNum.state == 1)		//µÚ2Î»
+N	|| ( (key >= '0' && key <= '5') && g_trade.inputNum.state == 2)		//µÚ3Î»
+N	|| ( (key >= '0' && key <= '9') && g_trade.inputNum.state == 4) )	//µÚ4Î»
+N	{
+N		g_trade.inputNum.lenn = 5;//ÊäÈë³¤¶È
+N		
+N		if(g_trade.inputNum.state == 0)//ÊäÈëµÚÒ»¸ö×Ö·û
+N		{
+N			for(i = 0; i < g_trade.inputNum.lenn; i++)//Õ¼Î»·û´¦Àí
+N			{
+N				if(i == 2)
+N					g_trade.inputNum.numchar[i] = ':';//µÚÈıÎ»ÊÇ¸öÃ°ºÅ
+N				else
+N					g_trade.inputNum.numchar[i] = '-';
+N			}
+N		}
+N		
+N		if(g_trade.inputNum.state < g_trade.inputNum.lenn)
+N		{
+N			if(g_trade.inputNum.state == 2)
+N			{
+N				g_trade.inputNum.state++;
+N			}
+N			g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N			g_trade.inputNum.value = g_trade.inputNum.value*10 + key - '0';
+N		}
+N		else
+N		{
+N			for(i = 0; i < g_trade.inputNum.state; i++)//Õ¼Î»·û´¦Àí
+N			{
+N				if(i == 2)
+N					g_trade.inputNum.numchar[i] = ':';
+N				else
+N					g_trade.inputNum.numchar[i] = '-';
+N			}
+N			g_trade.inputNum.state = 0;
+N			g_trade.inputNum.value = 0;
+N			g_trade.inputNum.value = g_trade.inputNum.value*10 + key - '0';
+N			g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N		}
+N		return TRUE;
+N	}
+N	else
+N	{
+N		return FALSE;
+N	}
+N}
+N
+N/*
+N¹¦ÄÜ£ºÊäÈëÈÕÆÚ
+NËµÃ÷£º¶ÔÓÚ´óĞ¡ÔÂÈÕÊäÈëÃ»ÓĞÏŞÖÆ£¬¶ÔÓÚ2ÔÂÈÕÊäÈëÃ»ÓĞÏŞÖÆ£¬¶ÔÓÚÈıÔÂ
+N*/
+Nuint8_t input_data(uint8_t key)
+N{
+N	uint8_t i;
+N	
+N	if((key >= '1' && key < '3' && (g_trade.inputNum.state == 0 || g_trade.inputNum.state == g_trade.inputNum.lenn))//ÄêµÚ 1 Î»
+N	|| (key >= '0' && key <= '9' && g_trade.inputNum.state == 1 && g_trade.inputNum.numchar[0] == '2')//ÄêµÚ 2 Î»
+N	|| (key == '9' && g_trade.inputNum.state == 1 && g_trade.inputNum.numchar[0] == '1')//ÄêµÚ 2 Î»(Ö»ÄÜÊäÈë19xx)
+N	|| (key >= '0' && key <= '9' && g_trade.inputNum.state == 2)//ÄêµÚ 3 Î»
+N	|| (key >= '0' && key <= '9' && g_trade.inputNum.state == 3)//ÄêµÚ 4 Î»
+N	|| (key >= '0' && key < '2' && g_trade.inputNum.state == 4)//ÔÂµÚ 1 Î»
+N	|| (key > '0' && key <= '9' && g_trade.inputNum.state == 6 && g_trade.inputNum.numchar[5] == '0')//ÔÂµÚ 2 Î»
+N	|| (key >= '0' && key < '3' && g_trade.inputNum.state == 6 && g_trade.inputNum.numchar[5] == '1')//ÔÂµÚ 2 Î»
+N	|| (key >= '0' && key < '4' && g_trade.inputNum.state == 7)//ÈÕµÚ 1 Î»
+N	|| (key > '0' && key <= '9' && g_trade.inputNum.state == 9 && g_trade.inputNum.numchar[8] == '0' )//ÈÕµÚ 2 Î»
+N	|| (key >= '0' && key <= '9' && g_trade.inputNum.state == 9 && (g_trade.inputNum.numchar[8] == '1' || g_trade.inputNum.numchar[8] == '2'))//ÈÕµÚ 2 Î»
+N	|| (key >= '0' && key < '2' && g_trade.inputNum.state == 9 && g_trade.inputNum.numchar[8] == '3')//ÈÕµÚ 2 Î»
+N	)
+N	{
+N		g_trade.inputNum.lenn = 10;//ÊäÈë³¤¶È
+N		
+N		if(g_trade.inputNum.state == 0)//ÊäÈëµÚÒ»¸ö×Ö·û
+N		{
+N			for(i = 0; i < g_trade.inputNum.lenn; i++)//Õ¼Î»·û³õÊ¼»¯
+N			{
+N				if(i == 4 || i == 7)
+N				{
+N					g_trade.inputNum.numchar[i] = '/';//·Ö¸ô·û
+N				}
+N				else
+N				{
+N					g_trade.inputNum.numchar[i] = '-';
+N				}
+N			}
+N		}
+N		
+N		if(g_trade.inputNum.state < g_trade.inputNum.lenn)
+N		{
+N			if(g_trade.inputNum.state == 4 || g_trade.inputNum.state == 7)
+N			{
+N				g_trade.inputNum.state++;
+N			}
+N			g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N			g_trade.inputNum.value = g_trade.inputNum.value*10 + key - '0';
+N		}
+N		else
+N		{
+N			for(i = 0; i < g_trade.inputNum.state; i++)//Õ¼Î»·û´¦Àí
+N			{
+N				if(i == 4 || i == 7)
+N				{
+N					g_trade.inputNum.numchar[i] = '/';
+N				}
+N				else
+N				{
+N					g_trade.inputNum.numchar[i] = '-';
+N				}
+N			}
+N			g_trade.inputNum.state = 0;
+N			g_trade.inputNum.value = 0;
+N			g_trade.inputNum.value = g_trade.inputNum.value*10 + key - '0';
+N			g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N		}
+N		return TRUE;
+N	}
+N	else
+N	{
+N		return FALSE;
+N	}
+N}
+N/*
+NÊäÈëÊı×Ö
+NËµÃ÷£ºÏÈÊäÈëµÄÊÇ¸ßÎ»
+N²ÎÊı£ºkey£º¼üÖµ
+NÕâÊÇÒ»¸ö·½·¨£¬´«ÈëÖ¸Õë²Ù×÷£¬Í¨ÓÃĞÍ
+NÊ¹ÓÃ´Ë·½·¨Ç°£¬ĞèÒªÏÈÇå³ı¸É¾»
+N*/
+Nvoid input_num(uint8_t key)
+N{
+N	if(key >= '0' && key <= '9')
+N	{
+N		if(g_trade.inputNum.lenn == 0)
+N		{
+N			g_trade.inputNum.lenn = 1;
+N		}
+N		
+N		if(g_trade.inputNum.state == 0)//µÚÒ»´ÎÊäÈë
+N		{
+N			uint8_t i;
+N			for(i = 0; i < g_trade.inputNum.lenn; i++)
+N			g_trade.inputNum.numchar[i] = '-';//Õ¼Î»·û
+N		}
+N		
+N		if(g_trade.inputNum.state < g_trade.inputNum.lenn)
+N		{
+N			g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N			g_trade.inputNum.value = g_trade.inputNum.value*10 + key - '0';
+N		}
+N		else
+N		{
+N			uint8_t i;
+N			for(i = 0; i < g_trade.inputNum.state; i++)
+N				g_trade.inputNum.numchar[i] = '-';
+N
+N			g_trade.inputNum.state = 0;
+N			g_trade.inputNum.value = 0;
+N			g_trade.inputNum.value = g_trade.inputNum.value*10 + key - '0';
+N			g_trade.inputNum.numchar[g_trade.inputNum.state++] = key;
+N		}
+N	}
+N}
+N
+N
+N/*
+N°´¼ü±àÂëÖµ×ª»»ÎªÄÚ²¿»õµÀ±àÂë
+N*/
+Nstatic void transfer_selsec_encode(uint16_t channel) 
+N{
+N	if(g_vm.channelBit == 1)//1Î»»õµÀ±àÂë£¨Ö»ÄÜ±íÊ¾ÍĞÅÌ£©
+N	{
+N		//ÕâÀï»¹Òª¼ÓÉÏÂÖÑ¯µÄ»õµÀºÅ
+N		g_trade.curDiverBoard.container = 0;
+N		g_trade.curDiverBoard.tray = channel - 1;
+N		g_trade.curDiverBoard.col = loop_channel_get(g_trade.curDiverBoard.tray);
+N	}
+N	else
+N	if(g_vm.channelBit == 3)
+N	{
+N		g_trade.curDiverBoard.container = (channel-110) / 100; 
+N		g_trade.curDiverBoard.tray = (channel - 110) %100 / 10;
+N		g_trade.curDiverBoard.col = (channel - 110) %100 % 10;
+N	}
+N	else//Òì³£Çé¿öÒ²°´ÕÕ2Î»»õµÀÀ´´¦Àí
+N//	if(g_vm.channelBit == 2)
+N	{
+N		g_trade.curDiverBoard.container = 0;
+N		g_trade.curDiverBoard.tray = (channel - 10) / 10;
+N		g_trade.curDiverBoard.col = (channel - 10) % 10;
+N	}
+N} 
+N
+N/*
+NÑ¡Ôñ»õµÀ
+N²ÎÊı£ºkey £º¼üÖµ
+NÕâ¸öÒòÎªÒªÏÔÊ¾*ºÅ£¬¹Ì¶¨³¤¶È£¬ËùÓĞÊÇ¶ÀÓĞĞÍ
+N*/
+Nvoid select_goods(uint8_t key)
+N{
+N	uint8_t i;
+N	if(g_trade.select.state == 0 || g_trade.select.state == g_vm.channelBit )//µÚÒ»´Î°´¼ü»òÒÑ¾­°´µ½ÏŞ¶¨³¤¶È
+N	{
+N		if(key > '0' && key <= ('0' + g_vm.maxtrayNum))
+N		{
+N			g_trade.select.state = 0;
+N			g_trade.select.select[g_trade.select.state++] = key;
+N			for(i = 1; i < g_vm.channelBit; i++)
+N			{
+N				g_trade.select.select[i] = '*';
+N			}
+N			g_trade.select.select[i] = '\0';
+N			
+N			if(g_vm.channelBit == g_trade.select.state)
+N			{
+N				g_trade.select.value = atoi((const char*)g_trade.select.select);//×Ö·û´®×ªÎªintĞÍ10½øÖÆµÄÖµ
+N				transfer_selsec_encode(g_trade.select.value);
+N			}
+N		}
+N	}
+N	else//°´¼üÖĞ¼äÖµ
+N	{
+N		if(key >= '0' && key <= '9')
+N		{
+N			g_trade.select.select[g_trade.select.state] = key;
+N			g_trade.select.state++;
+N			if(g_trade.select.state == g_vm.channelBit)//ÊäÈëÍê³É
+N			{
+N				g_trade.select.value = atoi((const char*)g_trade.select.select);
+N				transfer_selsec_encode(g_trade.select.value);
+N			}
+N			
+N		}
+N	}
+N}
+N/*
+N·µ»Ø»õµÀÑ¡Ôñ×´Ì¬
+N*/
+Nbool select_state_get(void)
+N{
+N	if(g_trade.select.state == g_vm.channelBit)
+N		return TRUE;
+N	else
+N		return FALSE;
+N}
+N
+N/*
+N·µ»Ø»õµÀ×Ö·û´®Ö¸Õë
+N*/
+Nchar *select_char_get(void)
+N{
+N	return (char*)g_trade.select.select;
+N}
+N
+N/*
+NÇå³ı»õµÀÑ¡Ôñ
+N*/
+Nvoid select_clear(void)
+N{
+N	uint8_t i;
+N	g_trade.select.state = 0;
+N	g_trade.select.value = 0;
+N	for(i = 0; i < 11; i++)
+N	g_trade.select.select[i] = ' ';//Õâ¸öµØ·½¿ÉÒÔ¸Ä³É*£¬¸ù¾İchannelBit
+N	
+N	g_trade.curDiverBoard.container = 0;
+N	g_trade.curDiverBoard.tray = 0;
+N	g_trade.curDiverBoard.col = 0;
+N}
+N
+N/*
+N·µ»Ø»õµÀÖµ£¬¾ÍÊÇ°´¼üµÄ10½øÖÆ±íÊ¾
+N*/
+Nuint16_t select_value_get(void)
+N{
+N	return g_trade.select.value;
+N}
+N
+N/*
+N×´Ì¬»úÊı¾İÇåÁã
+N*/
+Nvoid fsm_value_clear(void)
+N{
+N	g_fsm.count = 0;
+N	g_fsm.mode = 0;
+N	g_fsm.num = 0;
+N	g_fsm.shortcut = 0;
+N	g_fsm.status = 0;
+N	
+N}
+N
+N/*
+NÊµÏÖ¶ÏÑÔ
+N´Ó´®¿Ú1Êä³ö
+N*/ 
+Nvoid assert_failed(uint8_t* file, uint32_t line)
+N{
+N	log_send(file, line);
+N}
+N
+N/*
+NÊµÏÖÓÃ»§ÈÕÖ¾Êä³ö
+N´Ó´®¿Ú1Êä³ö
+N*/ 
+Nvoid log_fail(uint8_t* file, uint32_t line)
+N{
+N	log_send(file, line);
+N}
+N
+N
+N
+N
