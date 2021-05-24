@@ -1,10 +1,10 @@
 #此文件可以忽略文件/文件夹
 # ignore folder
-CORE/
-FATFS/
-FWLIB/
+#Libraries/
+#UCOSII/
+#FWLIB/
 OBJ/
-USB/
+#USB/
 
 
 # ignore document
